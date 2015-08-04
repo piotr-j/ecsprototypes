@@ -1,14 +1,14 @@
-package io.piotrjastrzebski.ecsclones.thirder;
+package io.piotrjastrzebski.ecsclones.roguer;
 
 import io.piotrjastrzebski.ecsclones.ECSGame;
 import io.piotrjastrzebski.ecsclones.base.GameScreen;
 
 /**
- * Simple threes clone in ecs
+ * Simple rogue like in ecs
  * Created by EvilEntity on 30/07/2015.
  */
-public class Thirder extends GameScreen {
-	public Thirder (ECSGame game) {
+public class Roguer extends GameScreen {
+	public Roguer (ECSGame game) {
 		super(game);
 	}
 }

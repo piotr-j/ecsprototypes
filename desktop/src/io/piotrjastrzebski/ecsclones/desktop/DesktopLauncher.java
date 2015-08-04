@@ -7,6 +7,10 @@ import io.piotrjastrzebski.ecsclones.ECSGame;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		new LwjglApplication(new ECSGame(), config);
+		config.width = 1280;
+		config.height = 720;
+		config.useHDPI = true;
+		DesktopBridge bridge = new DesktopBridge();
+		new LwjglApplication(new ECSGame(bridge), config);
 	}
 }
