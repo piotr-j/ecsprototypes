@@ -19,6 +19,7 @@ allprojects {
         box2DLightsVersion = '1.4'
         aiVersion = '1.5.0'
         artemisVersion = '0.10.2'
+        visuiVersion = '0.8.0'
     }
 
     repositories {
@@ -74,11 +75,7 @@ project(":core") {
         compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
-        compile "com.kotcrab.vis:vis-ui:0.7.7"
-        // TODO do we want these 2?
-        compile "net.dermetfan.libgdx-utils:libgdx-utils:0.13.0"
-        compile "net.dermetfan.libgdx-utils:libgdx-utils-box2d:0.13.0"
-
+        compile "com.kotcrab.vis:vis-ui:$visuiVersion"
         compile "net.onedaybeard.artemis:artemis-odb:$artemisVersion"
     }
 }
