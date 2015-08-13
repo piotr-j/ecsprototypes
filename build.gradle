@@ -19,7 +19,7 @@ allprojects {
         box2DLightsVersion = '1.4'
         aiVersion = '1.5.0'
         artemisVersion = '0.10.2'
-        visuiVersion = '0.8.1-SNAPSHOT'
+        visuiVersion = '0.8.1'
     }
 
     repositories {
