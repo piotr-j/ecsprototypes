@@ -50,6 +50,7 @@ public class Physics extends EntitySystem {
 	}
 
 	public static class UserData {
+		public int category;
 		public int entity;
 
 		public UserData (Entity entity) {
@@ -91,9 +92,8 @@ public class Physics extends EntitySystem {
 	public static class Category {
 		public final static short DEFAULT = 0;
 		public final static short BOUNDARY = 1;
-		public final static short PLAYER = 1 << 1;
-		public final static short PLAYER_PROJECTILE = 1 << 2;
-		public final static short PARTICLE = 1 << 3;
-		public final static short ENEMY = 1 << 4;
+		public final static short PROJECTILE = 1 << 1;
+		public final static short BLOCK = 1 << 2;
+		public final static short TARGET = 1 << 3;
 	}
 }
