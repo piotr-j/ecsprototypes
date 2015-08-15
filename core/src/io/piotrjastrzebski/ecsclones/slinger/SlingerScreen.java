@@ -7,8 +7,8 @@ import io.piotrjastrzebski.ecsclones.base.GameScreen;
  * Simple angry birds like in ecs
  * Created by EvilEntity on 30/07/2015.
  */
-public class Slinger extends GameScreen {
-	public Slinger (ECSGame game) {
+public class SlingerScreen extends GameScreen {
+	public SlingerScreen (ECSGame game) {
 		super(game);
 	}
 }

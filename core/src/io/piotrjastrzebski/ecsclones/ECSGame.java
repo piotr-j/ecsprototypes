@@ -16,9 +16,7 @@ import io.piotrjastrzebski.ecsclones.base.BaseScreen;
 import io.piotrjastrzebski.ecsclones.base.GameScreen;
 import io.piotrjastrzebski.ecsclones.base.PlatformBridge;
 import io.piotrjastrzebski.ecsclones.flapper.FlapperScreen;
-import io.piotrjastrzebski.ecsclones.roguer.Roguer;
-import io.piotrjastrzebski.ecsclones.slinger.Slinger;
-import io.piotrjastrzebski.ecsclones.thirder.Thirder;
+import io.piotrjastrzebski.ecsclones.slinger.SlingerScreen;
 
 public class ECSGame extends Game {
 	SpriteBatch batch;
@@ -69,9 +67,9 @@ public class ECSGame extends Game {
 			super(game);
 			group = new GridGroup();
 			button(FlapperScreen.class);
-			button(Roguer.class);
-			button(Slinger.class);
-			button(Thirder.class);
+//			button(Roguer.class);
+			button(SlingerScreen.class);
+//			button(Thirder.class);
 			root.add(group).expand().fill();
 		}
 
