@@ -19,6 +19,7 @@ import io.piotrjastrzebski.ecsclones.slinger.components.parts.BlockDef;
  */
 @Wire
 public class BlockMaker extends EntitySystem {
+	private ComponentMapper<Block> mBlock;
 	private ComponentMapper<BlockDef> mBlockDef;
 	private ComponentMapper<Transform> mTransform;
 	private ComponentMapper<Size> mSize;
@@ -33,7 +34,7 @@ public class BlockMaker extends EntitySystem {
 	BodyDef bodyDef;
 	PolygonShape shape;
 	FixtureDef fixtureDef;
-	@Override protected void inserted (Entity e) {
+	@Override protected void inserted (final Entity e) {
 		BlockDef blockDef = mBlockDef.get(e);
 		Transform tf = mTransform.get(e);
 		Size size = mSize.get(e);
@@ -57,6 +58,19 @@ public class BlockMaker extends EntitySystem {
 		fixtureDef.density = blockDef.density;
 
 		block.body.createFixture(fixtureDef);
+
+		block.body.setUserData(new Physics.UserData(e){
+			@Override public void onPostSolve (Physics.UserData userData, float strength) {
+				if (strength > 1) {
+					e.deleteFromWorld();
+				}
+			}
+		});
+	}
+
+	@Override protected void removed (Entity e) {
+		Block block = mBlock.get(e);
+		physics.getWorld().destroyBody(block.body);
 	}
 
 	@Override protected void processSystem () {
