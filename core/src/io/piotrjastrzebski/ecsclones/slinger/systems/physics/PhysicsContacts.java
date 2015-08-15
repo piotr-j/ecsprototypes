@@ -41,11 +41,6 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 		// TODO what do we want with this? average? max? first only?
 		// http://www.iforce2d.net/b2dtut/sticky-projectiles says first value
 		float strength = normalImpulses[0];
-//		int count = impulse.getCount();
-//		for (int i = 0; i < count; i++) {
-//			strength += normalImpulses[i];
-//		}
-//		strength /= count;
 
 		Physics.UserData userDataA = (Physics.UserData)contact.getFixtureA().getBody().getUserData();
 		Physics.UserData userDataB = (Physics.UserData)contact.getFixtureB().getBody().getUserData();
