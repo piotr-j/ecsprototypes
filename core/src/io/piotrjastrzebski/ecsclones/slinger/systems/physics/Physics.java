@@ -50,11 +50,16 @@ public class Physics extends EntitySystem {
 	}
 
 	public static class UserData {
-		public int category;
+		public short category;
 		public int entity;
 
 		public UserData (Entity entity) {
 			set(entity);
+		}
+
+		public UserData (Entity e, short category) {
+			set(e);
+			this.category = category;
 		}
 
 		public UserData set (Entity entity) {
