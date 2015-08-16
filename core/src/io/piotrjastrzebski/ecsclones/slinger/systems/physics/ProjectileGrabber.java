@@ -15,7 +15,7 @@ import io.piotrjastrzebski.ecsclones.slinger.SlingerScreen;
 import io.piotrjastrzebski.ecsclones.slinger.components.Slinging;
 import io.piotrjastrzebski.ecsclones.slinger.components.parts.Projectile;
 import io.piotrjastrzebski.ecsclones.slinger.components.parts.Sling;
-import io.piotrjastrzebski.ecsclones.slinger.util.Input;
+import io.piotrjastrzebski.ecsclones.base.util.Input;
 
 /**
  * Created by EvilEntity on 15/08/2015.

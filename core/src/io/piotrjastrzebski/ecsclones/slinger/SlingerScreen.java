@@ -4,24 +4,15 @@ import com.artemis.EntityEdit;
 import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.utils.ImmutableBag;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.physics.box2d.joints.DistanceJoint;
-import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
-import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
-import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.badlogic.gdx.utils.Array;
 import io.piotrjastrzebski.ecsclones.ECSGame;
 import io.piotrjastrzebski.ecsclones.base.GameScreen;
 import io.piotrjastrzebski.ecsclones.slinger.components.*;
 import io.piotrjastrzebski.ecsclones.slinger.systems.*;
 import io.piotrjastrzebski.ecsclones.slinger.systems.physics.*;
-import io.piotrjastrzebski.ecsclones.slinger.util.Input;
-import io.piotrjastrzebski.ecsclones.slinger.util.Resizing;
+import io.piotrjastrzebski.ecsclones.base.util.Input;
+import io.piotrjastrzebski.ecsclones.base.util.Resizing;
 
 import java.util.Comparator;
 
@@ -66,7 +57,7 @@ public class SlingerScreen extends GameScreen {
 
 		world = new World(config);
 
-		Array<Input> inputs = new Array<>();
+		Array<io.piotrjastrzebski.ecsclones.base.util.Input> inputs = new Array<>();
 		input(inputs, world.getManagers());
 		input(inputs, world.getSystems());
 		inputs.sort(new Comparator<Input>() {

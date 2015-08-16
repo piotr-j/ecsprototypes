@@ -1,4 +1,4 @@
-package io.piotrjastrzebski.ecsclones.slinger.util;
+package io.piotrjastrzebski.ecsclones.base.util;
 
 /**
  * Created by EvilEntity on 15/08/2015.

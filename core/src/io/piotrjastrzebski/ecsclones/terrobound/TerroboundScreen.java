@@ -1,6 +1,5 @@
 package io.piotrjastrzebski.ecsclones.terrobound;
 
-import com.artemis.EntityEdit;
 import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.utils.ImmutableBag;
@@ -8,15 +7,8 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.utils.Array;
 import io.piotrjastrzebski.ecsclones.ECSGame;
 import io.piotrjastrzebski.ecsclones.base.GameScreen;
-import io.piotrjastrzebski.ecsclones.slinger.components.Level;
-import io.piotrjastrzebski.ecsclones.slinger.components.WorldDef;
-import io.piotrjastrzebski.ecsclones.slinger.systems.Box2dRenderer;
-import io.piotrjastrzebski.ecsclones.slinger.systems.DebugRenderer;
-import io.piotrjastrzebski.ecsclones.slinger.systems.GUISystem;
-import io.piotrjastrzebski.ecsclones.slinger.systems.LevelLoader;
-import io.piotrjastrzebski.ecsclones.slinger.systems.physics.*;
-import io.piotrjastrzebski.ecsclones.slinger.util.Input;
-import io.piotrjastrzebski.ecsclones.slinger.util.Resizing;
+import io.piotrjastrzebski.ecsclones.base.util.Input;
+import io.piotrjastrzebski.ecsclones.base.util.Resizing;
 
 import java.util.Comparator;
 

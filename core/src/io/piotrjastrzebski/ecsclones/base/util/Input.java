@@ -1,4 +1,4 @@
-package io.piotrjastrzebski.ecsclones.slinger.util;
+package io.piotrjastrzebski.ecsclones.base.util;
 
 import com.badlogic.gdx.InputProcessor;
 
