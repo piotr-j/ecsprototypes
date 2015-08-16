@@ -59,9 +59,9 @@ public class BlockMaker extends EntitySystem {
 
 		block.body.createFixture(fixtureDef);
 
-		block.body.setUserData(new Physics.UserData(e){
+		block.body.setUserData(new Physics.UserData(e, Physics.Category.BLOCK){
 			@Override public void onPostSolve (Physics.UserData userData, float strength) {
-				if (strength > 1) {
+				if (strength > 2) {
 					e.deleteFromWorld();
 				}
 			}

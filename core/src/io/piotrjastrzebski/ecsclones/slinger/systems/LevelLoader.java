@@ -46,23 +46,23 @@ public class LevelLoader extends Manager {
 		createGround();
 		float ground = -SlingerScreen.VP_HEIGHT / 2 + 1f;
 		// need some decent way of calculating rotation position, or gui!
-		createBox(-1f + 1, ground, 1f, 3f, 0);
-		createBox(1f + 1, ground, 1f, 3f, 0);
-		createBox(+ 1, ground + 2f, 1f, 3f, 90);
-		createBox(0f + 1, ground + 4, 1f, 3f, 0);
+		createBox(-1f + 1, ground, 0.25f, 3f, 0);
+		createBox(1f + 1, ground, 0.25f, 3f, 0);
+		createBox(+ 1, ground + 2f, 0.25f, 3f, 90);
+		createBox(0f + 1, ground + 4, 0.25f, 3f, 0);
 
-		createBox(-1f + 5, ground, 1f, 3f, 0);
-		createBox(1f + 5, ground, 1f, 3f, 0);
-		createBox(+ 5, ground + 2f, 1f, 3f, 90);
-		createBox(-1f + 5, ground + 4, 1f, 3f, 0);
-		createBox(1f + 5, ground + 4, 1f, 3f, 0);
-		createBox(+ 5, ground+2f + 4, 1f, 3f, 90);
-		createBox(0f + 5, ground + 8, 1f, 3f, 0);
+		createBox(-1f + 5, ground, 0.25f, 3f, 0);
+		createBox(1f + 5, ground, 0.25f, 3f, 0);
+		createBox(+ 5, ground + 2f, 0.25f, 3f, 90);
+		createBox(-1f + 5, ground + 4, 0.25f, 3f, 0);
+		createBox(1f + 5, ground + 4, 0.25f, 3f, 0);
+		createBox(+ 5, ground+2f + 4, 0.25f, 3f, 90);
+		createBox(0f + 5, ground + 8, 0.25f, 3f, 0);
 
-		createBox(-1f + 9, ground, 1f, 3f, 0);
-		createBox(1f + 9, ground, 1f, 3f, 0);
-		createBox(+ 9, ground + 2f, 1f, 3f, 90);
-		createBox(0f + 9, ground + 4, 1f, 3f, 0);
+		createBox(-1f + 9, ground, 0.25f, 3f, 0);
+		createBox(1f + 9, ground, 0.25f, 3f, 0);
+		createBox(+ 9, ground + 2f, 0.25f, 3f, 90);
+		createBox(0f + 9, ground + 4, 0.25f, 3f, 0);
 
 		createSlingShot(-16, ground);
 		createProjectile(-16, ground + 5, true);
@@ -130,7 +130,7 @@ public class LevelLoader extends Manager {
 		BlockDef blockDef = edit.create(BlockDef.class);
 		blockDef.restitution = 0.2f;
 		blockDef.friction = 0.3f;
-		blockDef.density = 1;
+		blockDef.density = 2;
 
 		Transform transform = edit.create(Transform.class);
 		transform.x = x;
