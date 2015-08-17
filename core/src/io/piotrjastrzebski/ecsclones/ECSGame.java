@@ -17,6 +17,7 @@ import io.piotrjastrzebski.ecsclones.base.GameScreen;
 import io.piotrjastrzebski.ecsclones.base.PlatformBridge;
 import io.piotrjastrzebski.ecsclones.flapper.FlapperScreen;
 import io.piotrjastrzebski.ecsclones.slinger.SlingerScreen;
+import io.piotrjastrzebski.ecsclones.terrobound.TerroboundScreen;
 
 public class ECSGame extends Game {
 	SpriteBatch batch;
@@ -70,6 +71,7 @@ public class ECSGame extends Game {
 //			button(Roguer.class);
 			button(SlingerScreen.class);
 //			button(Thirder.class);
+			button(TerroboundScreen.class);
 			root.add(group).expand().fill();
 		}
 
