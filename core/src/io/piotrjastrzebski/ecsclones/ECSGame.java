@@ -16,6 +16,7 @@ import io.piotrjastrzebski.ecsclones.base.BaseScreen;
 import io.piotrjastrzebski.ecsclones.base.GameScreen;
 import io.piotrjastrzebski.ecsclones.base.PlatformBridge;
 import io.piotrjastrzebski.ecsclones.flapper.FlapperScreen;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.RoBScreen;
 import io.piotrjastrzebski.ecsclones.slinger.SlingerScreen;
 
 public class ECSGame extends Game {
@@ -69,6 +70,7 @@ public class ECSGame extends Game {
 			button(FlapperScreen.class);
 //			button(Roguer.class);
 			button(SlingerScreen.class);
+			button(RoBScreen.class);
 //			button(Thirder.class);
 			root.add(group).expand().fill();
 		}
