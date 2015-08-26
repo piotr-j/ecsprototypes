@@ -1,6 +1,5 @@
 package io.piotrjastrzebski.ecsclones.flapper;
 
-import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import io.piotrjastrzebski.ecsclones.ECSGame;
 import io.piotrjastrzebski.ecsclones.base.GameScreen;
@@ -10,15 +9,11 @@ import io.piotrjastrzebski.ecsclones.base.GameScreen;
  * Created by EvilEntity on 30/07/2015.
  */
 public class FlapperScreen extends GameScreen {
-	World world;
 	public FlapperScreen (ECSGame game) {
 		super(game);
-		WorldConfiguration config = new WorldConfiguration();
-		config.register(gameCamera);
-		config.register(gameViewport);
-		config.register(renderer);
-		config.register(batch);
+	}
 
+	@Override protected void preInit (WorldConfiguration config) {
 		config.setSystem(new FlapperRespawner());
 
 		config.setSystem(new GravitySystem());
@@ -38,22 +33,15 @@ public class FlapperScreen extends GameScreen {
 		config.setSystem(new OOBCleaner());
 
 		config.setSystem(new DebugRenderer());
+	}
 
-
-		world = new World(config);
+	@Override protected void postInit () {
 
 	}
 
 	@Override public void render (float delta) {
 		super.render(delta);
-		world.delta = delta;
-		world.process();
 		stage.act(delta);
 		stage.draw();
-	}
-
-	@Override public void dispose () {
-		super.dispose();
-		world.dispose();
 	}
 }

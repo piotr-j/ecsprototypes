@@ -12,7 +12,7 @@ import io.piotrjastrzebski.ecsclones.flapper.components.Flapper;
  */
 @Wire
 public class FlapperFollower extends EntityProcessingSystem {
-	@Wire
+	@Wire(name = FlapperScreen.WIRE_GAME_CAM)
 	OrthographicCamera camera;
 	protected ComponentMapper<Position> mPosition;
 	protected ComponentMapper<Size> mSize;

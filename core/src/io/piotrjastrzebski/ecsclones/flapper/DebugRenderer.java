@@ -16,7 +16,7 @@ import io.piotrjastrzebski.ecsclones.base.components.Size;
  */
 @Wire
 public class DebugRenderer extends EntityProcessingSystem {
-	@Wire OrthographicCamera camera;
+	@Wire(name = FlapperScreen.WIRE_GAME_CAM) OrthographicCamera camera;
 	@Wire ShapeRenderer renderer;
 
 	protected ComponentMapper<Position> mPosition;

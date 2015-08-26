@@ -1,5 +1,6 @@
 package io.piotrjastrzebski.ecsclones.roguer;
 
+import com.artemis.WorldConfiguration;
 import io.piotrjastrzebski.ecsclones.ECSGame;
 import io.piotrjastrzebski.ecsclones.base.GameScreen;
 
@@ -10,5 +11,13 @@ import io.piotrjastrzebski.ecsclones.base.GameScreen;
 public class Roguer extends GameScreen {
 	public Roguer (ECSGame game) {
 		super(game);
+	}
+
+	@Override protected void preInit (WorldConfiguration config) {
+
+	}
+
+	@Override protected void postInit () {
+
 	}
 }
