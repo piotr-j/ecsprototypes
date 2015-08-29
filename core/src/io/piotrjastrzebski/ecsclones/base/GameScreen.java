@@ -48,7 +48,7 @@ public abstract class GameScreen extends BaseScreen {
 			}
 		});
 		for (Input input : inputs) {
-			multiplexer.addProcessor(input);
+			multiplexer.addProcessor(input.get());
 		}
 	}
 

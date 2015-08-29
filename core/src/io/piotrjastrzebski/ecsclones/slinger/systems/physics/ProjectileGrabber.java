@@ -3,6 +3,7 @@ package io.piotrjastrzebski.ecsclones.slinger.systems.physics;
 import com.artemis.*;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -21,7 +22,7 @@ import io.piotrjastrzebski.ecsclones.base.util.Input;
  * Created by EvilEntity on 15/08/2015.
  */
 @Wire
-public class ProjectileGrabber extends EntityProcessingSystem implements Input {
+public class ProjectileGrabber extends EntityProcessingSystem implements Input, InputProcessor {
 	private ComponentMapper<Projectile> mProjectile;
 	private ComponentMapper<Slinging> mSlinging;
 	private ComponentMapper<Sling> mSling;
@@ -117,6 +118,10 @@ public class ProjectileGrabber extends EntityProcessingSystem implements Input {
 
 	@Override public int priority () {
 		return 0;
+	}
+
+	@Override public InputProcessor get () {
+		return this;
 	}
 
 	@Override public boolean keyDown (int keycode) {
