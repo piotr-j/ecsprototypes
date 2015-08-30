@@ -3,18 +3,15 @@ package io.piotrjastrzebski.ecsclones.restrainingofbob;
 import com.artemis.Entity;
 import com.artemis.EntityEdit;
 import com.artemis.WorldConfiguration;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.ai.steer.behaviors.Wander;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import io.piotrjastrzebski.ecsclones.ECSGame;
 import io.piotrjastrzebski.ecsclones.base.GameScreen;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.*;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PBodyDef;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PCircle;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PPolygon;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PRect;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.rendering.DebugTint;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.*;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.*;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.Steering;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.physics.PBodyBuilder;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.physics.Physics;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.physics.PhysicsContacts;
@@ -36,6 +33,7 @@ public class RoBScreen extends GameScreen {
 	@Override protected void preInit (WorldConfiguration config) {
 		config.setManager(new PhysicsContacts());
 		config.setSystem(new Physics());
+		config.setSystem(new Steering(true));
 		config.setSystem(new TransformUpdater());
 		config.setSystem(new PBodyBuilder());
 		config.setSystem(new MoveController());
@@ -43,7 +41,7 @@ public class RoBScreen extends GameScreen {
 		config.setSystem(new PhysicsMover());
 		config.setSystem(new CircleBoundsUpdater());
 		config.setSystem(new RectBoundsUpdater());
-		config.setSystem(new Follower());
+		config.setSystem(new CameraFollower());
 		config.setSystem(new DebugRenderer());
 		config.setSystem(new Box2dDebugRenderer());
 	}
@@ -100,6 +98,7 @@ public class RoBScreen extends GameScreen {
 
 		Transform transform = ee.create(Transform.class);
 		transform.pos.set(MathUtils.random(-18, 17), MathUtils.random(-10, 9));
+//		transform.rot = MathUtils.random(359);
 
 		Mover mover = ee.create(Mover.class);
 		mover.maxLinearImp = 2.5f;
@@ -107,12 +106,31 @@ public class RoBScreen extends GameScreen {
 		PBodyDef bodyDef = ee.create(PBodyDef.class);
 		bodyDef.type(BodyDef.BodyType.DynamicBody);
 		bodyDef.def.linearDamping = 5f;
-		bodyDef.def.fixedRotation = true;
+//		bodyDef.def.fixedRotation = true;
 		bodyDef.restitution = .25f;
 		bodyDef.friction = .25f;
 		bodyDef.density = 1;
 
 		PCircle pCircle = ee.create(PCircle.class);
 		pCircle.setSize(.5f);
+
+
+		PSteerable physSteerable = ee.create(PSteerable.class);
+		physSteerable.setMaxLinearAcceleration(4);
+		physSteerable.setMaxLinearSpeed(1);
+		physSteerable.setMaxAngularAcceleration(0.5f); // greater than 0 because independent facing is enabled
+		physSteerable.setMaxAngularSpeed(5);
+		physSteerable.setIndependentFacing(true);
+		physSteerable.setBoundingRadius(0.25f);
+
+		physSteerable.behaviour = new Wander<>(physSteerable) //
+			.setFaceEnabled(true) // We want to use Face internally (independent facing is on)
+			.setAlignTolerance(0.001f) // Used by Face
+			.setDecelerationRadius(0.25f) // Used by Face
+			.setTimeToTarget(0.1f) // Used by Face
+			.setWanderOffset(6f) //
+			.setWanderOrientation(MathUtils.random(360)) //
+			.setWanderRadius(2f) //
+			.setWanderRate(MathUtils.PI2 * 40);
 	}
 }

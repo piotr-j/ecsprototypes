@@ -18,13 +18,13 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.components.rendering.Debug
  * Created by PiotrJ on 29/08/15.
  */
 @Wire
-public class Follower extends EntityProcessingSystem {
+public class CameraFollower extends EntityProcessingSystem {
 	@Wire(name = GameScreen.WIRE_GAME_CAM) OrthographicCamera camera;
 
 	protected ComponentMapper<Transform> mTransform;
 	protected ComponentMapper<CamFollow> mCamFollow;
 
-	public Follower () {
+	public CameraFollower () {
 		super(Aspect.all(Transform.class, CamFollow.class));
 	}
 
