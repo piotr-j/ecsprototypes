@@ -17,7 +17,7 @@ allprojects {
         appName = 'ecsclones'
         gdxVersion = '1.6.4'
         box2DLightsVersion = '1.4'
-        aiVersion = '1.5.0'
+        aiVersion = '1.5.1-SNAPSHOT'
         artemisVersion = '0.10.2'
         visuiVersion = '0.8.1'
     }

@@ -4,8 +4,10 @@ import com.artemis.Component;
 import com.badlogic.gdx.ai.steer.Steerable;
 import com.badlogic.gdx.ai.steer.SteeringBehavior;
 import com.badlogic.gdx.ai.steer.behaviors.Wander;
+import com.badlogic.gdx.ai.utils.Location;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.Steering;
 
 /**
  * Created by PiotrJ on 23/08/15.
@@ -20,13 +22,9 @@ public class PSteerable extends Component implements Steerable<Vector2> {
 	float maxLinearAcceleration;
 	float maxAngularSpeed;
 	float maxAngularAcceleration;
+	float zeroThreshold = 0.001f;
 
-//	public SteeringBehavior<Vector2> behaviour;
 	private boolean independentFacing;
-
-//	public void setBehaviour (Wander<Vector2> behaviour) {
-//		this.behaviour = behaviour;
-//	}
 
 	public void setBoundingRadius (float boundingRadius) {
 		this.boundingRadius = boundingRadius;
@@ -40,21 +38,30 @@ public class PSteerable extends Component implements Steerable<Vector2> {
 		this.body = body;
 	}
 
+	private Vector2 zero = new Vector2();
 	@Override
 	public Vector2 getPosition () {
+		if (body == null) return zero;
 		return body.getPosition();
 	}
 
 	@Override
 	public float getOrientation () {
+		if (body == null) return 0;
 		return body.getAngle();
 	}
 
+	@Override public void setOrientation (float orientation) {
+
+	}
+
 	@Override public Vector2 getLinearVelocity () {
+		if (body == null) return zero;
 		return body.getLinearVelocity();
 	}
 
 	@Override public float getAngularVelocity () {
+		if (body == null) return 0;
 		return body.getAngularVelocity();
 	}
 
@@ -70,18 +77,20 @@ public class PSteerable extends Component implements Steerable<Vector2> {
 		this.tagged = tagged;
 	}
 
-	@Override public Vector2 newVector () {
-		return new Vector2();
-	}
+//	@Override public Vector2 newVector () {
+//		return new Vector2();
+//	}
 
 	@Override public float vectorToAngle (Vector2 vector) {
-		return (float)Math.atan2(-vector.x, vector.y);
+		return Steering.vectorToAngle(vector);
 	}
 
 	@Override public Vector2 angleToVector (Vector2 outVector, float angle) {
-		outVector.x = -(float)Math.sin(angle);
-		outVector.y = (float)Math.cos(angle);
-		return outVector;
+		return Steering.angleToVector(outVector, angle);
+	}
+
+	@Override public Location<Vector2> newLocation () {
+		return new PLocation();
 	}
 
 	@Override public float getMaxLinearSpeed () {
@@ -117,7 +126,11 @@ public class PSteerable extends Component implements Steerable<Vector2> {
 	}
 
 	public float getZeroLinearSpeedThreshold () {
-		return 0.001f;
+		return zeroThreshold;
+	}
+
+	@Override public void setZeroLinearSpeedThreshold (float zeroThreshold) {
+		this.zeroThreshold = zeroThreshold;
 	}
 
 	public boolean isIndependentFacing () {

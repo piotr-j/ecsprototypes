@@ -163,11 +163,11 @@ public class Steering extends EntityProcessingSystem {
 		}
 	}
 
-	private float vectorToAngle (Vector2 vector) {
+	public static float vectorToAngle (Vector2 vector) {
 		return (float)Math.atan2(-vector.x, vector.y);
 	}
 
-	private Vector2 angleToVector (Vector2 outVector, float angle) {
+	public static Vector2 angleToVector (Vector2 outVector, float angle) {
 		outVector.x = -(float)Math.sin(angle);
 		outVector.y = (float)Math.cos(angle);
 		return outVector;
