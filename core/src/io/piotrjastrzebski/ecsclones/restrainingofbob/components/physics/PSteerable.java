@@ -21,12 +21,12 @@ public class PSteerable extends Component implements Steerable<Vector2> {
 	float maxAngularSpeed;
 	float maxAngularAcceleration;
 
-	public SteeringBehavior<Vector2> behaviour;
+//	public SteeringBehavior<Vector2> behaviour;
 	private boolean independentFacing;
 
-	public void setBehaviour (Wander<Vector2> behaviour) {
-		this.behaviour = behaviour;
-	}
+//	public void setBehaviour (Wander<Vector2> behaviour) {
+//		this.behaviour = behaviour;
+//	}
 
 	public void setBoundingRadius (float boundingRadius) {
 		this.boundingRadius = boundingRadius;

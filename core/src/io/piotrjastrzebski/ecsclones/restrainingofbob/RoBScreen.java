@@ -3,8 +3,12 @@ package io.piotrjastrzebski.ecsclones.restrainingofbob;
 import com.artemis.Entity;
 import com.artemis.EntityEdit;
 import com.artemis.WorldConfiguration;
+import com.badlogic.gdx.ai.steer.behaviors.BlendedSteering;
+import com.badlogic.gdx.ai.steer.behaviors.LookWhereYouAreGoing;
+import com.badlogic.gdx.ai.steer.behaviors.Pursue;
 import com.badlogic.gdx.ai.steer.behaviors.Wander;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import io.piotrjastrzebski.ecsclones.ECSGame;
 import io.piotrjastrzebski.ecsclones.base.GameScreen;
@@ -48,15 +52,15 @@ public class RoBScreen extends GameScreen {
 
 	@Override protected void postInit () {
 		// TODO create player
-		createPlayer();
+		PSteerable player = createPlayer();
 
 		// TODO create a bunch of enemies
 		for (int i = 0; i < 25; i++) {
-			createEnemy();
+			createEnemy(player);
 		}
 	}
 
-	private void createPlayer () {
+	private PSteerable createPlayer () {
 		Entity player = world.createEntity();
 		EntityEdit edit = player.edit();
 		edit.create(Player.class).name = "Player 1";
@@ -90,9 +94,17 @@ public class RoBScreen extends GameScreen {
 		follow.offsetX = 0.5f;
 		follow.offsetY = 0.5f;
 
+		PSteerable physSteerable = edit.create(PSteerable.class);
+		physSteerable.setMaxLinearAcceleration(4);
+		physSteerable.setMaxLinearSpeed(1);
+		physSteerable.setMaxAngularAcceleration(0.5f); // greater than 0 because independent facing is enabled
+		physSteerable.setMaxAngularSpeed(5);
+		physSteerable.setIndependentFacing(true);
+		physSteerable.setBoundingRadius(0.25f);
+		return physSteerable;
 	}
 
-	private void createEnemy () {
+	private void createEnemy (PSteerable player) {
 		Entity e = world.createEntity();
 		EntityEdit ee = e.edit();
 
@@ -123,6 +135,7 @@ public class RoBScreen extends GameScreen {
 		physSteerable.setIndependentFacing(true);
 		physSteerable.setBoundingRadius(0.25f);
 
+		/*
 		physSteerable.behaviour = new Wander<>(physSteerable) //
 			.setFaceEnabled(true) // We want to use Face internally (independent facing is on)
 			.setAlignTolerance(0.001f) // Used by Face
@@ -132,5 +145,28 @@ public class RoBScreen extends GameScreen {
 			.setWanderOrientation(MathUtils.random(360)) //
 			.setWanderRadius(2f) //
 			.setWanderRate(MathUtils.PI2 * 40);
+		*/
+
+		Wander<Vector2> wander = new Wander<>(physSteerable) //
+			.setFaceEnabled(true) // We want to use Face internally (independent facing is on)
+			.setAlignTolerance(0.001f) // Used by Face
+			.setDecelerationRadius(0.25f) // Used by Face
+			.setTimeToTarget(0.1f) // Used by Face
+			.setWanderOffset(6f) //
+			.setWanderOrientation(MathUtils.random(360)) //
+			.setWanderRadius(2f) //
+			.setWanderRate(MathUtils.PI2 * 40);
+
+		BlendedSteering<Vector2> steering = new BlendedSteering<>(physSteerable);
+//		steering.add(wander, 1f);
+		steering.add(new LookWhereYouAreGoing<>(physSteerable), .5f);
+
+		steering.add(new Pursue<>(physSteerable, null), .5f);
+//		physSteerable.behaviour = steering;
+
+		SBehaviour sBehaviour = ee.create(SBehaviour.class);
+		sBehaviour.behaviour = steering;
+		sBehaviour.size = 2;
+
 	}
 }

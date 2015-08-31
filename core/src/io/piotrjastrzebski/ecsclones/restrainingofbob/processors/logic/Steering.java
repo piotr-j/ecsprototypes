@@ -1,12 +1,14 @@
 package io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic;
 
-import com.artemis.Aspect;
-import com.artemis.ComponentMapper;
-import com.artemis.Entity;
+import com.artemis.*;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
+import com.artemis.utils.IntBag;
+import com.badlogic.gdx.ai.steer.Steerable;
 import com.badlogic.gdx.ai.steer.SteeringAcceleration;
 import com.badlogic.gdx.ai.steer.SteeringBehavior;
+import com.badlogic.gdx.ai.steer.behaviors.BlendedSteering;
+import com.badlogic.gdx.ai.steer.behaviors.Pursue;
 import com.badlogic.gdx.ai.steer.behaviors.Wander;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -15,6 +17,8 @@ import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import io.piotrjastrzebski.ecsclones.base.GameScreen;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Player;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.SBehaviour;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PBody;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PSteerable;
 
@@ -28,7 +32,7 @@ public class Steering extends EntityProcessingSystem {
 
 	protected ComponentMapper<PSteerable> mPSteerable;
 	protected ComponentMapper<PBody> mPBody;
-
+	protected ComponentMapper<SBehaviour> mSBehaviour;
 
 	public static final SteeringAcceleration<Vector2> steeringOutput = new SteeringAcceleration<>(new Vector2());
 
@@ -38,25 +42,53 @@ public class Steering extends EntityProcessingSystem {
 
 	private boolean debug;
 	public Steering (boolean debug) {
-		super(Aspect.all(PSteerable.class, PBody.class));
+		super(Aspect.all(PSteerable.class, PBody.class, SBehaviour.class));
 		this.debug = debug;
 	}
 
+	EntitySubscription target;
+	@Override protected void initialize () {
+		target = world.getManager(AspectSubscriptionManager.class)
+			.get(Aspect.all(Player.class, PSteerable.class, PBody.class));
+	}
+
+	PSteerable targetSteerable;
 	@Override protected void begin () {
 		if (debug) {
 			renderer.begin(ShapeRenderer.ShapeType.Line);
+		}
+		IntBag entities = target.getEntities();
+		if (entities.size() > 0) {
+			int id = entities.get(0);
+			targetSteerable = mPSteerable.get(id);
+			targetSteerable.setBody(mPBody.get(id).body);
+		} else {
+			target = null;
 		}
 	}
 
 	@Override protected void process (Entity e) {
 		PSteerable steerable = mPSteerable.get(e);
-		if (steerable.behaviour == null) return;
 
 		PBody phys = mPBody.get(e);
 		Body body = phys.body;
 		steerable.setBody(body);
 
-		steerable.behaviour.calculateSteering(steeringOutput);
+		SBehaviour sBehaviour = mSBehaviour.get(e);
+		if (sBehaviour.behaviour == null) return;
+
+		if (sBehaviour.behaviour instanceof BlendedSteering) {
+			BlendedSteering<Vector2> blended = (BlendedSteering<Vector2>)sBehaviour.behaviour;
+			for (int i = 0; i < sBehaviour.size; i++) {
+				SteeringBehavior<Vector2> behavior = blended.get(i).getBehavior();
+				if (behavior instanceof Pursue) {
+					if (targetSteerable == null) return;
+					((Pursue<Vector2>)behavior).setTarget(targetSteerable);
+				}
+			}
+		}
+
+		sBehaviour.behaviour.calculateSteering(steeringOutput);
 
 		boolean anyAccelerations = false;
 
@@ -103,7 +135,7 @@ public class Steering extends EntityProcessingSystem {
 
 		if (debug) {
 			Vector2 pos = body.getPosition();
-			SteeringBehavior<Vector2> behaviour = steerable.behaviour;
+			SteeringBehavior<Vector2> behaviour = sBehaviour.behaviour;
 			if (behaviour instanceof Wander) {
 				debugDraw((Wander<Vector2>)behaviour, pos);
 			}
