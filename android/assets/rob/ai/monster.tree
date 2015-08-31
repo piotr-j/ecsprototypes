@@ -1,0 +1,21 @@
+import inRange:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.InRangeTask"
+import hpAbove:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.HPAboveTask"
+import evade:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.EvadeTask"
+import pursue:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.PursueTask"
+import wander:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.WanderTask"
+
+root
+  selector
+    sequence
+      inRange target:"player" dst:7.0
+      selector
+        sequence
+          invert
+            # percent/absolute, percent overrides absolute if percent>0
+            hpAbove percent:25
+          evade target:"player"
+        # this cant succeed, must be broken by low hp/death
+        parallel
+          inRange target:"player" dst:14.0
+          pursue target:"player"
+    wander

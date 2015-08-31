@@ -4,21 +4,20 @@ import com.artemis.*;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
-import com.badlogic.gdx.ai.steer.Steerable;
 import com.badlogic.gdx.ai.steer.SteeringAcceleration;
 import com.badlogic.gdx.ai.steer.SteeringBehavior;
 import com.badlogic.gdx.ai.steer.behaviors.BlendedSteering;
+import com.badlogic.gdx.ai.steer.behaviors.Evade;
 import com.badlogic.gdx.ai.steer.behaviors.Pursue;
 import com.badlogic.gdx.ai.steer.behaviors.Wander;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import io.piotrjastrzebski.ecsclones.base.GameScreen;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Player;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.SBehaviour;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.SBehaviour;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PBody;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PSteerable;
 
@@ -77,17 +76,20 @@ public class Steering extends EntityProcessingSystem {
 		SBehaviour sBehaviour = mSBehaviour.get(e);
 		if (sBehaviour.behaviour == null) return;
 
-		if (sBehaviour.behaviour instanceof BlendedSteering) {
-			BlendedSteering<Vector2> blended = (BlendedSteering<Vector2>)sBehaviour.behaviour;
-			for (int i = 0; i < sBehaviour.size; i++) {
-				SteeringBehavior<Vector2> behavior = blended.get(i).getBehavior();
-				if (behavior instanceof Pursue) {
-					if (targetSteerable == null) return;
-					((Pursue<Vector2>)behavior).setTarget(targetSteerable);
-				}
-			}
+//		if (sBehaviour.behaviour instanceof BlendedSteering) {
+//			BlendedSteering<Vector2> blended = (BlendedSteering<Vector2>)sBehaviour.behaviour;
+//			for (int i = 0; i < sBehaviour.size; i++) {
+//				SteeringBehavior<Vector2> behavior = blended.get(i).getBehavior();
+//				if (behavior instanceof Pursue) {
+//					if (targetSteerable == null) return;
+//					((Pursue<Vector2>)behavior).setTarget(targetSteerable);
+//				}
+//			}
+//		}
+		setOwner(sBehaviour.behaviour, steerable);
+		if (sBehaviour.target >= 0) {
+			setTarget(sBehaviour.behaviour, mPSteerable.get(sBehaviour.target));
 		}
-
 		sBehaviour.behaviour.calculateSteering(steeringOutput);
 
 		boolean anyAccelerations = false;
@@ -134,23 +136,75 @@ public class Steering extends EntityProcessingSystem {
 		}
 
 		if (debug) {
-			Vector2 pos = body.getPosition();
-			SteeringBehavior<Vector2> behaviour = sBehaviour.behaviour;
-			if (behaviour instanceof Wander) {
-				debugDraw((Wander<Vector2>)behaviour, pos);
-			}
+			debugDraw(sBehaviour.behaviour, body.getPosition());
 		}
 	}
 
-	private void debugDraw (Wander<Vector2> wander, Vector2 position) {
+	private void debugDraw (SteeringBehavior<Vector2> behaviour, Vector2 pos) {
+		if (behaviour instanceof BlendedSteering) {
+			BlendedSteering blended = (BlendedSteering)behaviour;
+			try {
+				for (int i = 0; i < 9; i++) {
+					debugDraw(blended.get(i).getBehavior(), pos);
+				}
+			} catch (IndexOutOfBoundsException e) {
+				// we dont know how many it has...
+			}
+		} else if (behaviour instanceof Wander) {
+			debugDraw((Wander<Vector2>)behaviour, pos);
+		} else if (behaviour instanceof Pursue) {
+			debugDraw((Pursue<Vector2>)behaviour, pos);
+		}
+	}
+
+	private void debugDraw (Wander<Vector2> wander, Vector2 pos) {
 		Vector2 target = wander.getInternalTargetPosition();
 		Vector2 center = wander.getWanderCenter();
 		float radius = wander.getWanderRadius();
 		renderer.setColor(Color.CYAN);
-		renderer.line(position.x, position.y, center.x, center.y);
+		renderer.line(pos.x, pos.y, center.x, center.y);
 		renderer.circle(center.x, center.y, radius, 32);
 		renderer.setColor(Color.RED);
 		renderer.circle(target.x, target.y, 0.1f, 8);
+	}
+
+	private void debugDraw (Pursue<Vector2> pursue, Vector2 pos) {
+		Vector2 target = pursue.getTarget().getPosition();
+		renderer.setColor(Color.RED);
+		renderer.line(pos.x, pos.y, target.x, target.y);
+	}
+
+	private void setOwner (SteeringBehavior<Vector2> behaviour, PSteerable steerable) {
+		if (behaviour instanceof BlendedSteering) {
+			BlendedSteering blended = (BlendedSteering)behaviour;
+			blended.setOwner(steerable);
+			try {
+				for (int i = 0; i < 9; i++) {
+					setOwner(blended.get(i).getBehavior(), steerable);
+				}
+			} catch (IndexOutOfBoundsException e) {
+				// we dont know how many it has...
+			}
+		} else {
+			behaviour.setOwner(steerable);
+		}
+	}
+
+	private void setTarget (SteeringBehavior<Vector2> behaviour, PSteerable pSteerable) {
+		if (behaviour instanceof BlendedSteering) {
+			BlendedSteering blended = (BlendedSteering)behaviour;
+			try {
+				for (int i = 0; i < 9; i++) {
+					setTarget(blended.get(i).getBehavior(), pSteerable);
+				}
+			} catch (IndexOutOfBoundsException e) {
+				// we dont know how many it has...
+			}
+		} else if (behaviour instanceof Evade) {
+			((Evade<Vector2>)behaviour).setTarget(pSteerable);
+		} else if (behaviour instanceof Pursue) {
+			((Pursue<Vector2>)behaviour).setTarget(pSteerable);
+		}
 	}
 
 	public void setDebug(boolean debug) {

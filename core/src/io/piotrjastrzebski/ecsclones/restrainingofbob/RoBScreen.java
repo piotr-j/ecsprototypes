@@ -3,6 +3,7 @@ package io.piotrjastrzebski.ecsclones.restrainingofbob;
 import com.artemis.Entity;
 import com.artemis.EntityEdit;
 import com.artemis.WorldConfiguration;
+import com.artemis.managers.TagManager;
 import com.badlogic.gdx.ai.steer.behaviors.BlendedSteering;
 import com.badlogic.gdx.ai.steer.behaviors.LookWhereYouAreGoing;
 import com.badlogic.gdx.ai.steer.behaviors.Pursue;
@@ -13,9 +14,11 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import io.piotrjastrzebski.ecsclones.ECSGame;
 import io.piotrjastrzebski.ecsclones.base.GameScreen;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.*;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.EnemyBrain;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.SBehaviour;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.*;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.*;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.Steering;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.*;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.physics.PBodyBuilder;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.physics.Physics;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.physics.PhysicsContacts;
@@ -35,6 +38,15 @@ public class RoBScreen extends GameScreen {
 	}
 
 	@Override protected void preInit (WorldConfiguration config) {
+		config.setManager(new TagManager());
+
+		config.setManager(new BWanderer());
+		config.setManager(new BEvader());
+		config.setManager(new BPursuer());
+
+		config.setSystem(new BTreeLoader());
+		config.setSystem(new BTreeUpdater());
+		config.setSystem(new Finder());
 		config.setManager(new PhysicsContacts());
 		config.setSystem(new Physics());
 		config.setSystem(new Steering(true));
@@ -55,13 +67,14 @@ public class RoBScreen extends GameScreen {
 		PSteerable player = createPlayer();
 
 		// TODO create a bunch of enemies
-		for (int i = 0; i < 25; i++) {
+		for (int i = 0; i < 50; i++) {
 			createEnemy(player);
 		}
 	}
 
 	private PSteerable createPlayer () {
 		Entity player = world.createEntity();
+		world.getManager(TagManager.class).register("player", player);
 		EntityEdit edit = player.edit();
 		edit.create(Player.class).name = "Player 1";
 		Transform transform = edit.create(Transform.class);
@@ -128,8 +141,8 @@ public class RoBScreen extends GameScreen {
 
 
 		PSteerable physSteerable = ee.create(PSteerable.class);
-		physSteerable.setMaxLinearAcceleration(4);
-		physSteerable.setMaxLinearSpeed(1);
+		physSteerable.setMaxLinearAcceleration(6);
+		physSteerable.setMaxLinearSpeed(2);
 		physSteerable.setMaxAngularAcceleration(0.5f); // greater than 0 because independent facing is enabled
 		physSteerable.setMaxAngularSpeed(5);
 		physSteerable.setIndependentFacing(true);
@@ -147,26 +160,32 @@ public class RoBScreen extends GameScreen {
 			.setWanderRate(MathUtils.PI2 * 40);
 		*/
 
-		Wander<Vector2> wander = new Wander<>(physSteerable) //
-			.setFaceEnabled(true) // We want to use Face internally (independent facing is on)
-			.setAlignTolerance(0.001f) // Used by Face
-			.setDecelerationRadius(0.25f) // Used by Face
-			.setTimeToTarget(0.1f) // Used by Face
-			.setWanderOffset(6f) //
-			.setWanderOrientation(MathUtils.random(360)) //
-			.setWanderRadius(2f) //
-			.setWanderRate(MathUtils.PI2 * 40);
-
-		BlendedSteering<Vector2> steering = new BlendedSteering<>(physSteerable);
+//		Wander<Vector2> wander = new Wander<>(physSteerable) //
+//			.setFaceEnabled(true) // We want to use Face internally (independent facing is on)
+//			.setAlignTolerance(0.001f) // Used by Face
+//			.setDecelerationRadius(0.25f) // Used by Face
+//			.setTimeToTarget(0.1f) // Used by Face
+//			.setWanderOffset(6f) //
+//			.setWanderOrientation(MathUtils.random(360)) //
+//			.setWanderRadius(2f) //
+//			.setWanderRate(MathUtils.PI2 * 40);
+//
+//		BlendedSteering<Vector2> steering = new BlendedSteering<>(physSteerable);
 //		steering.add(wander, 1f);
-		steering.add(new LookWhereYouAreGoing<>(physSteerable), .5f);
-
-		steering.add(new Pursue<>(physSteerable, null), .5f);
+//		steering.add(new LookWhereYouAreGoing<>(physSteerable), .5f);
+//
+//		steering.add(new Pursue<>(physSteerable, null), .5f);
 //		physSteerable.behaviour = steering;
 
-		SBehaviour sBehaviour = ee.create(SBehaviour.class);
-		sBehaviour.behaviour = steering;
-		sBehaviour.size = 2;
+//		SBehaviour sBehaviour = ee.create(SBehaviour.class);
+//		sBehaviour.behaviour = steering;
+//		sBehaviour.size = 2;
 
+		EnemyBrain brain = ee.create(EnemyBrain.class);
+		brain.minDst2 = 5;
+		brain.hp = 10;
+		brain.maxHP = 10;
+		brain.id = e.id;
+		brain.treePath = "rob/ai/monster.tree";
 	}
 }
