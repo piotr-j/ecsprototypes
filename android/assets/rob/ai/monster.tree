@@ -3,6 +3,7 @@ import hpAbove:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.HPAboveTask
 import evade:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.EvadeTask"
 import pursue:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.PursueTask"
 import wander:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.WanderTask"
+import stopParallel:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.StoppingParallel"
 
 root
   selector
@@ -15,7 +16,7 @@ root
             hpAbove percent:25
           evade target:"player"
         # this cant succeed, must be broken by low hp/death
-        parallel
-          inRange target:"player" dst:14.0
+        stopParallel
+          inRange target:"player" dst:10.0
           pursue target:"player"
     wander
