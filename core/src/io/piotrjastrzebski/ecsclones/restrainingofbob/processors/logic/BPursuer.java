@@ -5,9 +5,11 @@ import com.artemis.Manager;
 import com.artemis.annotations.Wire;
 import com.artemis.managers.TagManager;
 import com.badlogic.gdx.ai.steer.behaviors.*;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.SBehaviour;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PSteerable;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.rendering.DebugTint;
 
 /**
  * Created by PiotrJ on 31/08/15.
@@ -15,11 +17,10 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PSteera
 @Wire
 public class BPursuer extends Manager {
 	protected ComponentMapper<SBehaviour> mSBehaviour;
-//	protected ComponentMapper<PSteerable> mPSteerable;
+	protected ComponentMapper<DebugTint> mDebugTint;
 
 	BlendedSteering<Vector2> behaviour;
 	Pursue<Vector2> pursue;
-	Finder finder;
 
 	TagManager tags;
 	@Override protected void initialize () {
@@ -34,12 +35,10 @@ public class BPursuer extends Manager {
 		if (sBehaviour == null) {
 			sBehaviour = world.getEntity(pursuer).edit().create(SBehaviour.class);
 		}
+		mDebugTint.get(pursuer).color.set(Color.RED);
 
-//		if (finder.dst2(pursuer, pursuee) > 100)
-//			return false;
 		sBehaviour.target = tags.getEntity(pursuee).id;
 		sBehaviour.behaviour = behaviour;
-//		pursue.setTarget(mPSteerable.get(pursuee));
 		return true;
 	}
 }
