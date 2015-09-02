@@ -114,7 +114,7 @@ public class StoppingParallel<E> extends BranchTask<E> {
 			Task<E> current = children.get(i);
 			if (!runningTasks[i]) continue;
 			if (current == runningTask) continue;
-			current.fail();
+			current.end();
 		}
 		fail();
 	}

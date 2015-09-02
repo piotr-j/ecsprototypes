@@ -19,15 +19,10 @@ public class BPursuer extends Manager {
 	protected ComponentMapper<SBehaviour> mSBehaviour;
 	protected ComponentMapper<DebugTint> mDebugTint;
 
-	BlendedSteering<Vector2> behaviour;
-	Pursue<Vector2> pursue;
+	PSteerable dummy = new PSteerable();
 
 	TagManager tags;
 	@Override protected void initialize () {
-		PSteerable dummy = new PSteerable();
-		behaviour = new BlendedSteering<>(dummy);
-		behaviour.add(new LookWhereYouAreGoing<>(dummy), .5f);
-		behaviour.add(pursue = new Pursue<>(dummy, null), .5f);
 	}
 
 	public boolean set (int pursuer, String pursuee) {
@@ -38,7 +33,10 @@ public class BPursuer extends Manager {
 		mDebugTint.get(pursuer).color.set(Color.RED);
 
 		sBehaviour.target = tags.getEntity(pursuee).id;
-		sBehaviour.behaviour = behaviour;
+		MyBlendedSteering steering = new MyBlendedSteering(dummy);
+		sBehaviour.behaviour = steering;
+		steering.add(new LookWhereYouAreGoing<>(dummy), .5f);
+		steering.add(new Pursue<>(dummy, null), .5f);
 		return true;
 	}
 }

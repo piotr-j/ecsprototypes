@@ -4,22 +4,23 @@ import com.artemis.*;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
+import com.badlogic.gdx.ai.steer.GroupBehavior;
+import com.badlogic.gdx.ai.steer.Proximity;
 import com.badlogic.gdx.ai.steer.SteeringAcceleration;
 import com.badlogic.gdx.ai.steer.SteeringBehavior;
-import com.badlogic.gdx.ai.steer.behaviors.BlendedSteering;
-import com.badlogic.gdx.ai.steer.behaviors.Evade;
-import com.badlogic.gdx.ai.steer.behaviors.Pursue;
-import com.badlogic.gdx.ai.steer.behaviors.Wander;
+import com.badlogic.gdx.ai.steer.behaviors.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.utils.Array;
 import io.piotrjastrzebski.ecsclones.base.GameScreen;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Player;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.SBehaviour;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PBody;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PSteerable;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.physics.Physics;
 
 /**
  * Created by PiotrJ on 23/08/15.
@@ -32,6 +33,8 @@ public class Steering extends EntityProcessingSystem {
 	protected ComponentMapper<PSteerable> mPSteerable;
 	protected ComponentMapper<PBody> mPBody;
 	protected ComponentMapper<SBehaviour> mSBehaviour;
+
+	protected Physics physics;
 
 	public static final SteeringAcceleration<Vector2> steeringOutput = new SteeringAcceleration<>(new Vector2());
 
@@ -141,18 +144,21 @@ public class Steering extends EntityProcessingSystem {
 	}
 
 	private void debugDraw (SteeringBehavior<Vector2> behaviour, Vector2 pos) {
-		if (behaviour instanceof BlendedSteering) {
-			BlendedSteering blended = (BlendedSteering)behaviour;
-			try {
-				for (int i = 0; i < 9; i++) {
-					debugDraw(blended.get(i).getBehavior(), pos);
-				}
-			} catch (IndexOutOfBoundsException e) {
-				// we dont know how many it has...
+		if (behaviour instanceof MyBlendedSteering) {
+			MyBlendedSteering blended = (MyBlendedSteering)behaviour;
+			for (SteeringBehavior<Vector2> b : blended.getBehaviours()) {
+				debugDraw(b, pos);
+			}
+		} else if (behaviour instanceof MyPrioritySteering) {
+			MyPrioritySteering priority = (MyPrioritySteering)behaviour;
+			for (SteeringBehavior<Vector2> b : priority.getBehaviours()) {
+				debugDraw(b, pos);
 			}
 		} else if (behaviour instanceof Wander) {
 			debugDraw((Wander<Vector2>)behaviour, pos);
 		} else if (behaviour instanceof Pursue) {
+			debugDraw((Pursue<Vector2>)behaviour, pos);
+		} if (behaviour instanceof Pursue) {
 			debugDraw((Pursue<Vector2>)behaviour, pos);
 		}
 	}
@@ -175,35 +181,43 @@ public class Steering extends EntityProcessingSystem {
 	}
 
 	private void setOwner (SteeringBehavior<Vector2> behaviour, PSteerable steerable) {
-		if (behaviour instanceof BlendedSteering) {
-			BlendedSteering blended = (BlendedSteering)behaviour;
-			blended.setOwner(steerable);
-			try {
-				for (int i = 0; i < 9; i++) {
-					setOwner(blended.get(i).getBehavior(), steerable);
-				}
-			} catch (IndexOutOfBoundsException e) {
-				// we dont know how many it has...
+		behaviour.setOwner(steerable);
+		if (behaviour instanceof MyBlendedSteering) {
+			MyBlendedSteering blended = (MyBlendedSteering)behaviour;
+			for (SteeringBehavior<Vector2> b : blended.getBehaviours()) {
+				setOwner(b, steerable);
 			}
-		} else {
-			behaviour.setOwner(steerable);
+		} else if (behaviour instanceof MyPrioritySteering) {
+			MyPrioritySteering priority = (MyPrioritySteering)behaviour;
+			for (SteeringBehavior<Vector2> b : priority.getBehaviours()) {
+				setOwner(b, steerable);
+			}
+		} else if (behaviour instanceof GroupBehavior) {
+			Proximity proximity = ((GroupBehavior)behaviour).getProximity();
+			proximity.setOwner(steerable);
+			if (proximity instanceof Box2dSquareAABBProximity) {
+				((Box2dSquareAABBProximity)proximity).setWorld(physics.getWorld());
+			}else if (proximity instanceof Box2dRadiusProximity) {
+				((Box2dRadiusProximity)proximity).setWorld(physics.getWorld());
+			}
 		}
 	}
 
-	private void setTarget (SteeringBehavior<Vector2> behaviour, PSteerable pSteerable) {
-		if (behaviour instanceof BlendedSteering) {
-			BlendedSteering blended = (BlendedSteering)behaviour;
-			try {
-				for (int i = 0; i < 9; i++) {
-					setTarget(blended.get(i).getBehavior(), pSteerable);
-				}
-			} catch (IndexOutOfBoundsException e) {
-				// we dont know how many it has...
+	private void setTarget (SteeringBehavior<Vector2> behaviour, PSteerable steerable) {
+		if (behaviour instanceof MyBlendedSteering) {
+			MyBlendedSteering blended = (MyBlendedSteering)behaviour;
+			for (SteeringBehavior<Vector2> b : blended.getBehaviours()) {
+				setTarget(b, steerable);
+			}
+		} else if (behaviour instanceof MyPrioritySteering) {
+			MyPrioritySteering priority = (MyPrioritySteering)behaviour;
+			for (SteeringBehavior<Vector2> b : priority.getBehaviours()) {
+				setTarget(b, steerable);
 			}
 		} else if (behaviour instanceof Evade) {
-			((Evade<Vector2>)behaviour).setTarget(pSteerable);
+			((Evade<Vector2>)behaviour).setTarget(steerable);
 		} else if (behaviour instanceof Pursue) {
-			((Pursue<Vector2>)behaviour).setTarget(pSteerable);
+			((Pursue<Vector2>)behaviour).setTarget(steerable);
 		}
 	}
 

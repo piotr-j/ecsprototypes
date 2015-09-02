@@ -22,6 +22,7 @@ public class PBodyBuilder extends EntitySystem {
 	protected ComponentMapper<PCircle> mPCircle;
 	protected ComponentMapper<PPolygon> mPPolygon;
 	protected ComponentMapper<PEdge> mPEdge;
+	protected ComponentMapper<PSteerable> mPSteerable;
 
 	@Wire Physics physics;
 
@@ -83,6 +84,9 @@ public class PBodyBuilder extends EntitySystem {
 		}
 
 		pBody.body = body;
+		Physics.UserData userData = new Physics.UserData(e);
+		userData.steerable = mPSteerable.getSafe(e);
+		body.setUserData(userData);
 //		PEdge pEdge = mPEdge.getSafe(e);
 //		if (pEdge != null) {
 //			if (edge == null) edge = new EdgeShape();

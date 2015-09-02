@@ -5,6 +5,8 @@ import com.artemis.Manager;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.ai.steer.Steerable;
 import com.badlogic.gdx.ai.steer.behaviors.BlendedSteering;
+import com.badlogic.gdx.ai.steer.behaviors.PrioritySteering;
+import com.badlogic.gdx.ai.steer.behaviors.Separation;
 import com.badlogic.gdx.ai.steer.behaviors.Wander;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
@@ -22,6 +24,7 @@ public class BWanderer extends Manager {
 	protected ComponentMapper<DebugTint> mDebugTint;
 
 	Steerable<Vector2> dummy = new PSteerable();
+	Box2dRadiusProximity dummyProxy = new Box2dRadiusProximity(null, null, 1f);
 
 	public void set (int id) {
 		SBehaviour sBehaviour = mSBehaviour.get(id);
@@ -29,11 +32,13 @@ public class BWanderer extends Manager {
 			sBehaviour = world.getEntity(id).edit().create(SBehaviour.class);
 		}
 		mDebugTint.get(id).color.set(Color.YELLOW);
-		BlendedSteering<Vector2> blend = new BlendedSteering<>(dummy);
-		sBehaviour.behaviour = blend;
 		// TODO pool?
-		Wander<Vector2> wander = new Wander<>(dummy) //
-			.setFaceEnabled(true) // We want to use Face internally (independent facing is on)
+		MyPrioritySteering priority = new MyPrioritySteering(dummy, 0.001f);
+
+		Separation<Vector2> separation = new Separation<>(dummy, dummyProxy);
+		priority.add(separation);
+		Wander<Vector2> wander = new Wander<>(dummy); //
+		wander.setFaceEnabled(true) // We want to use Face internally (independent facing is on)
 			.setAlignTolerance(0.001f) // Used by Face
 			.setDecelerationRadius(0.25f) // Used by Face
 			.setTimeToTarget(0.1f) // Used by Face
@@ -41,7 +46,8 @@ public class BWanderer extends Manager {
 			.setWanderOrientation(MathUtils.random(360)) //
 			.setWanderRadius(2f) //
 			.setWanderRate(MathUtils.PI2 * 40);
-		blend.add(wander, 1);
-		// blend.add(separation);
+
+		priority.add(wander);
+		sBehaviour.behaviour = priority;
 	}
 }
