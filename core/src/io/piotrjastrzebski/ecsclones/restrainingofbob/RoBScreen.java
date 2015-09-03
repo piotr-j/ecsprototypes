@@ -56,6 +56,7 @@ public class RoBScreen extends GameScreen {
 		config.setSystem(new CameraFollower());
 		config.setSystem(new Box2dDebugRenderer());
 		config.setSystem(new DebugRenderer());
+		config.setSystem(new ShooterSystem());
 	}
 
 	@Override protected void postInit () {
@@ -80,6 +81,8 @@ public class RoBScreen extends GameScreen {
 		edit.create(CircleBounds.class).radius(.5f);
 
 		Shooter shooter = edit.create(Shooter.class);
+		shooter.delay = 0.25f;
+		shooter.dmg = 1;
 
 		Mover mover = edit.create(Mover.class);
 		mover.maxLinearImp = 5;

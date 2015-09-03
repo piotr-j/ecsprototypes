@@ -9,6 +9,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import io.piotrjastrzebski.ecsclones.base.util.Input;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Player;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Shoot;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Shooter;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Stunned;
 
@@ -27,10 +28,7 @@ public class ShootController extends EntityProcessingSystem implements Input, In
 
 	@Override protected void process (Entity e) {
 		if (shoot > 0) {
-			Shooter shooter = mShooter.get(e);
-			// ...
-		} else {
-
+			e.edit().create(Shoot.class);
 		}
 	}
 
