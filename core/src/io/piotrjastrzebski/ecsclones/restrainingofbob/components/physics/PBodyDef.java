@@ -64,6 +64,10 @@ public class PBodyDef extends PooledComponent {
 		def.awake = true;
 		def.gravityScale = 1;
 
+		categoryBits = 0x0001;
+		groupIndex = 0;
+		maskBits = -1;
+
 		restitution = 0;
 		friction = 0;
 		density = 1;
