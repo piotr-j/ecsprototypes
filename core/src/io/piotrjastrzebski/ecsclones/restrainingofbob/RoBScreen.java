@@ -33,6 +33,8 @@ public class RoBScreen extends GameScreen {
 	@Override protected void preInit (WorldConfiguration config) {
 		config.setManager(new TagManager());
 
+		config.setSystem(new Remover());
+
 		config.setManager(new BWanderer());
 		config.setManager(new BEvader());
 		config.setManager(new BPursuer());
