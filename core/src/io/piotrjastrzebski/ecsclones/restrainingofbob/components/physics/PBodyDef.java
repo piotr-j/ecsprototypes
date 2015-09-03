@@ -15,6 +15,10 @@ public class PBodyDef extends PooledComponent {
 	public float restitution;
 	public float friction;
 	public float density;
+	public short categoryBits;
+	public short groupIndex;
+	public short maskBits;
+
 
 	public PBodyDef () {reset();}
 

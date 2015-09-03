@@ -52,6 +52,9 @@ public class PBodyBuilder extends EntitySystem {
 		fixtureDef.restitution = pBodyDef.restitution;
 		fixtureDef.friction = pBodyDef.friction;
 		fixtureDef.density = pBodyDef.density;
+		fixtureDef.filter.categoryBits = pBodyDef.categoryBits;
+		fixtureDef.filter.maskBits = pBodyDef.maskBits;
+		fixtureDef.filter.groupIndex = pBodyDef.groupIndex;
 
 		PRect pRect = mPRect.getSafe(e);
 		if (pRect != null) {
