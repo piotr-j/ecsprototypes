@@ -13,4 +13,10 @@ public class Transform extends PooledComponent {
 		pos.setZero();
 		rot = 0;
 	}
+
+	public Transform set (Transform o) {
+		pos.set(o.pos);
+		rot = o.rot;
+		return this;
+	}
 }
