@@ -15,10 +15,7 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.*;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.rendering.DebugTint;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.*;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.*;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.physics.PBodyBuilder;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.physics.Physics;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.physics.PhysicsContacts;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.physics.PhysicsMover;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.physics.*;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.rendering.Box2dDebugRenderer;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.rendering.DebugRenderer;
 
@@ -45,6 +42,7 @@ public class RoBScreen extends GameScreen {
 		config.setSystem(new Finder());
 		config.setManager(new PhysicsContacts());
 		config.setSystem(new Physics());
+		config.setSystem(new PhysicsCleaner());
 		config.setSystem(new Steering());
 		config.setSystem(new TransformUpdater());
 		config.setSystem(new PBodyBuilder());

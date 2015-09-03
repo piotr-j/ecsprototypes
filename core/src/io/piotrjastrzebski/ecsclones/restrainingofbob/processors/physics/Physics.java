@@ -4,6 +4,7 @@ import com.artemis.BaseSystem;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PSteerable;
 
@@ -38,6 +39,12 @@ public class Physics extends BaseSystem {
 
 	public World getWorld () {
 		return box2d;
+	}
+
+	public void destroyBody (Body body) {
+		if (body != null) {
+			box2d.destroyBody(body);
+		}
 	}
 
 	public static class UserData {
