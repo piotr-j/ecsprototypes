@@ -21,7 +21,6 @@ public class PursueTask extends BaseTask {
 
 	@Override public void start () {
 		EnemyBrain brain = getObject();
-		Gdx.app.log(TAG, "start!");
 		if (pursuer.set(brain.id, target)) {
 			running();
 		} else {
@@ -31,15 +30,7 @@ public class PursueTask extends BaseTask {
 
 
 	@Override public void run () {
-		if (getObject().inRange) {
-			running();
-		} else {
-			fail();
-		}
-	}
-
-	@Override public void end () {
-		Gdx.app.log(TAG, "end!");
+		running();
 	}
 
 	@Override protected Task<EnemyBrain> copyTo (Task<EnemyBrain> task) {

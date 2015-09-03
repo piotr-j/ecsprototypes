@@ -27,12 +27,8 @@ public class InRangeTask extends BaseTask {
 	@Override public void run () {
 		EnemyBrain brain = getObject();
 		if (finder.dst2(brain.id, target) < dst * dst) {
-			brain.inRange = true;
-			Gdx.app.log(TAG, "player in range");
 			success();
 		} else {
-			brain.inRange = false;
-			Gdx.app.log(TAG, "player not in range");
 			fail();
 		}
 	}

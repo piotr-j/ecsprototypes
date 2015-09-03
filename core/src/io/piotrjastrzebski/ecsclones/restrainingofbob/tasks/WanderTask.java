@@ -14,7 +14,6 @@ public class WanderTask extends BaseTask {
 	private final static String TAG = WanderTask.class.getSimpleName();
 	BWanderer wanderer;
 	@Override public void start () {
-		Gdx.app.log(TAG, "start!");
 		wanderer.set(getObject().id);
 	}
 
