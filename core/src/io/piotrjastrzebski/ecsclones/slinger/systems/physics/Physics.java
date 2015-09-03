@@ -85,7 +85,7 @@ public class Physics extends EntitySystem {
 		}
 
 		/**
-		 * Called after collision was solved, other may be null. Strength is impulse required to solve the collision
+		 * Called delay collision was solved, other may be null. Strength is impulse required to solve the collision
 		 * WARNING this is called from contact listener, box2d objects cant be modified in here
 		 * This should be called even if owner entity gets deletedFromWorld() in onContact
 		 */

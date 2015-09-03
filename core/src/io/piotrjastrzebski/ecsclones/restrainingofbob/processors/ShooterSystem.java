@@ -11,6 +11,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import io.piotrjastrzebski.ecsclones.base.util.Input;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.*;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.RemoveAfter;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PBodyDef;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PCircle;
 
@@ -67,6 +68,11 @@ public class ShooterSystem extends EntityProcessingSystem {
 		bodyDef.categoryBits = 0x0002;
 		PCircle pCircle = pe.create(PCircle.class);
 		pCircle.setSize(0.25f);
+
+		Projectile projectile = pe.create(Projectile.class);
+		projectile.dmg = dmg;
+
+		pe.create(RemoveAfter.class).setDelay(2);
 	}
 
 }
