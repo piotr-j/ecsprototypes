@@ -87,7 +87,7 @@ public class PBodyBuilder extends EntitySystem {
 		}
 
 		pBody.body = body;
-		Physics.UserData userData = new Physics.UserData(e);
+		Physics.UserData userData = pBodyDef.userData != null?pBodyDef.userData:new Physics.UserData(e);
 		userData.steerable = mPSteerable.getSafe(e);
 		body.setUserData(userData);
 //		PEdge pEdge = mPEdge.getSafe(e);

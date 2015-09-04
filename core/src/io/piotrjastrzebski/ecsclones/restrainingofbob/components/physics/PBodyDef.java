@@ -4,6 +4,7 @@ import com.artemis.PooledComponent;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.physics.Physics;
 
 /**
  * Created by PiotrJ on 26/08/15.
@@ -18,7 +19,7 @@ public class PBodyDef extends PooledComponent {
 	public short categoryBits;
 	public short groupIndex;
 	public short maskBits;
-
+	public Physics.UserData userData;
 
 	public PBodyDef () {reset();}
 
@@ -71,5 +72,7 @@ public class PBodyDef extends PooledComponent {
 		restitution = 0;
 		friction = 0;
 		density = 1;
+
+		userData = null;
 	}
 }

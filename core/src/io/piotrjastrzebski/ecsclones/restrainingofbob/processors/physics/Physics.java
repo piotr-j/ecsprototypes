@@ -14,6 +14,13 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PSteera
 @Wire
 public class Physics extends BaseSystem {
 	private final static String TAG = Physics.class.getSimpleName();
+	public static final short CAT_PLAYER = 1<< 1;
+	public static final short CAT_PROJECTILE = 1<< 2;
+	public static final short CAT_ENEMY = 1<< 3;
+	public static final short MASK_PLAYER = CAT_ENEMY;
+	public static final short MASK_PROJECTILE = CAT_ENEMY;
+	public static final short MASK_ENEMY = CAT_ENEMY | CAT_PLAYER | CAT_PROJECTILE;
+
 	private World box2d;
 
 	@Wire PhysicsContacts contacts;

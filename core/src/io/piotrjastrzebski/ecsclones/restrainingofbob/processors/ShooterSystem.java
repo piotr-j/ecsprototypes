@@ -14,6 +14,7 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.components.*;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.RemoveAfter;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PBodyDef;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PCircle;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.physics.Physics;
 
 /**
  * Created by PiotrJ on 29/08/15.
@@ -65,7 +66,15 @@ public class ShooterSystem extends EntityProcessingSystem {
 		bodyDef.friction = .25f;
 		bodyDef.density = 1;
 		bodyDef.def.linearVelocity.set(1, 0).setAngle(trans.rot).scl(5);
-		bodyDef.categoryBits = 0x0002;
+
+		bodyDef.categoryBits = Physics.CAT_PROJECTILE;
+		bodyDef.maskBits = Physics.MASK_PROJECTILE;
+
+		bodyDef.userData = new Physics.UserData(p) {
+			@Override public void onContact (Physics.UserData other) {
+				ShooterSystem.this.onContact(this, other);
+			}
+		};
 		PCircle pCircle = pe.create(PCircle.class);
 		pCircle.setSize(0.25f);
 
@@ -75,4 +84,7 @@ public class ShooterSystem extends EntityProcessingSystem {
 		pe.create(RemoveAfter.class).setDelay(2);
 	}
 
+	protected void onContact(Physics.UserData src, Physics.UserData other) {
+		world.deleteEntity(src.entity);
+	}
 }

@@ -60,16 +60,14 @@ public class RoBScreen extends GameScreen {
 	}
 
 	@Override protected void postInit () {
-		// TODO create player
-		PSteerable player = createPlayer();
+		createPlayer();
 
-		// TODO create a bunch of enemies
 		for (int i = 0; i < 50; i++) {
-			createEnemy(player);
+			createEnemy();
 		}
 	}
 
-	private PSteerable createPlayer () {
+	private void createPlayer () {
 		Entity player = world.createEntity();
 		world.getManager(TagManager.class).register("player", player);
 		EntityEdit edit = player.edit();
@@ -95,6 +93,9 @@ public class RoBScreen extends GameScreen {
 		bodyDef.friction = .25f;
 		bodyDef.density = 1;
 
+		bodyDef.categoryBits = Physics.CAT_PLAYER;
+		bodyDef.maskBits = Physics.MASK_PLAYER;
+
 		PCircle pCircle = edit.create(PCircle.class);
 		pCircle.setSize(1f);
 
@@ -109,10 +110,9 @@ public class RoBScreen extends GameScreen {
 		physSteerable.setMaxAngularSpeed(5);
 		physSteerable.setIndependentFacing(true);
 		physSteerable.setBoundingRadius(0.25f);
-		return physSteerable;
 	}
 
-	private void createEnemy (PSteerable player) {
+	private void createEnemy () {
 		Entity e = world.createEntity();
 		EntityEdit ee = e.edit();
 
@@ -131,6 +131,9 @@ public class RoBScreen extends GameScreen {
 		bodyDef.restitution = .25f;
 		bodyDef.friction = .25f;
 		bodyDef.density = 1;
+
+		bodyDef.categoryBits = Physics.CAT_ENEMY;
+		bodyDef.maskBits = Physics.MASK_ENEMY;
 
 		PCircle pCircle = ee.create(PCircle.class);
 		pCircle.setSize(.5f);
