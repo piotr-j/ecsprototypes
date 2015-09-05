@@ -6,8 +6,11 @@ import com.artemis.Entity;
 import com.artemis.EntityEdit;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import io.piotrjastrzebski.ecsclones.base.util.Input;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.*;
@@ -26,9 +29,21 @@ public class ShooterSystem extends EntityProcessingSystem {
 	protected ComponentMapper<Transform> mTransform;
 	protected ComponentMapper<CircleBounds> mCircleBounds;
 	protected ComponentMapper<RectBounds> mRectBounds;
+	protected ComponentMapper<Facing> mFacing;
 
 	public ShooterSystem () {
-		super(Aspect.all(Transform.class, Shooter.class).exclude(Stunned.class));
+		super(Aspect.all(Transform.class, Shooter.class, Facing.class).exclude(Stunned.class));
+	}
+
+	private Vector2 toAngle(Vector2 v, float angle) {
+		v.set(1, 0).setAngle(angle);
+		if (MathUtils.isZero(v.x, 0.001f)) {
+			v.x = 0;
+		}
+		if (MathUtils.isZero(v.y, 0.001f)) {
+			v.y = 0;
+		}
+		return v;
 	}
 
 	@Override protected void process (Entity e) {
@@ -37,14 +52,14 @@ public class ShooterSystem extends EntityProcessingSystem {
 		if (mShoot.has(e)) {
 			if (shooter.timer <= 0) {
 				shooter.timer = shooter.delay;
-				createProjectile(e, shooter.dmg);
+				createProjectile(e, shooter);
 			}
 		}
 
 		e.edit().remove(Shoot.class);
 	}
 
-	private void createProjectile (Entity e, float dmg) {
+	private void createProjectile (Entity e, Shooter shooter) {
 		Entity p = world.createEntity();
 		EntityEdit pe = p.edit();
 
@@ -65,7 +80,9 @@ public class ShooterSystem extends EntityProcessingSystem {
 		bodyDef.restitution = .25f;
 		bodyDef.friction = .25f;
 		bodyDef.density = 1;
-		bodyDef.def.linearVelocity.set(1, 0).setAngle(trans.rot).scl(5);
+		Facing facing = mFacing.get(e);
+		float angle = facing.dir.angle + 90;
+		toAngle(bodyDef.def.linearVelocity, angle).scl(shooter.vel);
 
 		bodyDef.categoryBits = Physics.CAT_PROJECTILE;
 		bodyDef.maskBits = Physics.MASK_PROJECTILE;
@@ -79,7 +96,7 @@ public class ShooterSystem extends EntityProcessingSystem {
 		pCircle.setSize(0.25f);
 
 		Projectile projectile = pe.create(Projectile.class);
-		projectile.dmg = dmg;
+		projectile.dmg = shooter.dmg;
 
 		pe.create(RemoveAfter.class).setDelay(2);
 	}

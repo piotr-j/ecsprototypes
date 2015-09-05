@@ -5,16 +5,11 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import io.piotrjastrzebski.ecsclones.base.GameScreen;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.CamFollow;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.CircleBounds;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.RectBounds;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Transform;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.*;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PBody;
 
 /**

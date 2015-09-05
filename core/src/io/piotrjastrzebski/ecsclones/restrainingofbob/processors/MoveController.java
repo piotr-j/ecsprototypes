@@ -9,10 +9,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Vector2;
 import io.piotrjastrzebski.ecsclones.base.util.Input;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Mover;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Player;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Stunned;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Transform;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.*;
 
 /**
  * Created by PiotrJ on 29/08/15.
@@ -33,21 +30,20 @@ public class MoveController extends EntityProcessingSystem implements Input, Inp
 		Mover mover = mMover.get(e);
 		Transform transform = mTransform.get(e);
 		if (moveX > 0) { // right
-			// ???
 			imp.x = mover.maxLinearImp;
-//			transform.pos.x += 5 * world.delta;
+			transform.rot = Facing.Direction.RIGHT.angle;
 		} else if (moveX < 0) { // left
 			imp.x = -mover.maxLinearImp;
-//			transform.pos.x -= 5 * world.delta;
+			transform.rot = Facing.Direction.LEFT.angle;
 		} else {
 			imp.x = 0;
 		}
 		if (moveY > 0) { // up
-//			transform.pos.y += 5 * world.delta;
 			imp.y = mover.maxLinearImp;
+			transform.rot = Facing.Direction.UP.angle;
 		} else if (moveY < 0) { // down
-//			transform.pos.y -= 5 * world.delta;
 			imp.y = -mover.maxLinearImp;
+			transform.rot = Facing.Direction.DOWN.angle;
 		} else {
 			imp.y = 0;
 		}

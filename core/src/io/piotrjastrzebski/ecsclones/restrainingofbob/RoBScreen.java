@@ -47,6 +47,7 @@ public class RoBScreen extends GameScreen {
 		config.setSystem(new PhysicsCleaner());
 		config.setSystem(new Steering());
 		config.setSystem(new TransformUpdater());
+		config.setSystem(new VelocityUpdater());
 		config.setSystem(new PBodyBuilder());
 		config.setSystem(new MoveController());
 		config.setSystem(new ShootController());
@@ -57,6 +58,8 @@ public class RoBScreen extends GameScreen {
 		config.setSystem(new Box2dDebugRenderer());
 		config.setSystem(new DebugRenderer());
 		config.setSystem(new ShooterSystem());
+		config.setSystem(new FacingSystem());
+		config.setSystem(new PlayerFacingSystem());
 	}
 
 	@Override protected void postInit () {
@@ -81,6 +84,7 @@ public class RoBScreen extends GameScreen {
 		Shooter shooter = edit.create(Shooter.class);
 		shooter.delay = 0.25f;
 		shooter.dmg = 1;
+		shooter.vel = 10;
 
 		Mover mover = edit.create(Mover.class);
 		mover.maxLinearImp = 5;
@@ -110,6 +114,9 @@ public class RoBScreen extends GameScreen {
 		physSteerable.setMaxAngularSpeed(5);
 		physSteerable.setIndependentFacing(true);
 		physSteerable.setBoundingRadius(0.25f);
+
+		edit.create(Facing.class);
+		edit.create(Velocity.class);
 	}
 
 	private void createEnemy () {
@@ -153,5 +160,7 @@ public class RoBScreen extends GameScreen {
 		brain.maxHP = 10;
 		brain.id = e.id;
 		brain.treePath = "rob/ai/monster.tree";
+
+		ee.create(Velocity.class);
 	}
 }

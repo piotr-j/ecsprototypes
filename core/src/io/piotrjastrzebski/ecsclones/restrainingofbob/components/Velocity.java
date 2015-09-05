@@ -6,16 +6,9 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * Created by PiotrJ on 26/08/15.
  */
-public class Shooter extends PooledComponent {
-	public float delay;
-	public float dmg;
-	public float timer;
-	public float vel;
-
+public class Velocity extends PooledComponent {
+	public Vector2 vel = new Vector2();
 	@Override protected void reset () {
-		delay = 0;
-		dmg = 0;
-		timer = 0;
-		vel = 0;
+		vel.setZero();
 	}
 }
