@@ -4,8 +4,6 @@ import com.artemis.ComponentMapper;
 import com.artemis.Manager;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.ai.steer.Steerable;
-import com.badlogic.gdx.ai.steer.behaviors.BlendedSteering;
-import com.badlogic.gdx.ai.steer.behaviors.PrioritySteering;
 import com.badlogic.gdx.ai.steer.behaviors.Separation;
 import com.badlogic.gdx.ai.steer.behaviors.Wander;
 import com.badlogic.gdx.graphics.Color;
@@ -14,6 +12,8 @@ import com.badlogic.gdx.math.Vector2;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.SBehaviour;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PSteerable;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.rendering.DebugTint;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.utils.Box2dRadiusProximity;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.utils.MyPrioritySteering;
 
 /**
  * Created by PiotrJ on 31/08/15.

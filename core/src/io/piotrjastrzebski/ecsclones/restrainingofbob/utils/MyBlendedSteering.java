@@ -1,4 +1,4 @@
-package io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic;
+package io.piotrjastrzebski.ecsclones.restrainingofbob.utils;
 
 import com.badlogic.gdx.ai.steer.Steerable;
 import com.badlogic.gdx.ai.steer.SteeringBehavior;

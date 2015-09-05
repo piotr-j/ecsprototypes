@@ -6,10 +6,10 @@ import com.artemis.annotations.Wire;
 import com.artemis.managers.TagManager;
 import com.badlogic.gdx.ai.steer.behaviors.*;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Vector2;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.SBehaviour;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PSteerable;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.rendering.DebugTint;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.utils.MyBlendedSteering;
 
 /**
  * Created by PiotrJ on 31/08/15.

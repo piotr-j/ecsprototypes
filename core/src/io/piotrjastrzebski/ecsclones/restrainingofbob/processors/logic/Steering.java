@@ -14,13 +14,16 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.utils.Array;
 import io.piotrjastrzebski.ecsclones.base.GameScreen;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Player;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.SBehaviour;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PBody;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PSteerable;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.physics.Physics;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.utils.Box2dRadiusProximity;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.utils.Box2dSquareAABBProximity;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.utils.MyBlendedSteering;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.utils.MyPrioritySteering;
 
 /**
  * Created by PiotrJ on 23/08/15.
