@@ -68,7 +68,7 @@ public class RoBScreen extends GameScreen {
 	@Override protected void postInit () {
 		createPlayer();
 
-		for (int i = 0; i < 50; i++) {
+		for (int i = 0; i < 200; i++) {
 			createEnemy();
 		}
 	}
@@ -131,7 +131,7 @@ public class RoBScreen extends GameScreen {
 		ee.create(CircleBounds.class).radius(.25f);
 
 		Transform transform = ee.create(Transform.class);
-		transform.pos.set(MathUtils.random(-18, 17), MathUtils.random(-10, 9));
+		transform.pos.set(MathUtils.random(-VP_WIDTH, VP_WIDTH), MathUtils.random(-VP_HEIGHT, VP_HEIGHT));
 
 		Mover mover = ee.create(Mover.class);
 		mover.maxLinearImp = 2.5f;
