@@ -26,7 +26,7 @@ public class BPursuer extends Manager {
 	}
 
 	public boolean set (int pursuer, String pursuee) {
-		SBehaviour sBehaviour = mSBehaviour.get(pursuer);
+		SBehaviour sBehaviour = mSBehaviour.getSafe(world.getEntity(pursuer));
 		if (sBehaviour == null) {
 			sBehaviour = world.getEntity(pursuer).edit().create(SBehaviour.class);
 		}
