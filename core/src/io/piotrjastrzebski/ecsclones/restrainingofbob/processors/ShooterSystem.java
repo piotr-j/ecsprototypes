@@ -31,9 +31,10 @@ public class ShooterSystem extends EntityProcessingSystem {
 	protected ComponentMapper<RectBounds> mRectBounds;
 	protected ComponentMapper<Facing> mFacing;
 	protected ComponentMapper<Projectile> mProjectile;
+	protected ComponentMapper<Velocity> mVelocity;
 
 	public ShooterSystem () {
-		super(Aspect.all(Transform.class, Shooter.class, Facing.class).exclude(Stunned.class));
+		super(Aspect.all(Transform.class, Shooter.class, Facing.class, Velocity.class).exclude(Stunned.class));
 	}
 
 	private Vector2 toAngle(Vector2 v, float angle) {
@@ -87,7 +88,9 @@ public class ShooterSystem extends EntityProcessingSystem {
 		bodyDef.density = 1;
 		Facing facing = mFacing.get(e);
 		float angle = facing.dir.angle + 90;
-		toAngle(bodyDef.def.linearVelocity, angle).scl(shooter.vel);
+
+		Velocity vel = mVelocity.get(e);
+		toAngle(bodyDef.def.linearVelocity, angle).scl(shooter.vel).add(vel.vel);
 
 		bodyDef.categoryBits = Physics.CAT_PROJECTILE;
 		bodyDef.maskBits = Physics.MASK_PROJECTILE;
