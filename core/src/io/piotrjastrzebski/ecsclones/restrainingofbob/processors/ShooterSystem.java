@@ -64,8 +64,12 @@ public class ShooterSystem extends EntityProcessingSystem {
 		Entity p = world.createEntity();
 		EntityEdit pe = p.edit();
 
+		PCircle pCircle = pe.create(PCircle.class);
+		pCircle.setSize(0.25f);
+
 		Transform trans = pe.create(Transform.class);
 		trans.set(mTransform.get(e));
+		trans.pos.sub(pCircle.radius, pCircle.radius);
 		if (mRectBounds.has(e)) {
 			RectBounds rectBounds = mRectBounds.get(e);
 			trans.pos.x += rectBounds.width / 2;
@@ -93,8 +97,6 @@ public class ShooterSystem extends EntityProcessingSystem {
 				ShooterSystem.this.onContact(this, other);
 			}
 		};
-		PCircle pCircle = pe.create(PCircle.class);
-		pCircle.setSize(0.25f);
 
 		Projectile projectile = pe.create(Projectile.class);
 		projectile.dmg = shooter.dmg;
