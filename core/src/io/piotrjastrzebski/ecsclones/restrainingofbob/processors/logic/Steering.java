@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import io.piotrjastrzebski.ecsclones.base.GameScreen;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Dead;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Player;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.SBehaviour;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PBody;
@@ -47,7 +48,7 @@ public class Steering extends EntityProcessingSystem {
 
 	private boolean debug;
 	public Steering (boolean debug) {
-		super(Aspect.all(PSteerable.class, PBody.class, SBehaviour.class));
+		super(Aspect.all(PSteerable.class, PBody.class, SBehaviour.class).exclude(Dead.class));
 		this.debug = debug;
 	}
 

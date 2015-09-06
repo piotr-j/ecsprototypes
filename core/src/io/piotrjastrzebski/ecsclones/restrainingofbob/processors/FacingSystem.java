@@ -15,7 +15,7 @@ public class FacingSystem extends EntityProcessingSystem {
 	protected ComponentMapper<Transform> mTransform;
 	protected ComponentMapper<Facing> mFacing;
 	public FacingSystem () {
-		super(Aspect.all(Transform.class, Facing.class));
+		super(Aspect.all(Transform.class, Facing.class).exclude(Dead.class));
 	}
 
 	@Override protected void process (Entity e) {

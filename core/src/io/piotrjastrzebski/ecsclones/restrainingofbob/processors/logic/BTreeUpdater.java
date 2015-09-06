@@ -3,6 +3,7 @@ package io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic;
 import com.artemis.*;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Dead;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.EnemyBTree;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.EnemyBrain;
 
@@ -16,7 +17,7 @@ public class BTreeUpdater extends EntityProcessingSystem {
 	protected ComponentMapper<EnemyBTree> mEnemyBTree;
 
 	public BTreeUpdater () {
-		super(Aspect.all(EnemyBrain.class, EnemyBTree.class));
+		super(Aspect.all(EnemyBrain.class, EnemyBTree.class).exclude(Dead.class));
 		setPassive(true);
 	}
 

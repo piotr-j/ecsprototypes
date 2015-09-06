@@ -51,6 +51,9 @@ public class RoBScreen extends GameScreen {
 		config.setSystem(new PBodyBuilder());
 		config.setSystem(new MoveController());
 		config.setSystem(new ShootController());
+		config.setSystem(new HitBySystem());
+		config.setSystem(new DeathSystem());
+		config.setSystem(new DeathBodySystem());
 		config.setSystem(new PhysicsMover());
 		config.setSystem(new CircleBoundsUpdater());
 		config.setSystem(new RectBoundsUpdater());
@@ -85,6 +88,7 @@ public class RoBScreen extends GameScreen {
 		shooter.delay = 0.25f;
 		shooter.dmg = 1;
 		shooter.vel = 10;
+		shooter.alive = 1f;
 
 		Mover mover = edit.create(Mover.class);
 		mover.maxLinearImp = 5;
@@ -162,5 +166,7 @@ public class RoBScreen extends GameScreen {
 		brain.treePath = "rob/ai/monster.tree";
 
 		ee.create(Velocity.class);
+
+		ee.create(Health.class).hp = 3;
 	}
 }
