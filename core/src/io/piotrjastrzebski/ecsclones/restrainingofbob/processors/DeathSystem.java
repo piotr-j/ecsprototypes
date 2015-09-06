@@ -29,7 +29,7 @@ public class DeathSystem extends EntityProcessingSystem {
 		Health health = mHealth.get(e);
 		if (health.hp <= 0) {
 			e.edit().create(Dead.class);
-			e.edit().create(RemoveAfter.class).setDelay(10);
+			e.edit().create(RemoveAfter.class).setDelay(3);
 			if (mDebugTint.has(e)) {
 				mDebugTint.get(e).color.set(Color.BROWN);
 			}
