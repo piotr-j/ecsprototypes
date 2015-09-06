@@ -86,7 +86,7 @@ public class RoBScreen extends GameScreen {
 
 		Shooter shooter = edit.create(Shooter.class);
 		shooter.delay = 0.25f;
-		shooter.dmg = 1;
+		shooter.dmg = 2;
 		shooter.vel = 10;
 		shooter.alive = 1f;
 
