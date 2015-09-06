@@ -30,7 +30,7 @@ public class DebugRenderer extends EntityProcessingSystem {
 
 	@Override protected void begin () {
 		renderer.setProjectionMatrix(camera.combined);
-		renderer.begin(ShapeRenderer.ShapeType.Line);
+		renderer.begin(ShapeRenderer.ShapeType.Filled);
 	}
 
 	@Override protected void process (Entity e) {
