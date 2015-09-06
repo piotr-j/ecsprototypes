@@ -27,7 +27,7 @@ public class BWanderer extends Manager {
 	Box2dRadiusProximity dummyProxy = new Box2dRadiusProximity(null, null, 1f);
 
 	public void set (int id) {
-		SBehaviour sBehaviour = mSBehaviour.get(id);
+		SBehaviour sBehaviour = mSBehaviour.getSafe(world.getEntity(id));
 		if (sBehaviour == null) {
 			sBehaviour = world.getEntity(id).edit().create(SBehaviour.class);
 		}
