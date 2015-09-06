@@ -18,6 +18,7 @@ public class Box2dDebugRenderer extends BaseSystem {
 	Box2DDebugRenderer renderer;
 
 	@Override protected void initialize () {
+		setEnabled(false);
 		renderer = new Box2DDebugRenderer();
 	}
 
