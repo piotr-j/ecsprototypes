@@ -40,7 +40,10 @@ public class TransformUpdater extends EntityProcessingSystem {
 		} else {
 			trans.pos.set(pos.x, pos.y);
 		}
-		trans.rot = body.getAngle() * MathUtils.radiansToDegrees;
+		Vector2 vel = body.getLinearVelocity();
+		if (!vel.isZero(0.05f)) {
+			trans.rot = vel.angle();
+		}
 	}
 
 }

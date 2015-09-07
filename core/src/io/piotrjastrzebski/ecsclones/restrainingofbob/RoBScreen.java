@@ -62,7 +62,7 @@ public class RoBScreen extends GameScreen {
 		config.setSystem(new DebugRenderer());
 		config.setSystem(new ShooterSystem());
 		config.setSystem(new FacingSystem());
-		config.setSystem(new PlayerFacingSystem());
+//		config.setSystem(new PlayerFacingSystem());
 	}
 
 	@Override protected void postInit () {
@@ -85,20 +85,33 @@ public class RoBScreen extends GameScreen {
 		edit.create(CircleBounds.class).radius(.5f);
 
 		Shooter shooter = edit.create(Shooter.class);
+		// how often can it shoot
 		shooter.delay = 0.25f;
+		// dmg of the projectile
 		shooter.dmg = 2;
+		// +- fraction of vel
+		shooter.dmgSpread = .5f;
+		// +- fraction of vel
+//		shooter.dmgSpreadMult = 0.1f;
 		shooter.vel = 10;
+		// +- fraction of vel
+		shooter.velSpread = 0.1f;
+		// alive time in seconts for projectile
 		shooter.alive = 1f;
+		// +- fraction of alive
+		shooter.aliveSpread = 0.1f;
+		// fraction of src vel to add to projectile
+		shooter.srcVelMult = 0.5f;
 
 		Mover mover = edit.create(Mover.class);
-		mover.maxLinearImp = 5;
+		mover.maxLinearImp = 1f;
 
 		PBodyDef bodyDef = edit.create(PBodyDef.class);
 		bodyDef.type(BodyDef.BodyType.DynamicBody);
-		bodyDef.def.linearDamping = 25f;
+		bodyDef.def.linearDamping = mover.maxLinearImp * 10f;
 		bodyDef.def.fixedRotation = true;
 		bodyDef.restitution = .25f;
-		bodyDef.friction = .25f;
+		bodyDef.friction = .5f;
 		bodyDef.density = 1;
 
 		bodyDef.categoryBits = Physics.CAT_PLAYER;
@@ -119,7 +132,8 @@ public class RoBScreen extends GameScreen {
 		physSteerable.setIndependentFacing(true);
 		physSteerable.setBoundingRadius(0.25f);
 
-		edit.create(Facing.class);
+		edit.create(MoveFacing.class);
+		edit.create(AimFacing.class);
 		edit.create(Velocity.class);
 	}
 
@@ -168,5 +182,7 @@ public class RoBScreen extends GameScreen {
 		ee.create(Velocity.class);
 
 		ee.create(Health.class).hp = 3;
+		ee.create(MoveFacing.class);
+//		edit.create(MoveFacing.class);
 	}
 }

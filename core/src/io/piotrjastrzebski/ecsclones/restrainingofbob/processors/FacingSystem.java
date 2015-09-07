@@ -13,14 +13,14 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.components.*;
 @Wire
 public class FacingSystem extends EntityProcessingSystem {
 	protected ComponentMapper<Transform> mTransform;
-	protected ComponentMapper<Facing> mFacing;
+	protected ComponentMapper<MoveFacing> mFacing;
 	public FacingSystem () {
-		super(Aspect.all(Transform.class, Facing.class).exclude(Dead.class));
+		super(Aspect.all(Transform.class, MoveFacing.class).exclude(Dead.class));
 	}
 
 	@Override protected void process (Entity e) {
 		Transform transform = mTransform.get(e);
-		Facing facing = mFacing.get(e);
+		MoveFacing facing = mFacing.get(e);
 		facing.set(transform.rot);
 	}
 }

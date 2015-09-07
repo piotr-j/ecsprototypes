@@ -10,6 +10,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Vector2;
 import io.piotrjastrzebski.ecsclones.base.util.Input;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.*;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.utils.Direction;
 
 /**
  * Created by PiotrJ on 29/08/15.
@@ -28,22 +29,17 @@ public class MoveController extends EntityProcessingSystem implements Input, Inp
 	Vector2 imp = new Vector2();
 	@Override protected void process (Entity e) {
 		Mover mover = mMover.get(e);
-		Transform transform = mTransform.get(e);
 		if (moveX > 0) { // right
 			imp.x = mover.maxLinearImp;
-			transform.rot = Facing.Direction.RIGHT.angle;
 		} else if (moveX < 0) { // left
 			imp.x = -mover.maxLinearImp;
-			transform.rot = Facing.Direction.LEFT.angle;
 		} else {
 			imp.x = 0;
 		}
 		if (moveY > 0) { // up
 			imp.y = mover.maxLinearImp;
-			transform.rot = Facing.Direction.UP.angle;
 		} else if (moveY < 0) { // down
 			imp.y = -mover.maxLinearImp;
-			transform.rot = Facing.Direction.DOWN.angle;
 		} else {
 			imp.y = 0;
 		}
@@ -54,19 +50,15 @@ public class MoveController extends EntityProcessingSystem implements Input, Inp
 	@Override public boolean keyDown (int keycode) {
 		switch (keycode) {
 		case Keys.W:
-		case Keys.UP:
 			moveY++;
 			return true;
 		case Keys.S:
-		case Keys.DOWN:
 			moveY--;
 			return true;
 		case Keys.A:
-		case Keys.LEFT:
 			moveX--;
 			return true;
 		case Keys.D:
-		case Keys.RIGHT:
 			moveX++;
 			return true;
 		}
@@ -76,19 +68,15 @@ public class MoveController extends EntityProcessingSystem implements Input, Inp
 	@Override public boolean keyUp (int keycode) {
 		switch (keycode) {
 		case Keys.W:
-		case Keys.UP:
 			moveY--;
 			return true;
 		case Keys.S:
-		case Keys.DOWN:
 			moveY++;
 			return true;
 		case Keys.A:
-		case Keys.LEFT:
 			moveX++;
 			return true;
 		case Keys.D:
-		case Keys.RIGHT:
 			moveX--;
 			return true;
 		}
