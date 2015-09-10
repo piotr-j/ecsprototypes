@@ -55,7 +55,7 @@ public class Steering extends EntityProcessingSystem {
 	EntitySubscription target;
 	@Override protected void initialize () {
 		target = world.getManager(AspectSubscriptionManager.class)
-			.get(Aspect.all(Player.class, PSteerable.class, PBody.class));
+			.get(Aspect.all(Player.class, PSteerable.class, PBody.class).exclude(Dead.class));
 	}
 
 	PSteerable targetSteerable;

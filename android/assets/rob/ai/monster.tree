@@ -4,6 +4,7 @@ import evade:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.EvadeTask"
 import pursue:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.PursueTask"
 import wander:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.WanderTask"
 import stopParallel:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.StoppingParallel"
+import melee:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.MeleeTask"
 
 root
   selector
@@ -18,5 +19,10 @@ root
         # this cant succeed, must be broken by low hp/death
         stopParallel
           inRange target:"player" dst:10.0
-          pursue target:"player"
+          parallel
+            pursue target:"player"
+            # need a limitter of sort, time?
+            sequence
+              inRange target:"player" dst:3.0
+              melee target:"player"
     wander

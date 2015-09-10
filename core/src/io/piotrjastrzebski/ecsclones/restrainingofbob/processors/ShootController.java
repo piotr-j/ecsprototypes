@@ -19,7 +19,7 @@ public class ShootController extends EntityProcessingSystem implements Input, In
 	protected ComponentMapper<AimFacing> mAimFacing;
 
 	public ShootController () {
-		super(Aspect.all(Player.class, Shooter.class, AimFacing.class).exclude(Stunned.class));
+		super(Aspect.all(Player.class, Shooter.class, AimFacing.class).exclude(Stunned.class, Dead.class));
 	}
 
 	int shootX = 0;

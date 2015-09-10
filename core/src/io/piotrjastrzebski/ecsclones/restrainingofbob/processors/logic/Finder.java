@@ -6,6 +6,7 @@ import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.artemis.annotations.Wire;
 import com.artemis.managers.TagManager;
+import com.badlogic.gdx.Gdx;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Transform;
 
 /**
@@ -13,6 +14,8 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Transform;
  */
 @Wire
 public class Finder extends EntitySystem {
+	private final static String TAG = Finder.class.getSimpleName();
+
 	protected ComponentMapper<Transform> mTransform;
 	TagManager tags;
 
@@ -24,9 +27,13 @@ public class Finder extends EntitySystem {
 	@Override protected void processSystem () {}
 
 
-	public float dst2 (int idA, String tag) {
-		Entity tagged = tags.getEntity(tag);
-		Transform transA = mTransform.get(idA);
+	public float dst2 (int src, String target) {
+		Entity tagged = tags.getEntity(target);
+		if (tagged == null) {
+			Gdx.app.log(TAG, "Invalid tag " + target + "!");
+			return 9999;
+		}
+		Transform transA = mTransform.get(src);
 		Transform transB = mTransform.get(tagged);
 		if (transA == null || transB == null) return 9999;
 

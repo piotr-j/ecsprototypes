@@ -21,7 +21,7 @@ public class MoveController extends EntityProcessingSystem implements Input, Inp
 	protected ComponentMapper<Transform> mTransform;
 
 	public MoveController () {
-		super(Aspect.all(Transform.class, Player.class, Mover.class).exclude(Stunned.class));
+		super(Aspect.all(Transform.class, Player.class, Mover.class).exclude(Stunned.class, Dead.class));
 	}
 
 	int moveX = 0;

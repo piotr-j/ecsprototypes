@@ -38,6 +38,7 @@ public class RoBScreen extends GameScreen {
 		config.setManager(new BWanderer());
 		config.setManager(new BEvader());
 		config.setManager(new BPursuer());
+		config.setManager(new Meleer());
 
 		config.setSystem(new BTreeLoader());
 		config.setSystem(new BTreeUpdater());
@@ -102,6 +103,8 @@ public class RoBScreen extends GameScreen {
 		shooter.aliveSpread = 0.1f;
 		// fraction of src vel to add to projectile
 		shooter.srcVelMult = 0.5f;
+
+		edit.create(Health.class).hp = 10;
 
 		Mover mover = edit.create(Mover.class);
 		mover.maxLinearImp = 1f;
