@@ -1,8 +1,6 @@
 package io.piotrjastrzebski.ecsclones.restrainingofbob;
 
-import com.artemis.Entity;
-import com.artemis.EntityEdit;
-import com.artemis.WorldConfiguration;
+import com.artemis.*;
 import com.artemis.managers.TagManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;

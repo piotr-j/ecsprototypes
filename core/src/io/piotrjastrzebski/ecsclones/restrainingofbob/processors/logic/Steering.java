@@ -4,6 +4,7 @@ import com.artemis.*;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.steer.GroupBehavior;
 import com.badlogic.gdx.ai.steer.Proximity;
 import com.badlogic.gdx.ai.steer.SteeringAcceleration;
@@ -52,24 +53,9 @@ public class Steering extends EntityProcessingSystem {
 		this.debug = debug;
 	}
 
-	EntitySubscription target;
-	@Override protected void initialize () {
-		target = world.getManager(AspectSubscriptionManager.class)
-			.get(Aspect.all(Player.class, PSteerable.class, PBody.class).exclude(Dead.class));
-	}
-
-	PSteerable targetSteerable;
 	@Override protected void begin () {
 		if (debug) {
 			renderer.begin(ShapeRenderer.ShapeType.Line);
-		}
-		IntBag entities = target.getEntities();
-		if (entities.size() > 0) {
-			int id = entities.get(0);
-			targetSteerable = mPSteerable.get(id);
-			targetSteerable.setBody(mPBody.get(id).body);
-		} else {
-			target = null;
 		}
 	}
 
