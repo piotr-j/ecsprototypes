@@ -97,7 +97,7 @@ public class ShooterSystem extends EntityProcessingSystem {
 		bodyDef.categoryBits = Physics.CAT_PROJECTILE;
 		bodyDef.maskBits = Physics.MASK_PROJECTILE;
 
-		bodyDef.userData = new Physics.UserData(p) {
+		bodyDef.userData = new Physics.UserData(p.id) {
 			@Override public void onContact (Physics.UserData other) {
 				ShooterSystem.this.onContact(this, other);
 			}
@@ -125,10 +125,10 @@ public class ShooterSystem extends EntityProcessingSystem {
 	}
 
 	protected void onContact(Physics.UserData src, Physics.UserData other) {
-		Projectile projectile = mProjectile.get(src.entity);
-		Entity hit = world.getEntity(other.entity);
+		Projectile projectile = mProjectile.get(src.eid);
+		Entity hit = world.getEntity(other.eid);
 		HitBy hitBy = hit.edit().create(HitBy.class);
 		hitBy.dmg = projectile.dmg;
-		world.deleteEntity(src.entity);
+		world.deleteEntity(src.eid);
 	}
 }

@@ -35,12 +35,12 @@ public class GroundMaker extends EntitySystem {
 	BodyDef bodyDef;
 	PolygonShape shape;
 	FixtureDef fixtureDef;
-	@Override protected void inserted (Entity e) {
-		GroundDef groundDef = mGroundDef.get(e);
-		Transform tf = mTransform.get(e);
-		Size size = mSize.get(e);
+	@Override protected void inserted (int eid) {
+		GroundDef groundDef = mGroundDef.get(eid);
+		Transform tf = mTransform.get(eid);
+		Size size = mSize.get(eid);
 
-		Ground ground = e.edit().create(Ground.class);
+		Ground ground = world.getEntity(eid).edit().create(Ground.class);
 		if (bodyDef == null) bodyDef = new BodyDef();
 
 		bodyDef.type = BodyDef.BodyType.StaticBody;

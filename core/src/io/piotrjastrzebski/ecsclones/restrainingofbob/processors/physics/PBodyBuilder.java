@@ -37,15 +37,15 @@ public class PBodyBuilder extends EntitySystem {
 	EdgeShape edge;
 	// chain ?
 
-	@Override protected void inserted (Entity e) {
-		Transform transform = mTransform.get(e);
-		PBodyDef pBodyDef = mPBodyDef.get(e);
+	@Override protected void inserted (int eid) {
+		Transform transform = mTransform.get(eid);
+		PBodyDef pBodyDef = mPBodyDef.get(eid);
 		pBodyDef.rotation(transform.rot);
 		pBodyDef.position(transform.pos);
 
 
 
-		PBody pBody = e.edit().create(PBody.class);
+		PBody pBody = world.getEntity(eid).edit().create(PBody.class);
 		Body body = physics.getWorld().createBody(pBodyDef.def);
 
 		if (fixtureDef == null) fixtureDef = new FixtureDef();
@@ -56,7 +56,7 @@ public class PBodyBuilder extends EntitySystem {
 		fixtureDef.filter.maskBits = pBodyDef.maskBits;
 		fixtureDef.filter.groupIndex = pBodyDef.groupIndex;
 
-		PRect pRect = mPRect.getSafe(e);
+		PRect pRect = mPRect.getSafe(eid);
 		if (pRect != null) {
 			if (polygon == null) polygon = new PolygonShape();
 			polygon.setAsBox(pRect.width, pRect.height);
@@ -66,7 +66,7 @@ public class PBodyBuilder extends EntitySystem {
 			body.setTransform(transform.pos.x + pRect.width, transform.pos.y + pRect.height, transform.rot);
 		}
 
-		PPolygon pPolygon = mPPolygon.getSafe(e);
+		PPolygon pPolygon = mPPolygon.getSafe(eid);
 		if (pPolygon != null) {
 			if (polygon == null) polygon = new PolygonShape();
 			polygon.set(pPolygon.get());
@@ -76,7 +76,7 @@ public class PBodyBuilder extends EntitySystem {
 			body.setTransform(transform.pos.x + bounds.width / 2, transform.pos.y +  + bounds.height / 2, transform.rot);
 		}
 
-		PCircle pCircle = mPCircle.getSafe(e);
+		PCircle pCircle = mPCircle.getSafe(eid);
 		if (pCircle != null) {
 			if (circle == null) circle = new CircleShape();
 			circle.setRadius(pCircle.radius);
@@ -87,8 +87,8 @@ public class PBodyBuilder extends EntitySystem {
 		}
 
 		pBody.body = body;
-		Physics.UserData userData = pBodyDef.userData != null?pBodyDef.userData:new Physics.UserData(e);
-		userData.steerable = mPSteerable.getSafe(e);
+		Physics.UserData userData = pBodyDef.userData != null?pBodyDef.userData:new Physics.UserData(eid);
+		userData.steerable = mPSteerable.getSafe(eid);
 		body.setUserData(userData);
 //		PEdge pEdge = mPEdge.getSafe(e);
 //		if (pEdge != null) {
@@ -99,7 +99,7 @@ public class PBodyBuilder extends EntitySystem {
 //		}
 	}
 
-	@Override protected void removed (Entity e) {
+	@Override protected void removed (int eid) {
 
 	}
 

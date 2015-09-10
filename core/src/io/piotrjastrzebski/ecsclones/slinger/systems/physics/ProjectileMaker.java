@@ -37,12 +37,12 @@ public class ProjectileMaker extends EntitySystem {
 	BodyDef bodyDef;
 	CircleShape shape;
 	FixtureDef fixtureDef;
-	@Override protected void inserted (Entity e) {
-		ProjectileDef projectileDef = mProjectileDef.get(e);
-		Transform tf = mTransform.get(e);
-		Radius radius = mRadius.get(e);
+	@Override protected void inserted (int eid) {
+		ProjectileDef projectileDef = mProjectileDef.get(eid);
+		Transform tf = mTransform.get(eid);
+		Radius radius = mRadius.get(eid);
 
-		Projectile projectile = e.edit().create(Projectile.class);
+		Projectile projectile = world.getEntity(eid).edit().create(Projectile.class);
 		if (bodyDef == null) bodyDef = new BodyDef();
 
 		bodyDef.type = BodyDef.BodyType.DynamicBody;

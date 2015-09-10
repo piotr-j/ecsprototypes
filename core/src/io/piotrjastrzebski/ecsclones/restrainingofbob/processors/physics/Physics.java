@@ -58,22 +58,22 @@ public class Physics extends BaseSystem {
 
 	public static class UserData {
 		public short category;
-		public int entity;
+		public int eid;
 		public PSteerable steerable;
 
 		public UserData () {}
 
-		public UserData (Entity entity) {
-			set(entity);
+		public UserData (int eid) {
+			set(eid);
 		}
 
-		public UserData (Entity e, short category) {
-			set(e);
+		public UserData (int eid, short category) {
+			set(eid);
 			this.category = category;
 		}
 
-		public UserData set (Entity entity) {
-			this.entity = entity.id;
+		public UserData set (int eid) {
+			this.eid = eid;
 			return this;
 		}
 

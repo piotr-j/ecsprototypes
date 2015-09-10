@@ -22,7 +22,7 @@ public class FlapperRespawner extends EntityProcessingSystem {
 		createFlapper();
 	}
 
-	@Override protected void removed (Entity e) {
+	@Override protected void removed (int ei) {
 		// TODO better way of clearing the world
 		EntitySubscription all = world.getManager(AspectSubscriptionManager.class).get(Aspect.all());
 		IntBag entities = all.getEntities();

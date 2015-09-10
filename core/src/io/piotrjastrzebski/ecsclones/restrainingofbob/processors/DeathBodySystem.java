@@ -23,8 +23,8 @@ public class DeathBodySystem extends EntityProcessingSystem {
 		super(Aspect.all(Dead.class, PBody.class));
 	}
 
-	@Override protected void inserted (Entity e) {
-		Body body = mPBody.get(e).body;
+	@Override protected void inserted (int eid) {
+		Body body = mPBody.get(eid).body;
 		for (Fixture fixture : body.getFixtureList()) {
 			Filter filter = fixture.getFilterData();
 			filter.categoryBits = Physics.CAT_DEAD;

@@ -19,8 +19,8 @@ public class CollisionCleaner extends EntityProcessingSystem {
 		super(Aspect.all(Collided.class));
 	}
 
-	@Override protected void inserted (Entity e) {
-		e.edit().remove(Collided.class);
+	@Override protected void inserted (int eid) {
+		world.getEntity(eid).edit().remove(Collided.class);
 	}
 
 	@Override protected void process (Entity e) {

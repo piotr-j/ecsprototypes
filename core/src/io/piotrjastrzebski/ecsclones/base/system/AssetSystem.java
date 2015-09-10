@@ -17,7 +17,7 @@ public class AssetSystem extends EntityProcessingSystem {
 		super.initialize();
 	}
 
-	@Override protected void inserted (Entity e) {
+	@Override protected void inserted (int eid) {
 
 	}
 

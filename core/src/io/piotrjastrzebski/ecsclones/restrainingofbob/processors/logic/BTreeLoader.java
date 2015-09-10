@@ -30,9 +30,9 @@ public class BTreeLoader extends EntitySystem {
 
 	@Override protected void initialize () {}
 
-	@Override protected void inserted (Entity e) {
-		EnemyBrain brain = mEnemyBrain.get(e);
-		EnemyBTree tree = e.edit().create(EnemyBTree.class);
+	@Override protected void inserted (int eid) {
+		EnemyBrain brain = mEnemyBrain.get(eid);
+		EnemyBTree tree = world.getEntity(eid).edit().create(EnemyBTree.class);
 		tree.tree = (BehaviorTree<EnemyBrain>)get(brain.treePath).cloneTask();
 	}
 

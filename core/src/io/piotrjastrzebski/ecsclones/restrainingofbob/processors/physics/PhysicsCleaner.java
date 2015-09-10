@@ -24,8 +24,8 @@ public class PhysicsCleaner extends EntitySystem {
 
 	@Override protected void processSystem () {}
 
-	@Override protected void removed (Entity e) {
-		PBody pBody = mPBody.get(e);
+	@Override protected void removed (int eid) {
+		PBody pBody = mPBody.get(eid);
 		physics.destroyBody(pBody.body);
 	}
 }

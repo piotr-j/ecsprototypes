@@ -33,8 +33,8 @@ public class ProjectileLinker extends EntitySystem {
 		slings = world.getManager(AspectSubscriptionManager.class).get(Aspect.all(Sling.class));
 	}
 
-	@Override protected void inserted (Entity e) {
-		Projectile projectile = mProjectile.get(e);
+	@Override protected void inserted (int eid) {
+		Projectile projectile = mProjectile.get(eid);
 		IntBag entities = slings.getEntities();
 		// TODO solve this in cleaner way
 		Sling sling = mSling.get(slingMaker.latestID());
@@ -53,7 +53,7 @@ public class ProjectileLinker extends EntitySystem {
 		jointDef.localAnchorA.set(sling.anchor);
 		jointDef.localAnchorB.set(0, 0);
 
-		Slinging slinging = e.edit().create(Slinging.class);
+		Slinging slinging = world.getEntity(eid).edit().create(Slinging.class);
 		slinging.joint = (DistanceJoint)physics.getWorld().createJoint(jointDef);
 		slinging.slingID = slingMaker.latestID();
 	}
