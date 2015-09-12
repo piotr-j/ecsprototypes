@@ -20,8 +20,8 @@ public class OOBCleaner extends EntityProcessingSystem {
 	protected ComponentMapper<Position> mPosition;
 	protected ComponentMapper<Size> mSize;
 
-	@Wire OrthographicCamera camera;
-	@Wire ExtendViewport viewport;
+	@Wire(name = FlapperScreen.WIRE_GAME_CAM) OrthographicCamera camera;
+	@Wire(name = FlapperScreen.WIRE_GAME_VP) ExtendViewport viewport;
 
 	public OOBCleaner () {
 		super(Aspect.all(Position.class, Size.class));

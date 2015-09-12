@@ -34,12 +34,12 @@ public class BlockMaker extends EntitySystem {
 	BodyDef bodyDef;
 	PolygonShape shape;
 	FixtureDef fixtureDef;
-	@Override protected void inserted (final Entity e) {
-		BlockDef blockDef = mBlockDef.get(e);
-		Transform tf = mTransform.get(e);
-		Size size = mSize.get(e);
+	@Override protected void inserted (final int eid) {
+		BlockDef blockDef = mBlockDef.get(eid);
+		Transform tf = mTransform.get(eid);
+		Size size = mSize.get(eid);
 
-		Block block = e.edit().create(Block.class);
+		Block block = world.getEntity(eid).edit().create(Block.class);
 		if (bodyDef == null) bodyDef = new BodyDef();
 
 		bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -59,17 +59,17 @@ public class BlockMaker extends EntitySystem {
 
 		block.body.createFixture(fixtureDef);
 
-		block.body.setUserData(new Physics.UserData(e, Physics.Category.BLOCK){
+		block.body.setUserData(new Physics.UserData(eid, Physics.Category.BLOCK){
 			@Override public void onPostSolve (Physics.UserData userData, float strength) {
 				if (strength > 2) {
-					e.deleteFromWorld();
+					world.deleteEntity(eid);
 				}
 			}
 		});
 	}
 
-	@Override protected void removed (Entity e) {
-		Block block = mBlock.get(e);
+	@Override protected void removed (int eid) {
+		Block block = mBlock.get(eid);
 		physics.getWorld().destroyBody(block.body);
 	}
 

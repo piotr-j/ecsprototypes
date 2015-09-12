@@ -37,8 +37,8 @@ public class WorldGenerator extends EntityProcessingSystem {
 	public static final float MIN_OBST_DST = 6;
 	public static final float MAX_OBST_DST = 12;
 	float lastX;
-	@Override protected void inserted (Entity e) {
-		Position position = mPosition.get(e);
+	@Override protected void inserted (int eid) {
+		Position position = mPosition.get(eid);
 		lastX = position.pos.x;
 		createSky(lastX -FlapperScreen.VP_WIDTH / 2, FlapperScreen.VP_WIDTH);
 		createGround(lastX -FlapperScreen.VP_WIDTH / 2, FlapperScreen.VP_WIDTH);

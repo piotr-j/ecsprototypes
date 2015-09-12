@@ -34,9 +34,9 @@ public class LevelLoader extends Manager {
 		levels = Aspect.all(Level.class).build(world);
 	}
 
-	@Override public void added (Entity e) {
-		if (levels.isInterested(e)) {
-			load(physics.getWorld(), mLevel.get(e));
+	@Override public void added (int eid) {
+		if (levels.isInterested(world.getEntity(eid))) {
+			load(physics.getWorld(), mLevel.get(eid));
 		}
 	}
 

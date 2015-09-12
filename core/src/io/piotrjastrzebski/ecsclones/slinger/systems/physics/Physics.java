@@ -21,11 +21,11 @@ public class Physics extends EntitySystem {
 	private int velIters;
 	private int posIters;
 	private float step;
-	@Override protected void inserted (Entity e) {
+	@Override protected void inserted (int eid) {
 		if (box2d != null) {
 			throw new IllegalStateException(TAG + " there cant be more than one world at a time!");
 		}
-		WorldDef def = mWorldDef.get(e);
+		WorldDef def = mWorldDef.get(eid);
 		box2d = new World(def.gravity, def.sleep);
 		box2d.setContactListener(contacts);
 		velIters = def.velIters;
@@ -39,7 +39,7 @@ public class Physics extends EntitySystem {
 		box2d.step(step, velIters, posIters);
 	}
 
-	@Override protected void removed (Entity e) {
+	@Override protected void removed (int eid) {
 		// todo do this properly
 		box2d.dispose();
 		box2d = null;
@@ -51,19 +51,19 @@ public class Physics extends EntitySystem {
 
 	public static class UserData {
 		public short category;
-		public int entity;
+		public int eid;
 
-		public UserData (Entity entity) {
-			set(entity);
+		public UserData (int eid) {
+			set(eid);
 		}
 
-		public UserData (Entity e, short category) {
-			set(e);
+		public UserData (int eid, short category) {
+			set(eid);
 			this.category = category;
 		}
 
-		public UserData set (Entity entity) {
-			this.entity = entity.id;
+		public UserData set (int eid) {
+			this.eid = eid;
 			return this;
 		}
 
@@ -85,7 +85,7 @@ public class Physics extends EntitySystem {
 		}
 
 		/**
-		 * Called after collision was solved, other may be null. Strength is impulse required to solve the collision
+		 * Called delay collision was solved, other may be null. Strength is impulse required to solve the collision
 		 * WARNING this is called from contact listener, box2d objects cant be modified in here
 		 * This should be called even if owner entity gets deletedFromWorld() in onContact
 		 */

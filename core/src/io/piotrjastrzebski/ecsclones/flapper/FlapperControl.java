@@ -23,9 +23,9 @@ public class FlapperControl extends EntityProcessingSystem implements InputProce
 	}
 
 	private boolean jump;
-	@Override protected void inserted (Entity e) {
-		Flapper flapper = mFlapper.get(e);
-		Movement movement = mMovement.get(e);
+	@Override protected void inserted (int eid) {
+		Flapper flapper = mFlapper.get(eid);
+		Movement movement = mMovement.get(eid);
 		movement.acc.add(flapper.forwardAcc);
 	}
 
@@ -42,7 +42,7 @@ public class FlapperControl extends EntityProcessingSystem implements InputProce
 //		movement.acc.add(flapper.forwardAcc);
 	}
 
-	@Override protected void removed (Entity e) {
+	@Override protected void removed (int eid) {
 
 	}
 

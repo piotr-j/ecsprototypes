@@ -37,14 +37,14 @@ public class SlingMaker extends EntitySystem {
 	BodyDef bodyDef;
 	PolygonShape shape;
 	FixtureDef fixtureDef;
-	@Override protected void inserted (Entity e) {
-		latestID = e.id;
+	@Override protected void inserted (int eid) {
+		latestID = eid;
 
-		Transform tf = mTransform.get(e);
-		Size size = mSize.get(e);
-		SlingDef slingDef = mSlingDef.get(e);
+		Transform tf = mTransform.get(eid);
+		Size size = mSize.get(eid);
+		SlingDef slingDef = mSlingDef.get(eid);
 
-		Sling sling = e.edit().create(Sling.class);
+		Sling sling = world.getEntity(eid).edit().create(Sling.class);
 		sling.length = slingDef.length;
 		sling.dampingRatio = slingDef.dampingRatio;
 		sling.frequencyHz = slingDef.frequencyHz;

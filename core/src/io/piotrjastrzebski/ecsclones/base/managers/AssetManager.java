@@ -14,9 +14,9 @@ public class AssetManager extends Manager {
 		assetAspect = Aspect.all(Asset.class).build(world);
 	}
 
-	@Override public void added (Entity e) {
-		if (assetAspect.isInterested(e)) {
-			initAsset(mAsset.get(e));
+	@Override public void added (int eid) {
+		if (assetAspect.isInterested(world.getEntity(eid))) {
+			initAsset(mAsset.get(eid));
 		}
 	}
 

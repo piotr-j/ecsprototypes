@@ -26,21 +26,21 @@ public class FlapperCollisionResolver extends EntityProcessingSystem {
 		super(Aspect.all(Collided.class, Flapper.class));
 	}
 
-	@Override protected void inserted (Entity e) {
+	@Override protected void inserted (int eid) {
 		// here on in process?
-		Collided collided = mCollided.get(e);
+		Collided collided = mCollided.get(eid);
 		for (int i = 0; i < collided.with.size(); i++) {
 			Entity o = world.getEntity(collided.with.get(i));
 			if (mKiller.has(o)) {
 				// dead
-				e.deleteFromWorld();
+				world.deleteEntity(eid);
 				Gdx.app.log("", "Died! ");
 			}
 			if (mScore.has(o)) {
 				FlapperScorer scorer = mScore.get(o);
 				if (scorer.consumed) continue;
 				scorer.consumed = true;
-				Flapper flapper = mFlapper.get(e);
+				Flapper flapper = mFlapper.get(eid);
 				flapper.score++;
 				// scorer is no longer required
 				o.deleteFromWorld();

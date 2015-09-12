@@ -20,8 +20,8 @@ public class GUISystem extends EntitySystem {
 		super(Aspect.all(GUIActor.class));
 	}
 
-	@Override protected void inserted (Entity e) {
-		GUIActor guiActor = mGUIActor.get(e);
+	@Override protected void inserted (int eid) {
+		GUIActor guiActor = mGUIActor.get(eid);
 		stage.addActor(guiActor.actor);
 	}
 
@@ -30,8 +30,8 @@ public class GUISystem extends EntitySystem {
 		stage.draw();
 	}
 
-	@Override protected void removed (Entity e) {
-		GUIActor guiActor = mGUIActor.get(e);
+	@Override protected void removed (int eid) {
+		GUIActor guiActor = mGUIActor.get(eid);
 		guiActor.actor.remove();
 	}
 }

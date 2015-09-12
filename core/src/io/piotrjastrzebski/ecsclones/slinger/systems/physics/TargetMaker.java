@@ -34,12 +34,12 @@ public class TargetMaker extends EntitySystem {
 	BodyDef bodyDef;
 	PolygonShape shape;
 	FixtureDef fixtureDef;
-	@Override protected void inserted (Entity e) {
-		BlockDef blockDef = mBlockDef.get(e);
-		Transform tf = mTransform.get(e);
-		Size size = mSize.get(e);
+	@Override protected void inserted (int eid) {
+		BlockDef blockDef = mBlockDef.get(eid);
+		Transform tf = mTransform.get(eid);
+		Size size = mSize.get(eid);
 
-		Block block = e.edit().create(Block.class);
+		Block block = world.getEntity(eid).edit().create(Block.class);
 		if (bodyDef == null) bodyDef = new BodyDef();
 
 		bodyDef.type = BodyDef.BodyType.DynamicBody;
