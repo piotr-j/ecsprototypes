@@ -12,7 +12,6 @@ import com.badlogic.gdx.math.Vector2;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.SBehaviour;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PSteerable;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.rendering.DebugTint;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.utils.Box2dRadiusProximity;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.utils.MyPrioritySteering;
 
 /**
@@ -24,7 +23,7 @@ public class BWanderer extends Manager {
 	protected ComponentMapper<DebugTint> mDebugTint;
 
 	Steerable<Vector2> dummy = new PSteerable();
-	Box2dRadiusProximity dummyProxy = new Box2dRadiusProximity(null, null, 1f);
+	PProximity dummyProxy = new PProximity();
 
 	public void set (int id) {
 		SBehaviour sBehaviour = mSBehaviour.getSafe(world.getEntity(id));

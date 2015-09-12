@@ -3,8 +3,6 @@ package io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic;
 import com.artemis.*;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
-import com.artemis.utils.IntBag;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.steer.GroupBehavior;
 import com.badlogic.gdx.ai.steer.Proximity;
 import com.badlogic.gdx.ai.steer.SteeringAcceleration;
@@ -17,13 +15,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import io.piotrjastrzebski.ecsclones.base.GameScreen;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Dead;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Player;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.SBehaviour;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PBody;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PSteerable;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.physics.Physics;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.utils.Box2dRadiusProximity;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.utils.Box2dSquareAABBProximity;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.utils.MyBlendedSteering;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.utils.MyPrioritySteering;
 
@@ -187,12 +182,10 @@ public class Steering extends EntityProcessingSystem {
 				setOwner(b, steerable);
 			}
 		} else if (behaviour instanceof GroupBehavior) {
-			Proximity proximity = ((GroupBehavior)behaviour).getProximity();
+			Proximity<Vector2> proximity = ((GroupBehavior<Vector2>)behaviour).getProximity();
 			proximity.setOwner(steerable);
-			if (proximity instanceof Box2dSquareAABBProximity) {
-				((Box2dSquareAABBProximity)proximity).setWorld(physics.getWorld());
-			}else if (proximity instanceof Box2dRadiusProximity) {
-				((Box2dRadiusProximity)proximity).setWorld(physics.getWorld());
+			if (proximity instanceof PProximity) {
+				((PProximity)proximity).setWorld(physics.getWorld());
 			}
 		}
 	}
