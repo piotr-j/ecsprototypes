@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.*;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.RemoveAfter;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.DeleteAfter;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PBodyDef;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PCircle;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.rendering.DebugTint;
@@ -121,7 +121,7 @@ public class ShooterSystem extends EntityProcessingSystem {
 		} else {
 			Gdx.app.log(TAG, "Default alive time for shooter = " + e.id);
 		}
-		pe.create(RemoveAfter.class).setDelay(alive);
+		pe.create(DeleteAfter.class).setDelay(alive);
 	}
 
 	protected void onContact(Physics.UserData src, Physics.UserData other) {

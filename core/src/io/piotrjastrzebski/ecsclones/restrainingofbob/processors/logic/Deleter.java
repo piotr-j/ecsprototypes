@@ -5,21 +5,21 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.RemoveAfter;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.DeleteAfter;
 
 /**
  * Created by PiotrJ on 31/08/15.
  */
 @Wire
-public class Remover extends EntityProcessingSystem {
-	protected ComponentMapper<RemoveAfter> mRemoveAfter;
+public class Deleter extends EntityProcessingSystem {
+	protected ComponentMapper<DeleteAfter> mRemoveAfter;
 
-	public Remover () {
-		super(Aspect.all(RemoveAfter.class));
+	public Deleter () {
+		super(Aspect.all(DeleteAfter.class));
 	}
 
 	@Override protected void process (Entity e) {
-		RemoveAfter after = mRemoveAfter.get(e);
+		DeleteAfter after = mRemoveAfter.get(e);
 		after.timer += world.delta;
 		if (after.timer > after.delay) {
 			after.timer = 0;

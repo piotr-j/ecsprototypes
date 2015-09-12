@@ -8,9 +8,8 @@ import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.graphics.Color;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Dead;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Health;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.HitBy;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Invulnerable;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.RemoveAfter;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.DeleteAfter;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.rendering.DebugTint;
 
 /**
@@ -29,7 +28,7 @@ public class DeathSystem extends EntityProcessingSystem {
 		Health health = mHealth.get(e);
 		if (health.hp <= 0) {
 			e.edit().create(Dead.class);
-			e.edit().create(RemoveAfter.class).setDelay(3);
+			e.edit().create(DeleteAfter.class).setDelay(3);
 			if (mDebugTint.has(e)) {
 				mDebugTint.get(e).color.set(Color.BROWN);
 			}

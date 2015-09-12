@@ -3,17 +3,9 @@ package io.piotrjastrzebski.ecsclones.restrainingofbob.processors;
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
-import com.artemis.EntityEdit;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.*;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.RemoveAfter;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PBodyDef;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PCircle;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.physics.Physics;
 
 /**
  * Created by PiotrJ on 29/08/15.
