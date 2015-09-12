@@ -16,6 +16,7 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.*;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.physics.*;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.rendering.Box2dDebugRenderer;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.rendering.DebugRenderer;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.rendering.HealthRenderer;
 
 /**
  * Simple angry birds like in ecs
@@ -58,6 +59,7 @@ public class RoBScreen extends GameScreen {
 		config.setSystem(new RectBoundsUpdater());
 		config.setSystem(new CameraFollower());
 		config.setSystem(new Box2dDebugRenderer());
+		config.setSystem(new HealthRenderer());
 		config.setSystem(new DebugRenderer());
 		config.setSystem(new ShooterSystem());
 		config.setSystem(new FacingSystem());
@@ -102,7 +104,7 @@ public class RoBScreen extends GameScreen {
 		// fraction of src vel to add to projectile
 		shooter.srcVelMult = 0.5f;
 
-		edit.create(Health.class).hp = 10;
+		edit.create(Health.class).hp(10);
 
 		Mover mover = edit.create(Mover.class);
 		mover.maxLinearImp = 1f;
@@ -182,7 +184,7 @@ public class RoBScreen extends GameScreen {
 
 		ee.create(Velocity.class);
 
-		ee.create(Health.class).hp = 3;
+		ee.create(Health.class).hp(3);
 		ee.create(MoveFacing.class);
 //		edit.create(MoveFacing.class);
 	}
