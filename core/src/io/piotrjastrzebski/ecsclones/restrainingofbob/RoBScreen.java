@@ -9,6 +9,7 @@ import io.piotrjastrzebski.ecsclones.ECSGame;
 import io.piotrjastrzebski.ecsclones.base.GameScreen;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.*;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.EnemyBrain;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.RemoveAfter;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.*;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.rendering.DebugTint;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.*;
@@ -33,6 +34,7 @@ public class RoBScreen extends GameScreen {
 		config.setManager(new TagManager());
 
 		config.setSystem(new Deleter());
+		config.setSystem(new Remover());
 
 		config.setManager(new BWanderer());
 		config.setManager(new BEvader());
@@ -138,6 +140,9 @@ public class RoBScreen extends GameScreen {
 		edit.create(MoveFacing.class);
 		edit.create(AimFacing.class);
 		edit.create(Velocity.class);
+
+		edit.create(Invulnerable.class);
+		edit.create(RemoveAfter.class).setDelay(5).add(Invulnerable.class);
 	}
 
 	private void createEnemy () {
