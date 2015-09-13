@@ -2,17 +2,8 @@ package io.piotrjastrzebski.ecsclones.restrainingofbob;
 
 import com.artemis.*;
 import com.artemis.managers.TagManager;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import io.piotrjastrzebski.ecsclones.ECSGame;
 import io.piotrjastrzebski.ecsclones.base.GameScreen;
-import io.piotrjastrzebski.ecsclones.flapper.WorldGenerator;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.*;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.EnemyBrain;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.RemoveAfter;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.*;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.rendering.DebugTint;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.*;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.*;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.physics.*;
@@ -33,9 +24,6 @@ public class RoBScreen extends GameScreen {
 
 	@Override protected void preInit (WorldConfiguration config) {
 		config.setManager(new TagManager());
-
-		config.setSystem(new Deleter());
-		config.setSystem(new Remover());
 
 		config.setSystem(new PlayerSpawner());
 		config.setSystem(new MonsterSpawner());
@@ -69,6 +57,9 @@ public class RoBScreen extends GameScreen {
 		config.setSystem(new DebugRenderer());
 		config.setSystem(new ShooterSystem());
 		config.setSystem(new FacingSystem());
+
+		config.setSystem(new Remover());
+		config.setSystem(new Deleter());
 //		config.setSystem(new PlayerFacingSystem());
 	}
 
