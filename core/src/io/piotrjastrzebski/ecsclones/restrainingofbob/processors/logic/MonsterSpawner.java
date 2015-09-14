@@ -28,7 +28,7 @@ public class MonsterSpawner extends EntitySystem {
 	}
 
 	@Override protected void processSystem () {
-		int toSpawn = 200 - getSubscription().getEntities().size();
+		int toSpawn = 1 - getSubscription().getEntities().size();
 		for (int i = 0; i < toSpawn; i++) {
 			spawnEnemy();
 		}
@@ -43,8 +43,8 @@ public class MonsterSpawner extends EntitySystem {
 
 		Transform transform = ee.create(Transform.class);
 		transform.pos.set(
-			MathUtils.random(-RoBScreen.VP_WIDTH, RoBScreen.VP_WIDTH),
-			MathUtils.random(-RoBScreen.VP_HEIGHT, RoBScreen.VP_HEIGHT)
+			MathUtils.random(-RoBScreen.VP_WIDTH/3, RoBScreen.VP_WIDTH/3),
+			MathUtils.random(-RoBScreen.VP_HEIGHT/3, RoBScreen.VP_HEIGHT/3)
 		);
 
 		Mover mover = ee.create(Mover.class);
@@ -74,8 +74,6 @@ public class MonsterSpawner extends EntitySystem {
 
 		EnemyBrain brain = ee.create(EnemyBrain.class);
 		brain.minDst2 = 5;
-		brain.hp = 10;
-		brain.maxHP = 10;
 		brain.id = e.id;
 		brain.treePath = "rob/ai/monster.tree";
 
