@@ -10,7 +10,7 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.BEvader;
 /**
  * Created by PiotrJ on 19/08/15.
  */
-@Wire
+@Wire(injectInherited = true)
 public class EvadeTask extends BaseTask {
 	private final static String TAG = EvadeTask.class.getSimpleName();
 

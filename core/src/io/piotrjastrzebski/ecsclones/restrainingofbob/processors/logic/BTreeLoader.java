@@ -11,7 +11,9 @@ import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.StreamUtils;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.EnemyBTree;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.EnemyBrain;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.BaseDecorator;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.BaseTask;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.Injectable;
 
 import java.io.Reader;
 
@@ -63,17 +65,17 @@ public class BTreeLoader extends EntitySystem {
 	private void injectTask (Task task) {
 		for (int i = 0; i < task.getChildCount(); i++) {
 			Task child = task.getChild(i);
-			if (child instanceof BaseTask) {
+
+			if (child instanceof Injectable) {
 				try {
-					((BaseTask)child).initialize(world);
+					((Injectable)child).initialize(world);
 				} catch (MundaneWireException e) {
 					// we do not care if there is nothing to inject, perhaps we will at some point
 				}
 			} else if (child instanceof LeafTask) {
 				Gdx.app.error(TAG, "All LeafTasks should extend BaseTask! " + child);
-			} else {
-				injectTask(child);
 			}
+			injectTask(child);
 		}
 	}
 

@@ -5,6 +5,7 @@ import pursue:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.PursueTask"
 import wander:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.WanderTask"
 import stopParallel:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.StoppingParallel"
 import melee:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.MeleeTask"
+import limit:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.LimitDecorator"
 
 root
   selector
@@ -25,6 +26,9 @@ root
             pursue target:"player"
             # need a limitter of sort, time?
             sequence
+              # actual range should probably be in entity
               inRange target:"player" dst:3.0
-              melee target:"player"
+              # actual delay should probably be in entity
+              limit delay:.5
+                melee target:"player"
     wander
