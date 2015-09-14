@@ -28,7 +28,7 @@ public class MonsterSpawner extends EntitySystem {
 	}
 
 	@Override protected void processSystem () {
-		int toSpawn = 1 - getSubscription().getEntities().size();
+		int toSpawn = 200 - getSubscription().getEntities().size();
 		for (int i = 0; i < toSpawn; i++) {
 			spawnEnemy();
 		}
