@@ -26,6 +26,7 @@ public class BrainUpdateSystem extends EntityProcessingSystem {
 	@Override protected void process (Entity e) {
 		EnemyBrain enemyBrain = mEnemyBrain.get(e);
 		Health health = mHealth.get(e);
+		enemyBrain.maxHP = health.maxHp;
 		enemyBrain.hp = health.hp;
 	}
 }
