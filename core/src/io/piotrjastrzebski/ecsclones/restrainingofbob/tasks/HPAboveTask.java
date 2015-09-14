@@ -28,10 +28,8 @@ public class HPAboveTask extends BaseTask {
 			test = absolute;
 		}
 		if (brain.hp > test) {
-//			Gdx.app.log(TAG, "hp high!" + brain.hp);
 			success();
 		} else {
-//			Gdx.app.log(TAG, "hp low! " + brain.hp);
 			fail();
 		}
 	}

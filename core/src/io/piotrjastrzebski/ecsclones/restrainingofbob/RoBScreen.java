@@ -46,6 +46,7 @@ public class RoBScreen extends GameScreen {
 		config.setSystem(new MoveController());
 		config.setSystem(new ShootController());
 		config.setSystem(new HitBySystem());
+		config.setSystem(new BrainUpdateSystem());
 		config.setSystem(new DeathSystem());
 		config.setSystem(new DeathBodySystem());
 		config.setSystem(new PhysicsMover());

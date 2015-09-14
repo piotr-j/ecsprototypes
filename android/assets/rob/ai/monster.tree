@@ -11,7 +11,8 @@ root
     sequence
       inRange target:"player" dst:7.0
       selector
-        sequence
+        stopParallel
+          inRange target:"player" dst:10.0
           invert
             # percent/absolute, percent overrides absolute if percent>0
             hpAbove percent:25
@@ -19,6 +20,7 @@ root
         # this cant succeed, must be broken by low hp/death
         stopParallel
           inRange target:"player" dst:10.0
+          hpAbove percent:25
           parallel
             pursue target:"player"
             # need a limitter of sort, time?
