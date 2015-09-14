@@ -63,7 +63,7 @@ public class PlayerSpawner extends EntitySystem {
 		// how often can it shoot
 		shooter.delay = 0.1f;
 		// dmg of the projectile
-		shooter.dmg = 2;
+		shooter.dmg = 1;
 		// +- fraction of vel
 		shooter.dmgSpread = .5f;
 		// +- fraction of vel
