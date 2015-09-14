@@ -61,7 +61,7 @@ public class PlayerSpawner extends EntitySystem {
 
 		Shooter shooter = edit.create(Shooter.class);
 		// how often can it shoot
-		shooter.delay = 0.25f;
+		shooter.delay = 0.1f;
 		// dmg of the projectile
 		shooter.dmg = 2;
 		// +- fraction of vel
