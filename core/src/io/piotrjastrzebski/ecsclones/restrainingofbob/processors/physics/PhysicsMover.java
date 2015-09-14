@@ -6,6 +6,7 @@ import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.math.MathUtils;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Dead;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Mover;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PBody;
 
@@ -20,7 +21,7 @@ public class PhysicsMover extends EntityProcessingSystem {
 	protected ComponentMapper<Mover> mMover;
 
 	public PhysicsMover () {
-		super(Aspect.all(PBody.class, Mover.class));
+		super(Aspect.all(PBody.class, Mover.class).exclude(Dead.class));
 	}
 
 	@Override protected void process (Entity e) {

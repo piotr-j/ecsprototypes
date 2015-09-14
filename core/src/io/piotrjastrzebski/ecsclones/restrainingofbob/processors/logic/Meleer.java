@@ -16,21 +16,24 @@ public class Meleer extends Manager {
 	private final static String TAG = Meleer.class.getSimpleName();
 	protected ComponentMapper<HitBy> mHitBy;
 	Finder finder;
+
 	public Meleer () {
 	}
 
 	TagManager tags;
-	public void attack (int attacker, String target) {
-		Gdx.app.log(TAG, attacker + " attacks " + target);
+	public boolean attack (int attacker, String target) {
 		Entity te = tags.getEntity(target);
 		if (te == null) {
 			Gdx.app.log(TAG, "Invalid tag " + target + "!");
-			return;
+			return false;
 		}
+		// TODO get range and dmg from attacker
 		HitBy hit = mHitBy.getSafe(te);
 		if (hit == null) {
 			hit = te.edit().create(HitBy.class);
 		}
+		Gdx.app.log(TAG, attacker + " attacks " + target);
 		hit.dmg += 0.5f;
+		return true;
 	}
 }

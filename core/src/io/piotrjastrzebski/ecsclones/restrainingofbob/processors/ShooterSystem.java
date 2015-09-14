@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.*;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.RemoveAfter;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.DeleteAfter;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PBodyDef;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PCircle;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.rendering.DebugTint;
@@ -121,14 +121,18 @@ public class ShooterSystem extends EntityProcessingSystem {
 		} else {
 			Gdx.app.log(TAG, "Default alive time for shooter = " + e.id);
 		}
-		pe.create(RemoveAfter.class).setDelay(alive);
+		pe.create(DeleteAfter.class).setDelay(alive);
 	}
 
-	protected void onContact(Physics.UserData src, Physics.UserData other) {
-		Projectile projectile = mProjectile.get(src.eid);
-		Entity hit = world.getEntity(other.eid);
+	protected void onContact(Physics.UserData p, Physics.UserData t) {
+		Entity pe = world.getEntity(p.eid);
+		if (!pe.isActive()) return;
+		Entity hit = world.getEntity(t.eid);
+		if (!hit.isActive()) return;
+
+		Projectile projectile = mProjectile.get(p.eid);
 		HitBy hitBy = hit.edit().create(HitBy.class);
 		hitBy.dmg = projectile.dmg;
-		world.deleteEntity(src.eid);
+		pe.edit().create(DeleteAfter.class);
 	}
 }

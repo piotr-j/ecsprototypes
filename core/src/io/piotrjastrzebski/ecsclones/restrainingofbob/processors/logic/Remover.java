@@ -1,10 +1,9 @@
 package io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic;
 
-import com.artemis.Aspect;
-import com.artemis.ComponentMapper;
-import com.artemis.Entity;
+import com.artemis.*;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
+import com.badlogic.gdx.Gdx;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.RemoveAfter;
 
 /**
@@ -23,7 +22,11 @@ public class Remover extends EntityProcessingSystem {
 		after.timer += world.delta;
 		if (after.timer > after.delay) {
 			after.timer = 0;
-			e.deleteFromWorld();
+			EntityEdit edit = e.edit();
+			for (Class<? extends Component> cls : after.clses)  {
+				edit.remove(cls);
+			}
+			edit.remove(after);
 		}
 	}
 }

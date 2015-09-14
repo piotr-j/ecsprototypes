@@ -9,7 +9,7 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.EnemyBrai
 /**
  * Created by PiotrJ on 19/08/15.
  */
-@Wire
+@Wire(injectInherited = true)
 public class HPAboveTask extends BaseTask {
 	private final static String TAG = HPAboveTask.class.getSimpleName();
 
@@ -28,10 +28,8 @@ public class HPAboveTask extends BaseTask {
 			test = absolute;
 		}
 		if (brain.hp > test) {
-//			Gdx.app.log(TAG, "hp high!" + brain.hp);
 			success();
 		} else {
-//			Gdx.app.log(TAG, "hp low! " + brain.hp);
 			fail();
 		}
 	}

@@ -5,33 +5,28 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
-import com.badlogic.gdx.graphics.Color;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Dead;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Health;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.HitBy;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Invulnerable;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.DeleteAfter;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.rendering.DebugTint;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.EnemyBrain;
 
 /**
  * Created by PiotrJ on 29/08/15.
  */
 @Wire
-public class DeathSystem extends EntityProcessingSystem {
+public class BrainUpdateSystem extends EntityProcessingSystem {
+	protected ComponentMapper<EnemyBrain> mEnemyBrain;
 	protected ComponentMapper<Health> mHealth;
-	protected ComponentMapper<DebugTint> mDebugTint;
 
-	public DeathSystem () {
-		super(Aspect.all(Health.class).exclude(Invulnerable.class, Dead.class));
+	public BrainUpdateSystem () {
+		super(Aspect.all(EnemyBrain.class, Health.class));
 	}
 
 	@Override protected void process (Entity e) {
+		EnemyBrain enemyBrain = mEnemyBrain.get(e);
 		Health health = mHealth.get(e);
-		if (health.hp <= 0) {
-			e.edit().create(Dead.class);
-			e.edit().create(DeleteAfter.class).setDelay(3);
-			if (mDebugTint.has(e)) {
-				mDebugTint.get(e).color.set(Color.BROWN);
-			}
-		}
+		enemyBrain.maxHP = health.maxHp;
+		enemyBrain.hp = health.hp;
 	}
 }

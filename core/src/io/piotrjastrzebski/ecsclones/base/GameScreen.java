@@ -3,7 +3,6 @@ package io.piotrjastrzebski.ecsclones.base;
 import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.utils.ImmutableBag;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.utils.Array;
 import io.piotrjastrzebski.ecsclones.ECSGame;
 import io.piotrjastrzebski.ecsclones.base.util.Input;

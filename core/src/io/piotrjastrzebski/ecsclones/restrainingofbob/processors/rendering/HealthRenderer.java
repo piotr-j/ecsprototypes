@@ -8,6 +8,7 @@ import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Interpolation;
 import io.piotrjastrzebski.ecsclones.base.GameScreen;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.*;
 
@@ -56,7 +57,9 @@ public class HealthRenderer extends EntityProcessingSystem {
 		renderer.setColor(Color.GRAY);
 		renderer.rect(x - w / 2, y - h * .85f, w, h * 0.25f);
 		if (a >= 0) {
-			renderer.setColor(1 - a, a, 0, 1);
+			float r = Interpolation.pow5.apply(0, 1, 1 - a);
+			float g = Interpolation.pow5.apply(0, 1, a);
+			renderer.setColor(r, g, 0, 1);
 			renderer.rect(x - w / 2, y - h * .85f, w * a, h * 0.25f);
 		}
 	}

@@ -10,7 +10,7 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.Meleer;
 /**
  * Created by PiotrJ on 19/08/15.
  */
-@Wire
+@Wire(injectInherited = true)
 public class MeleeTask extends BaseTask {
 	private final static String TAG = MeleeTask.class.getSimpleName();
 
@@ -21,7 +21,11 @@ public class MeleeTask extends BaseTask {
 
 	@Override public void start () {
 		EnemyBrain brain = getObject();
-		meleer.attack(brain.id, target);
+		if (meleer.attack(brain.id, target)) {
+			success();
+		} else {
+			fail();
+		}
 	}
 
 

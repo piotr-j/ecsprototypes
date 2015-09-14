@@ -76,11 +76,13 @@ public class Steering extends EntityProcessingSystem {
 //		}
 		setOwner(sBehaviour.behaviour, steerable);
 		if (sBehaviour.target >= 0) {
-			PSteerable target = mPSteerable.get(sBehaviour.target);
-			PBody tb = mPBody.getSafe(sBehaviour.target);
-			if (tb != null)
-				target.setBody(tb.body);
-			setTarget(sBehaviour.behaviour, target);
+			PSteerable target = mPSteerable.getSafe(sBehaviour.target);
+			if (target != null) {
+				PBody tb = mPBody.getSafe(sBehaviour.target);
+				if (tb != null)
+					target.setBody(tb.body);
+				setTarget(sBehaviour.behaviour, target);
+			}
 		}
 		sBehaviour.behaviour.calculateSteering(steeringOutput);
 
