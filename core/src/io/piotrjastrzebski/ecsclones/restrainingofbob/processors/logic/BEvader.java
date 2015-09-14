@@ -24,7 +24,7 @@ public class BEvader extends Manager {
 	Evade<Vector2> evade;
 	PSteerable dummy = new PSteerable();
 	public boolean set (int evader, String evadee) {
-		SBehaviour sBehaviour = mSBehaviour.get(evader);
+		SBehaviour sBehaviour = mSBehaviour.getSafe(evader);
 		if (sBehaviour == null) {
 			sBehaviour = world.getEntity(evader).edit().create(SBehaviour.class);
 		}
