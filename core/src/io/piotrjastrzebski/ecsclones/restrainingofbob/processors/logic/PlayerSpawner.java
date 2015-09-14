@@ -113,6 +113,7 @@ public class PlayerSpawner extends EntitySystem {
 		edit.create(AimFacing.class);
 		edit.create(Velocity.class);
 
+		edit.create(Invulnerable.class);
 		edit.create(RemoveAfter.class).setDelay(3).add(Invulnerable.class);
 	}
 }
