@@ -29,8 +29,12 @@ public class Finder extends EntitySystem {
 		if (tagged == null) {
 			return 9999;
 		}
+		return (dst2(src, tagged.id));
+	}
+
+	public float dst2 (int src, int target) {
 		Transform transA = mTransform.get(src);
-		Transform transB = mTransform.get(tagged);
+		Transform transB = mTransform.get(target);
 		if (transA == null || transB == null) return 9999;
 
 		return transA.pos.dst2(transB.pos);
