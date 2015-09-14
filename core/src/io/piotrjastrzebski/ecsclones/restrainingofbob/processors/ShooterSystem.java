@@ -124,11 +124,15 @@ public class ShooterSystem extends EntityProcessingSystem {
 		pe.create(DeleteAfter.class).setDelay(alive);
 	}
 
-	protected void onContact(Physics.UserData src, Physics.UserData other) {
-		Projectile projectile = mProjectile.get(src.eid);
-		Entity hit = world.getEntity(other.eid);
+	protected void onContact(Physics.UserData p, Physics.UserData t) {
+		Entity pe = world.getEntity(p.eid);
+		if (!pe.isActive()) return;
+		Entity hit = world.getEntity(t.eid);
+		if (!hit.isActive()) return;
+
+		Projectile projectile = mProjectile.get(p.eid);
 		HitBy hitBy = hit.edit().create(HitBy.class);
 		hitBy.dmg = projectile.dmg;
-		world.deleteEntity(src.eid);
+		pe.edit().create(DeleteAfter.class);
 	}
 }
