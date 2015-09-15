@@ -12,12 +12,7 @@ root
     sequence
       inRange target:"player" dst:7.0
       selector
-        stopParallel
-          inRange target:"player" dst:10.0
-          invert
-            # percent/absolute, percent overrides absolute if percent>0
-            hpAbove percent:25
-          evade target:"player"
+        include subtree:"rob/ai/sub/run-when-low-hp.tree"
         # this cant succeed, must be broken by low hp/death
         stopParallel
           inRange target:"player" dst:10.0

@@ -6,6 +6,8 @@ import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.artemis.annotations.Wire;
 import com.artemis.managers.TagManager;
+import com.badlogic.gdx.math.Circle;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.CircleBounds;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Transform;
 
 /**
@@ -14,6 +16,7 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Transform;
 @Wire
 public class Finder extends EntitySystem {
 	protected ComponentMapper<Transform> mTransform;
+	protected ComponentMapper<CircleBounds> mCircleBounds;
 	TagManager tags;
 
 	public Finder () {
@@ -23,20 +26,37 @@ public class Finder extends EntitySystem {
 
 	@Override protected void processSystem () {}
 
-
 	public float dst2 (int src, String target) {
 		Entity tagged = tags.getEntity(target);
 		if (tagged == null) {
 			return 9999;
 		}
-		return (dst2(src, tagged.id));
+		return dst2(src, tagged.id);
 	}
 
 	public float dst2 (int src, int target) {
-		Transform transA = mTransform.get(src);
-		Transform transB = mTransform.get(target);
+		Transform transA = mTransform.getSafe(src);
+		Transform transB = mTransform.getSafe(target);
 		if (transA == null || transB == null) return 9999;
 
 		return transA.pos.dst2(transB.pos);
+	}
+
+	public boolean overlaps (int src, String target, float radius) {
+		Entity tagged = tags.getEntity(target);
+		if (tagged == null) {
+			return false;
+		}
+		return overlaps(src, tagged.id, radius);
+	}
+
+	Circle tmp = new Circle();
+	public boolean overlaps (int src, int target, float radius) {
+		CircleBounds srcCB = mCircleBounds.getSafe(src);
+		CircleBounds tarCB = mCircleBounds.getSafe(target);
+		if (srcCB == null || tarCB == null) return false;
+		tmp.set(srcCB.bounds);
+		tmp.setRadius(radius);
+		return tmp.overlaps(tarCB.bounds);
 	}
 }

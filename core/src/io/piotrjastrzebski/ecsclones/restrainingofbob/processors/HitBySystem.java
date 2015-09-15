@@ -14,15 +14,18 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.components.*;
 public class HitBySystem extends EntityProcessingSystem {
 	protected ComponentMapper<HitBy> mHitBy;
 	protected ComponentMapper<Health> mHealth;
+	protected ComponentMapper<Invulnerable> mInvulnerable;
 
 	public HitBySystem () {
-		super(Aspect.all(HitBy.class, Health.class).exclude(Invulnerable.class, Dead.class));
+		super(Aspect.all(HitBy.class, Health.class).exclude(Dead.class));
 	}
 
 	@Override protected void process (Entity e) {
-		HitBy hitBy = mHitBy.get(e);
-		Health health = mHealth.get(e);
-		health.hp -= hitBy.dmg;
+		if (!mInvulnerable.has(e)) {
+			HitBy hitBy = mHitBy.get(e);
+			Health health = mHealth.get(e);
+			health.hp -= hitBy.dmg;
+		}
 		// TODO apply some status base on type or whatever
 		e.edit().remove(HitBy.class);
 	}

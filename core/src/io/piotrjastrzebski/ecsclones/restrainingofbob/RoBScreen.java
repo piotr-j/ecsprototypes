@@ -10,6 +10,7 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.physics.*;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.rendering.Box2dDebugRenderer;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.rendering.DebugRenderer;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.rendering.HealthRenderer;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.rendering.MeleeRangeRenderer;
 
 /**
  * Simple angry birds like in ecs
@@ -56,6 +57,7 @@ public class RoBScreen extends GameScreen {
 		config.setSystem(new Box2dDebugRenderer());
 		config.setSystem(new HealthRenderer());
 		config.setSystem(new DebugRenderer());
+		config.setSystem(new MeleeRangeRenderer());
 		config.setSystem(new ShooterSystem());
 		config.setSystem(new FacingSystem());
 
