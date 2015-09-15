@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.btree.BehaviorTree;
 import com.badlogic.gdx.ai.btree.LeafTask;
 import com.badlogic.gdx.ai.btree.Task;
+import com.badlogic.gdx.ai.btree.decorator.Include;
 import com.badlogic.gdx.ai.btree.utils.BehaviorTreeParser;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.StreamUtils;
@@ -55,6 +56,8 @@ public class BTreeLoader extends EntitySystem {
 			reader = Gdx.files.internal(path).reader();
 			BehaviorTreeParser<EnemyBrain> parser = new BehaviorTreeParser<>(BehaviorTreeParser.DEBUG_NONE);
 			tree = parser.parse(reader, null);
+			// cline tree tp force load included sub trees
+			tree = (BehaviorTree<EnemyBrain>)tree.cloneTask();
 			injectTask(tree);
 		} finally {
 			StreamUtils.closeQuietly(reader);
@@ -65,7 +68,6 @@ public class BTreeLoader extends EntitySystem {
 	private void injectTask (Task task) {
 		for (int i = 0; i < task.getChildCount(); i++) {
 			Task child = task.getChild(i);
-
 			if (child instanceof Injectable) {
 				try {
 					((Injectable)child).initialize(world);
