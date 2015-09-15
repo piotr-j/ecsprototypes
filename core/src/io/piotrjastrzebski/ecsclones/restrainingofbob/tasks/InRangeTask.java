@@ -26,7 +26,7 @@ public class InRangeTask extends BaseTask {
 
 	@Override public void run () {
 		EnemyBrain brain = getObject();
-		if (finder.dst2(brain.id, target) < dst * dst) {
+		if (finder.overlaps(brain.id, target, dst)) {
 			success();
 		} else {
 			fail();
