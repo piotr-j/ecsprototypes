@@ -75,7 +75,7 @@ public class MonsterSpawner extends EntitySystem {
 		EnemyBrain brain = ee.create(EnemyBrain.class);
 		brain.minDst2 = 5;
 		brain.id = e.id;
-		brain.treePath = "rob/ai/monster.tree";
+		brain.treePath = "rob/ai/melee-monster.tree";
 
 		ee.create(Velocity.class);
 
