@@ -27,7 +27,7 @@ root
             # need a limitter of sort, time?
             sequence
               # actual range should probably be in entity
-              inRange target:"player" dst:1.25
+              inRange target:"player" dst:.75
               # actual delay should probably be in entity
               limit delay:.5
                 melee target:"player"
