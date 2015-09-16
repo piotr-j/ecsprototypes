@@ -1,7 +1,7 @@
 import stopParallel:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.StoppingParallel"
-import inRange:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.InRangeTask"
-import hpAbove:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.HPAboveTask"
-import evade:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.EvadeTask"
+import inRange:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.InRangeTask"
+import hpAbove:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.HPAboveTask"
+import evade:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.EvadeTask"
 
 stopParallel
   inRange target:"player" dst:10.0

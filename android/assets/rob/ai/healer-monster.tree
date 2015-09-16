@@ -1,10 +1,10 @@
-import inRange:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.InRangeTask"
-import hpAbove:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.HPAboveTask"
-import evade:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.EvadeTask"
-import pursue:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.PursueTask"
-import wander:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.WanderTask"
+import inRange:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.InRangeTask"
+import hpAbove:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.HPAboveTask"
+import evade:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.EvadeTask"
+import pursue:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.PursueTask"
+import wander:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.WanderTask"
 import stopParallel:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.StoppingParallel"
-import melee:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.MeleeTask"
+import melee:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.MeleeTask"
 import limit:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.LimitDecorator"
 
 root

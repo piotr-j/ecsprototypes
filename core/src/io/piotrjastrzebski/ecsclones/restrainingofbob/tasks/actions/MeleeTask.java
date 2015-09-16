@@ -1,11 +1,11 @@
-package io.piotrjastrzebski.ecsclones.restrainingofbob.tasks;
+package io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions;
 
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.ai.btree.Task;
 import com.badlogic.gdx.ai.btree.annotation.TaskAttribute;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.EnemyBrain;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.BPursuer;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.Meleer;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.base.BaseTask;
 
 /**
  * Created by PiotrJ on 19/08/15.

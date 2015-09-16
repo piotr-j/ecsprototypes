@@ -6,14 +6,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.btree.BehaviorTree;
 import com.badlogic.gdx.ai.btree.LeafTask;
 import com.badlogic.gdx.ai.btree.Task;
-import com.badlogic.gdx.ai.btree.decorator.Include;
 import com.badlogic.gdx.ai.btree.utils.BehaviorTreeParser;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.StreamUtils;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.EnemyBTree;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.EnemyBrain;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.BaseDecorator;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.BaseTask;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.Injectable;
 
 import java.io.Reader;

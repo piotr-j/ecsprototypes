@@ -4,6 +4,7 @@ import com.artemis.annotations.Wire;
 import com.badlogic.gdx.ai.btree.Task;
 import com.badlogic.gdx.ai.btree.annotation.TaskAttribute;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.EnemyBrain;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.base.BaseDecorator;
 
 /**
  * Created by PiotrJ on 19/08/15.
