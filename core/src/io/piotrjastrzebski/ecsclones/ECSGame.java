@@ -16,6 +16,8 @@ import io.piotrjastrzebski.ecsclones.base.BaseScreen;
 import io.piotrjastrzebski.ecsclones.base.GameScreen;
 import io.piotrjastrzebski.ecsclones.base.PlatformBridge;
 import io.piotrjastrzebski.ecsclones.flapper.FlapperScreen;
+import io.piotrjastrzebski.ecsclones.jumper.JumperScreen;
+import io.piotrjastrzebski.ecsclones.matcher.MatherScreen;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.RoBScreen;
 import io.piotrjastrzebski.ecsclones.slinger.SlingerScreen;
 import io.piotrjastrzebski.ecsclones.terrobound.TerroboundScreen;
@@ -73,7 +75,9 @@ public class ECSGame extends Game {
 			button(SlingerScreen.class);
 			button(RoBScreen.class);
 //			button(Thirder.class);
-			button(TerroboundScreen.class);
+//			button(TerroboundScreen.class);
+			button(JumperScreen.class);
+			button(MatherScreen.class);
 			root.add(group).expand().fill();
 		}
 
