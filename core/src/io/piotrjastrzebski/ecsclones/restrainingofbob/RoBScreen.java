@@ -35,8 +35,6 @@ public class RoBScreen extends GameScreen {
 		config.setManager(new Meleer());
 
 		config.setSystem(new BTreeLoader());
-		config.setSystem(new BTreeUpdater());
-		config.setSystem(new Finder());
 		config.setManager(new PhysicsContacts());
 		config.setSystem(new Physics());
 		config.setSystem(new PhysicsCleaner());
@@ -60,6 +58,8 @@ public class RoBScreen extends GameScreen {
 		config.setSystem(new MeleeRangeRenderer());
 		config.setSystem(new ShooterSystem());
 		config.setSystem(new FacingSystem());
+		config.setSystem(new Finder());
+		config.setSystem(new BTreeUpdater());
 
 		config.setSystem(new Remover());
 		config.setSystem(new Deleter());
