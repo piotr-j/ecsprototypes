@@ -3,7 +3,7 @@ import hpAbove:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.
 import evade:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.EvadeTask"
 import pursue:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.PursueTask"
 import wander:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.WanderTask"
-import stopParallel:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.PolicyParallel"
+import stopParallel:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.StoppingParallel"
 import melee:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.MeleeTask"
 import limit:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.LimitDecorator"
 
@@ -17,7 +17,7 @@ root
         stopParallel
           inRange target:"player" dst:10.0
           hpAbove percent:25
-          stopParallel sequencePolicy:false
+          parallel
             pursue target:"player"
             # need a limitter of sort, time?
             sequence
