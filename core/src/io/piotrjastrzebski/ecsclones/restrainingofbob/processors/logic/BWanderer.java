@@ -29,6 +29,7 @@ public class BWanderer extends Manager {
 		if (sBehaviour == null) {
 			sBehaviour = world.getEntity(id).edit().create(SBehaviour.class);
 		}
+		sBehaviour.target = -1;
 		mDebugTint.get(id).setDdefault();
 		// TODO pool?
 		MyPrioritySteering priority = new MyPrioritySteering(dummy, 0.001f);
