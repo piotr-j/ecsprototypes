@@ -89,7 +89,16 @@ public class MonsterSpawner extends EntitySystem {
 			break;
 		case 7:
 		case 8:
+			// TODO charged ranged attack that can be interrupted by hitting the monster
 			brain.treePath = "rob/ai/monster/ranged.tree";
+			Shooter shooter = ee.create(Shooter.class);
+			shooter.dmg = 2;
+			shooter.alive = 3;
+			shooter.delay = 1;
+			shooter.vel = 7;
+			shooter.collisionCategory = Physics.CAT_PROJECTILE_E;
+			shooter.collisionMask = Physics.CAT_PLAYER;
+			ee.create(AimDirection.class);
 			ee.create(DebugTint.class).setBase(Color.ORANGE);
 			break;
 		case 9:

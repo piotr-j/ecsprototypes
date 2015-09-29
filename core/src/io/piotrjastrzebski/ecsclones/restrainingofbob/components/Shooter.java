@@ -15,6 +15,8 @@ public class Shooter extends PooledComponent {
 	public float velSpread;
 	public float aliveSpread;
 	public float dmgSpread;
+	public short collisionCategory;
+	public short collisionMask;
 
 	@Override protected void reset () {
 		delay = 0;
@@ -26,5 +28,8 @@ public class Shooter extends PooledComponent {
 		srcVelMult = 0;
 		velSpread = 0;
 		aliveSpread = 0;
+
+		collisionCategory = 0;
+		collisionMask = 0;
 	}
 }

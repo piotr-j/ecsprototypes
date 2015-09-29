@@ -93,8 +93,8 @@ public class ShooterSystem extends EntityProcessingSystem {
 			.scl(MathUtils.random(shooter.vel - shooter.vel * shooter.velSpread, shooter.vel + shooter.vel * shooter.velSpread))
 				.add(vel.vel.x * shooter.srcVelMult, vel.vel.y * shooter.srcVelMult);
 
-		bodyDef.categoryBits = Physics.CAT_PROJECTILE;
-		bodyDef.maskBits = Physics.MASK_PROJECTILE;
+		bodyDef.categoryBits = shooter.collisionCategory;
+		bodyDef.maskBits = shooter.collisionMask;
 
 		bodyDef.userData = new Physics.UserData(p.id) {
 			@Override public void onContact (Physics.UserData other) {

@@ -78,6 +78,9 @@ public class PlayerSpawner extends EntitySystem {
 		// fraction of src vel to add to projectile
 		shooter.srcVelMult = 0.5f;
 
+		shooter.collisionCategory = Physics.CAT_PROJECTILE_P;
+		shooter.collisionMask = Physics.CAT_ENEMY;
+
 		edit.create(Health.class).hp(10);
 
 		Mover mover = edit.create(Mover.class);
@@ -110,7 +113,7 @@ public class PlayerSpawner extends EntitySystem {
 		physSteerable.setBoundingRadius(0.25f);
 
 		edit.create(MoveFacing.class);
-		edit.create(AimFacing.class);
+		edit.create(AimDirection.class);
 		edit.create(Velocity.class);
 
 		edit.create(Invulnerable.class);

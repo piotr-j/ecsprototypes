@@ -1,11 +1,13 @@
 package io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic;
 
 import com.artemis.ComponentMapper;
+import com.artemis.Entity;
 import com.artemis.Manager;
 import com.artemis.annotations.Wire;
 import com.artemis.managers.TagManager;
 import com.badlogic.gdx.ai.steer.behaviors.*;
 import com.badlogic.gdx.graphics.Color;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Dead;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.SBehaviour;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PSteerable;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.rendering.DebugTint;
@@ -18,6 +20,7 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.utils.MyBlendedSteering;
 public class BPursuer extends Manager {
 	protected ComponentMapper<SBehaviour> mSBehaviour;
 	protected ComponentMapper<DebugTint> mDebugTint;
+	protected ComponentMapper<Dead> mDead;
 
 	PSteerable dummy = new PSteerable();
 
@@ -30,9 +33,11 @@ public class BPursuer extends Manager {
 		if (sBehaviour == null) {
 			sBehaviour = world.getEntity(pursuer).edit().create(SBehaviour.class);
 		}
-		mDebugTint.get(pursuer).color.set(Color.RED);
+		Entity target = tags.getEntity(pursuee);
+//		if (mDead.has(target)) return false;
+		mDebugTint.get(pursuer).set(Color.RED);
 
-		sBehaviour.target = tags.getEntity(pursuee).id;
+		sBehaviour.target = target.id;
 		MyBlendedSteering steering = new MyBlendedSteering(dummy);
 		sBehaviour.behaviour = steering;
 		steering.add(new LookWhereYouAreGoing<>(dummy), .5f);
