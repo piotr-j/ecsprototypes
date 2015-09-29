@@ -6,6 +6,7 @@ import wander:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.Wand
 import stopParallel:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.StoppingParallel"
 import melee:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.MeleeTask"
 import limit:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.LimitDecorator"
+import isAlive:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.IsAliveTask"
 
 root
   selector
@@ -15,6 +16,7 @@ root
         include subtree:"rob/ai/include/run-when-low-hp.tree"
         # this cant succeed, must be broken by low hp/death
         stopParallel
+          isAlive target:"player"
           inRange target:"player" dst:10.0
           hpAbove percent:25
           parallel
