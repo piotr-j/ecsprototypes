@@ -4,7 +4,7 @@ import com.artemis.annotations.Wire;
 import com.badlogic.gdx.ai.btree.Task;
 import com.badlogic.gdx.ai.btree.annotation.TaskAttribute;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.EnemyBrain;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.Meleer;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.MonsterMelee;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.base.BaseTask;
 
 /**
@@ -14,7 +14,7 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.base.BaseTask;
 public class MeleeTask extends BaseTask {
 	private final static String TAG = MeleeTask.class.getSimpleName();
 
-	Meleer meleer;
+	MonsterMelee meleer;
 
 	@TaskAttribute(required=true)
 	public String target;

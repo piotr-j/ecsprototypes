@@ -12,12 +12,12 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.components.HitBy;
  * Created by PiotrJ on 31/08/15.
  */
 @Wire
-public class Meleer extends Manager {
-	private final static String TAG = Meleer.class.getSimpleName();
+public class MonsterMelee extends Manager {
+	private final static String TAG = MonsterMelee.class.getSimpleName();
 	protected ComponentMapper<HitBy> mHitBy;
 	Finder finder;
 
-	public Meleer () {
+	public MonsterMelee () {
 	}
 
 	TagManager tags;
