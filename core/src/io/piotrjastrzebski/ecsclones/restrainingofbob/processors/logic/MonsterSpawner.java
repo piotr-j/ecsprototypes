@@ -38,7 +38,6 @@ public class MonsterSpawner extends EntitySystem {
 		Entity e = world.createEntity();
 		EntityEdit ee = e.edit();
 
-		ee.create(DebugTint.class).color.set(Color.YELLOW);
 		ee.create(CircleBounds.class).radius(.25f);
 
 		Transform transform = ee.create(Transform.class);
@@ -75,7 +74,29 @@ public class MonsterSpawner extends EntitySystem {
 		EnemyBrain brain = ee.create(EnemyBrain.class);
 		brain.minDst2 = 5;
 		brain.id = e.id;
-		brain.treePath = "rob/ai/melee-monster.tree";
+		// TODO need to define this in some reasonable way
+		switch (MathUtils.random(9)) {
+		default:
+		case 0:
+		case 1:
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+		case 6:
+			brain.treePath = "rob/ai/monster/melee.tree";
+			ee.create(DebugTint.class).setBase(Color.YELLOW);
+			break;
+		case 7:
+		case 8:
+			brain.treePath = "rob/ai/monster/ranged.tree";
+			ee.create(DebugTint.class).setBase(Color.ORANGE);
+			break;
+		case 9:
+			brain.treePath = "rob/ai/monster/healer.tree";
+			ee.create(DebugTint.class).setBase(Color.GREEN);
+			break;
+		}
 
 		ee.create(Velocity.class);
 

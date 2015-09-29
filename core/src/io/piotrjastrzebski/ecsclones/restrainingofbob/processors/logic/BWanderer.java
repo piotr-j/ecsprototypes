@@ -6,7 +6,6 @@ import com.artemis.annotations.Wire;
 import com.badlogic.gdx.ai.steer.Steerable;
 import com.badlogic.gdx.ai.steer.behaviors.Separation;
 import com.badlogic.gdx.ai.steer.behaviors.Wander;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.SBehaviour;
@@ -30,7 +29,7 @@ public class BWanderer extends Manager {
 		if (sBehaviour == null) {
 			sBehaviour = world.getEntity(id).edit().create(SBehaviour.class);
 		}
-		mDebugTint.get(id).color.set(Color.YELLOW);
+		mDebugTint.get(id).setDdefault();
 		// TODO pool?
 		MyPrioritySteering priority = new MyPrioritySteering(dummy, 0.001f);
 
