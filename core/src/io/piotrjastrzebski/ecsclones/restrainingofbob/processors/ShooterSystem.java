@@ -30,12 +30,12 @@ public class ShooterSystem extends EntityProcessingSystem {
 	protected ComponentMapper<Transform> mTransform;
 	protected ComponentMapper<CircleBounds> mCircleBounds;
 	protected ComponentMapper<RectBounds> mRectBounds;
-	protected ComponentMapper<AimFacing> mFacing;
+	protected ComponentMapper<AimDirection> mFacing;
 	protected ComponentMapper<Projectile> mProjectile;
 	protected ComponentMapper<Velocity> mVelocity;
 
 	public ShooterSystem () {
-		super(Aspect.all(Transform.class, Shooter.class, AimFacing.class, Velocity.class).exclude(Stunned.class));
+		super(Aspect.all(Transform.class, Shooter.class, AimDirection.class, Velocity.class).exclude(Stunned.class));
 	}
 
 	private Vector2 toAngle(Vector2 v, float angle) {
@@ -87,11 +87,10 @@ public class ShooterSystem extends EntityProcessingSystem {
 		bodyDef.restitution = .25f;
 		bodyDef.friction = .25f;
 		bodyDef.density = 1;
-		AimFacing facing = mFacing.get(e);
+		AimDirection facing = mFacing.get(e);
 		Velocity vel = mVelocity.get(e);
-		toAngle(bodyDef.def.linearVelocity, facing.dir.angle)
-			.scl(MathUtils
-				.random(shooter.vel - shooter.vel * shooter.velSpread, shooter.vel + shooter.vel * shooter.velSpread))
+		toAngle(bodyDef.def.linearVelocity, facing.angle)
+			.scl(MathUtils.random(shooter.vel - shooter.vel * shooter.velSpread, shooter.vel + shooter.vel * shooter.velSpread))
 				.add(vel.vel.x * shooter.srcVelMult, vel.vel.y * shooter.srcVelMult);
 
 		bodyDef.categoryBits = Physics.CAT_PROJECTILE;

@@ -16,10 +16,10 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.utils.Direction;
  */
 @Wire
 public class ShootController extends EntityProcessingSystem implements Input, InputProcessor {
-	protected ComponentMapper<AimFacing> mAimFacing;
+	protected ComponentMapper<AimDirection> mAimFacing;
 
 	public ShootController () {
-		super(Aspect.all(Player.class, Shooter.class, AimFacing.class).exclude(Stunned.class, Dead.class));
+		super(Aspect.all(Player.class, Shooter.class, AimDirection.class).exclude(Stunned.class, Dead.class));
 	}
 
 	int shootX = 0;
@@ -27,15 +27,15 @@ public class ShootController extends EntityProcessingSystem implements Input, In
 
 	@Override protected void process (Entity e) {
 		// TODO we want to aim in latest direction
-		AimFacing aimFacing = mAimFacing.get(e);
+		AimDirection aimDirection = mAimFacing.get(e);
 		if (shootX > 0) {
-			aimFacing.dir = Direction.RIGHT;
+			aimDirection.angle = Direction.RIGHT.angle;
 		} else if (shootX < 0) {
-			aimFacing.dir = Direction.LEFT;
+			aimDirection.angle = Direction.LEFT.angle;
 		} else if (shootY > 0) {
-			aimFacing.dir = Direction.UP;
+			aimDirection.angle = Direction.UP.angle;
 		} else if (shootY < 0) {
-			aimFacing.dir = Direction.DOWN;
+			aimDirection.angle = Direction.DOWN.angle;
 		}
 		if (shootX != 0 || shootY != 0) {
 			e.edit().create(Shoot.class);
