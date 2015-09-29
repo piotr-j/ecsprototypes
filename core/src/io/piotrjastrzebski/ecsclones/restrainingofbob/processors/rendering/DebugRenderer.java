@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import io.piotrjastrzebski.ecsclones.base.GameScreen;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.AimFacing;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.AimDirection;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.MoveFacing;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.RectBounds;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.CircleBounds;
@@ -28,7 +28,7 @@ public class DebugRenderer extends EntityProcessingSystem {
 	protected ComponentMapper<CircleBounds> mRadius;
 	protected ComponentMapper<DebugTint> mTint;
 	protected ComponentMapper<MoveFacing> mMoveFacing;
-	protected ComponentMapper<AimFacing> mAimFacing;
+	protected ComponentMapper<AimDirection> mAimFacing;
 
 	public DebugRenderer () {
 		super(Aspect.all(DebugTint.class).one(RectBounds.class, CircleBounds.class));
@@ -72,8 +72,8 @@ public class DebugRenderer extends EntityProcessingSystem {
 			renderer.rectLine(x, y, x + w * fv.x/2, y + h * fv.y/2, lw);
 		}
 		if (mAimFacing.has(e)) {
-			AimFacing facing = mAimFacing.get(e);
-			fv.set(1, 0).setAngle(facing.dir.angle);
+			AimDirection facing = mAimFacing.get(e);
+			fv.set(1, 0).setAngle(facing.angle);
 			renderer.setColor(Color.BLACK);
 			float lw = Math.max(w, h)/5f;
 			renderer.rectLine(x + w * fv.x/2, y + h * fv.y/2, x + w * fv.x, y + h * fv.y, lw);
