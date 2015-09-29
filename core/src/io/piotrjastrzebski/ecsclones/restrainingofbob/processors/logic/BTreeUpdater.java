@@ -24,6 +24,8 @@ public class BTreeUpdater extends EntityProcessingSystem {
 	@Override protected void initialize () {}
 
 	@Override protected void process (Entity e) {
+		// TODO make this frame rate independent like physics? if we target 30fps we should be fine
+		// TODO could try delayed system in artemis 1.0 for this
 		EnemyBrain brain = mEnemyBrain.get(e);
 		EnemyBTree tree = mEnemyBTree.get(e);
 		tree.tree.setObject(brain);
