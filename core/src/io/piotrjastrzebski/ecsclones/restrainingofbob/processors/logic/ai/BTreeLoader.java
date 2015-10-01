@@ -2,7 +2,9 @@ package io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.ai;
 
 import com.artemis.*;
 import com.artemis.annotations.Wire;
+import com.artemis.utils.IntBag;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ai.btree.BehaviorTree;
 import com.badlogic.gdx.ai.btree.LeafTask;
 import com.badlogic.gdx.ai.btree.Task;
@@ -10,6 +12,7 @@ import com.badlogic.gdx.ai.btree.utils.BehaviorTreeParser;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.StreamUtils;
+import io.piotrjastrzebski.ecsclones.base.util.Input;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.EnemyBTree;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.EnemyBrain;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.Injectable;
@@ -20,7 +23,7 @@ import java.io.Reader;
  * Created by PiotrJ on 31/08/15.
  */
 @Wire
-public class BTreeLoader extends EntitySystem {
+public class BTreeLoader extends EntitySystem implements Input, InputProcessor {
 	private final static String TAG = BTreeLoader.class.getSimpleName();
 	protected ComponentMapper<EnemyBrain> mEnemyBrain;
 	protected ComponentMapper<EnemyBTree> mEnemyBTree;
@@ -105,4 +108,54 @@ public class BTreeLoader extends EntitySystem {
 	}
 
 	@Override protected void processSystem () {}
+
+	@Override public int priority () {
+		return 0;
+	}
+
+	@Override public InputProcessor get () {
+		return this;
+	}
+
+	@Override public boolean keyDown (int keycode) {
+		if (keycode == com.badlogic.gdx.Input.Keys.R) {
+			archetypes.clear();
+			IntBag entities = getSubscription().getEntities();
+			for (int i = 0; i < entities.size(); i++) {
+				int eid = entities.get(i);
+				EnemyBrain brain = mEnemyBrain.get(eid);
+				EnemyBTree tree = mEnemyBTree.get(eid);
+				tree.set(brain.treePath, get(brain.treePath));
+			}
+		}
+		return false;
+	}
+
+	@Override public boolean keyUp (int keycode) {
+		return false;
+	}
+
+	@Override public boolean keyTyped (char character) {
+		return false;
+	}
+
+	@Override public boolean touchDown (int screenX, int screenY, int pointer, int button) {
+		return false;
+	}
+
+	@Override public boolean touchUp (int screenX, int screenY, int pointer, int button) {
+		return false;
+	}
+
+	@Override public boolean touchDragged (int screenX, int screenY, int pointer) {
+		return false;
+	}
+
+	@Override public boolean mouseMoved (int screenX, int screenY) {
+		return false;
+	}
+
+	@Override public boolean scrolled (int amount) {
+		return false;
+	}
 }
