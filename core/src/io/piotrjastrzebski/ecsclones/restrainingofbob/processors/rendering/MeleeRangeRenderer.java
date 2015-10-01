@@ -8,12 +8,10 @@ import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Interpolation;
 import io.piotrjastrzebski.ecsclones.base.GameScreen;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.CircleBounds;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Health;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.RectBounds;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.EnemyBrain;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.CircleBounds;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.RectBounds;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.EnemyBrain;
 
 /**
  * Created by PiotrJ on 29/08/15.

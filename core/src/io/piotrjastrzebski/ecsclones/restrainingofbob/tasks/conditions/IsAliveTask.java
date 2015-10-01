@@ -6,8 +6,8 @@ import com.artemis.annotations.Wire;
 import com.artemis.managers.TagManager;
 import com.badlogic.gdx.ai.btree.Task;
 import com.badlogic.gdx.ai.btree.annotation.TaskAttribute;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Dead;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.EnemyBrain;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.status.Dead;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.EnemyBrain;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.base.BaseTask;
 
 /**

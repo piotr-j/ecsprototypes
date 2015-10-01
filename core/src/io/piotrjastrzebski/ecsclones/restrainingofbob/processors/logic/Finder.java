@@ -7,8 +7,8 @@ import com.artemis.EntitySystem;
 import com.artemis.annotations.Wire;
 import com.artemis.managers.TagManager;
 import com.badlogic.gdx.math.Circle;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.CircleBounds;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Transform;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.CircleBounds;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.Transform;
 
 /**
  * Created by PiotrJ on 31/08/15.

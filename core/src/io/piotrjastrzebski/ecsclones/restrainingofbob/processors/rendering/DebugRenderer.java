@@ -10,10 +10,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import io.piotrjastrzebski.ecsclones.base.GameScreen;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.AimDirection;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.MoveFacing;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.RectBounds;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.CircleBounds;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.AimDirection;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.MoveFacing;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.RectBounds;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.CircleBounds;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.rendering.DebugTint;
 
 /**

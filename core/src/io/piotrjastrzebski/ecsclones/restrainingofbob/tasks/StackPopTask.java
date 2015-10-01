@@ -3,7 +3,7 @@ package io.piotrjastrzebski.ecsclones.restrainingofbob.tasks;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.ai.btree.Task;
 import com.badlogic.gdx.ai.btree.annotation.TaskAttribute;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.EnemyBrain;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.EnemyBrain;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.base.BaseTask;
 
 /**

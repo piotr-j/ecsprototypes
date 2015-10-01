@@ -9,11 +9,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.RoBScreen;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.*;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.EnemyBrain;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PBodyDef;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PCircle;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PSteerable;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.*;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.EnemyBrain;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.status.Health;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.*;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.rendering.DebugTint;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.physics.Physics;
 

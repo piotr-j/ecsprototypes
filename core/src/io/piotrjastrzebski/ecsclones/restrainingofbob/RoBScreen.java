@@ -4,13 +4,16 @@ import com.artemis.*;
 import com.artemis.managers.TagManager;
 import io.piotrjastrzebski.ecsclones.ECSGame;
 import io.piotrjastrzebski.ecsclones.base.GameScreen;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.*;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.*;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.ai.*;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.input.MoveController;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.input.ShootController;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.physics.*;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.rendering.Box2dDebugRenderer;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.rendering.DebugRenderer;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.rendering.HealthRenderer;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.rendering.MeleeRangeRenderer;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.updaters.*;
 
 /**
  * Simple angry birds like in ecs

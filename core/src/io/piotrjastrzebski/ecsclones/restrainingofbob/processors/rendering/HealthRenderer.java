@@ -10,7 +10,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Interpolation;
 import io.piotrjastrzebski.ecsclones.base.GameScreen;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.*;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.status.Health;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.CircleBounds;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.RectBounds;
 
 /**
  * Created by PiotrJ on 29/08/15.

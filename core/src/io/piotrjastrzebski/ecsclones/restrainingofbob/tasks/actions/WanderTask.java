@@ -2,8 +2,8 @@ package io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions;
 
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.ai.btree.Task;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.EnemyBrain;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.BWanderer;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.EnemyBrain;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.ai.BWanderer;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.base.BaseTask;
 
 /**

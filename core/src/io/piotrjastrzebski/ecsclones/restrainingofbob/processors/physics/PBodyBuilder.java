@@ -3,13 +3,9 @@ package io.piotrjastrzebski.ecsclones.restrainingofbob.processors.physics;
 import com.artemis.*;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.physics.box2d.World;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.Transform;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.Transform;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.*;
-
-import java.lang.ref.PhantomReference;
 
 /**
  * Created by PiotrJ on 22/08/15.

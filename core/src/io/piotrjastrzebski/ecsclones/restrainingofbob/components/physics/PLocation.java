@@ -1,11 +1,9 @@
 package io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics;
 
 import com.artemis.Component;
-import com.badlogic.gdx.ai.steer.Steerable;
 import com.badlogic.gdx.ai.utils.Location;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.Steering;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.ai.Steering;
 
 /**
  * Created by PiotrJ on 23/08/15.
