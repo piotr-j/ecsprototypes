@@ -2,15 +2,19 @@ package io.piotrjastrzebski.ecsclones;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.Constructor;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.layout.GridGroup;
+import com.kotcrab.vis.ui.widget.VisDialog;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import io.piotrjastrzebski.ecsclones.base.BaseScreen;
 import io.piotrjastrzebski.ecsclones.base.GameScreen;
@@ -66,27 +70,30 @@ public class ECSGame extends Game {
 
 	private class MainMenuScreen extends BaseScreen {
 		GridGroup group;
+		IntMap<Class<? extends GameScreen>> keyToClass;
 		public MainMenuScreen (ECSGame game) {
 			super(game);
 			group = new GridGroup();
-			button(FlapperScreen.class);
+			keyToClass = new IntMap<>();
+			button(FlapperScreen.class, Input.Keys.NUM_1);
 //			button(Roguer.class);
-			button(SlingerScreen.class);
-			button(RoBScreen.class);
+			button(SlingerScreen.class, Input.Keys.NUM_2);
+			button(RoBScreen.class, Input.Keys.NUM_3);
 //			button(Thirder.class);
 //			button(TerroboundScreen.class);
-			button(JumperScreen.class);
-			button(MatcherScreen.class);
+			button(JumperScreen.class, Input.Keys.NUM_4);
+			button(MatcherScreen.class, Input.Keys.NUM_5);
 			root.add(group).expand().fill();
 		}
 
-		private void button (final Class<? extends GameScreen> aClass) {
+		private void button (final Class<? extends GameScreen> aClass, int key) {
 			VisTextButton button = new VisTextButton("Run " + aClass.getSimpleName());
 			button.addListener(new ClickListener() {
 				@Override public void clicked (InputEvent event, float x, float y) {
 					run(aClass);
 				}
 			});
+			keyToClass.put(key, aClass);
 			group.addActor(button);
 		}
 
@@ -97,6 +104,18 @@ public class ECSGame extends Game {
 			} catch (ReflectionException e) {
 				e.printStackTrace();
 			}
+		}
+
+		int lastKey;
+		@Override public boolean keyDown (int keycode) {
+			if (keycode == Input.Keys.ESCAPE && lastKey == Input.Keys.ESCAPE) {
+				Gdx.app.exit();
+			}
+			if (keyToClass.containsKey(keycode)) {
+				run(keyToClass.get(keycode));
+			}
+			lastKey = keycode;
+			return super.keyDown(keycode);
 		}
 
 		@Override public void show () {
