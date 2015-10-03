@@ -8,9 +8,11 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ai.btree.BehaviorTree;
 import com.badlogic.gdx.ai.btree.LeafTask;
 import com.badlogic.gdx.ai.btree.Task;
+import com.badlogic.gdx.ai.btree.leaf.Wait;
 import com.badlogic.gdx.ai.btree.utils.BehaviorTreeParser;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.Pool;
+import com.badlogic.gdx.utils.SerializationException;
 import com.badlogic.gdx.utils.StreamUtils;
 import io.piotrjastrzebski.ecsclones.base.util.Input;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.EnemyBTree;
@@ -27,6 +29,7 @@ public class BTreeLoader extends BaseEntitySystem implements Input, InputProcess
 	private final static String TAG = BTreeLoader.class.getSimpleName();
 	protected ComponentMapper<EnemyBrain> mEnemyBrain;
 	protected ComponentMapper<EnemyBTree> mEnemyBTree;
+	public static final String DUMMY_BTREE = "dummy";
 
 	public BTreeLoader () {
 		super(Aspect.all(EnemyBrain.class));
@@ -35,6 +38,7 @@ public class BTreeLoader extends BaseEntitySystem implements Input, InputProcess
 	ObjectMap<String, Pool<BehaviorTree<EnemyBrain>>> bTreePools = new ObjectMap<>();
 
 	@Override protected void initialize () {
+		archetypes.put(DUMMY_BTREE, new BehaviorTree<>(new Wait<EnemyBrain>()));
 	}
 
 	@Override protected void inserted (int eid) {
@@ -46,11 +50,15 @@ public class BTreeLoader extends BaseEntitySystem implements Input, InputProcess
 	ObjectMap<String, BehaviorTree<EnemyBrain>> archetypes = new ObjectMap<>();
 
 	private BehaviorTree<EnemyBrain> get (final String path) {
+		return get(path, false);
+	}
+
+	private BehaviorTree<EnemyBrain> get (final String path, final boolean reload) {
 		Pool<BehaviorTree<EnemyBrain>> pool = bTreePools.get(path, null);
 		if (pool == null) {
 			pool = new Pool<BehaviorTree<EnemyBrain>>() {
 				@Override protected BehaviorTree<EnemyBrain> newObject () {
-					return (BehaviorTree<EnemyBrain>)getArchetype(path).cloneTask();
+					return (BehaviorTree<EnemyBrain>)getArchetype(path, reload).cloneTask();
 				}
 			};
 			bTreePools.put(path, pool);
@@ -65,11 +73,15 @@ public class BTreeLoader extends BaseEntitySystem implements Input, InputProcess
 		bTreePools.get(tree.path).free(bt);
 	}
 
-	private BehaviorTree<EnemyBrain> getArchetype (String path) {
+	private BehaviorTree<EnemyBrain> getArchetype (String path, boolean reload) {
 		BehaviorTree<EnemyBrain> tree = archetypes.get(path, null);
-		if (tree == null) {
+		if (tree == null || reload) {
 			tree = load(path);
-			archetypes.put(path, tree);
+			if (tree != null) {
+				archetypes.put(path, tree);
+			} else {
+				return archetypes.get(DUMMY_BTREE);
+			}
 		}
 		return tree;
 	}
@@ -84,6 +96,9 @@ public class BTreeLoader extends BaseEntitySystem implements Input, InputProcess
 			// cline tree tp force load included sub trees
 			tree = (BehaviorTree<EnemyBrain>)tree.cloneTask();
 			injectTask(tree);
+		} catch (SerializationException e) {
+			Gdx.app.error(TAG, "Reload of " + path + " failed!");
+			e.printStackTrace();
 		} finally {
 			StreamUtils.closeQuietly(reader);
 		}
@@ -118,13 +133,13 @@ public class BTreeLoader extends BaseEntitySystem implements Input, InputProcess
 
 	@Override public boolean keyDown (int keycode) {
 		if (keycode == com.badlogic.gdx.Input.Keys.R) {
-			archetypes.clear();
+			Gdx.app.log(TAG, "Reloading behaviour trees...");
 			IntBag entities = getSubscription().getEntities();
 			for (int i = 0; i < entities.size(); i++) {
 				int eid = entities.get(i);
 				EnemyBrain brain = mEnemyBrain.get(eid);
 				EnemyBTree tree = mEnemyBTree.get(eid);
-				tree.set(brain.treePath, get(brain.treePath));
+				tree.set(brain.treePath, get(brain.treePath, true));
 			}
 		}
 		return false;
