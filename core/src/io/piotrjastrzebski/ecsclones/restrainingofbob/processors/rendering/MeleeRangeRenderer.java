@@ -47,6 +47,12 @@ public class MeleeRangeRenderer extends EntityProcessingSystem {
 
 		renderer.setColor(Color.CYAN);
 		renderer.circle(x, y, .75f, 12);
+		renderer.setColor(Color.RED);
+		renderer.circle(x, y, 7f, 32);
+		renderer.setColor(Color.PINK);
+		renderer.circle(x, y, 10f, 32);
+		renderer.setColor(Color.GREEN);
+		renderer.circle(x, y, 5f, 32);
 	}
 
 	@Override protected void end () {
