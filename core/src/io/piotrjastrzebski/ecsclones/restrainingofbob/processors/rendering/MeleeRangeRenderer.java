@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import io.piotrjastrzebski.ecsclones.base.GameScreen;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.status.Dead;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.CircleBounds;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.RectBounds;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.EnemyBrain;
@@ -25,7 +26,7 @@ public class MeleeRangeRenderer extends EntityProcessingSystem {
 	protected ComponentMapper<CircleBounds> mRadius;
 
 	public MeleeRangeRenderer () {
-		super(Aspect.all(EnemyBrain.class, CircleBounds.class));
+		super(Aspect.all(EnemyBrain.class, CircleBounds.class).exclude(Dead.class));
 	}
 
 	@Override protected void begin () {
