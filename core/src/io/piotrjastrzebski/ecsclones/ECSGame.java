@@ -3,6 +3,7 @@ package io.piotrjastrzebski.ecsclones;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -43,6 +44,9 @@ public class ECSGame extends Game {
 		} else {
 			VisUI.load(VisUI.SkinScale.X1);
 		}
+		// enable markup so we can color text inline
+		VisUI.getSkin().get("default-font", BitmapFont.class).getData().markupEnabled = true;
+
 		batch = new SpriteBatch();
 		renderer = new ShapeRenderer();
 		menuScreen = new MainMenuScreen(this);
