@@ -6,6 +6,7 @@ import com.artemis.Entity;
 import com.artemis.EntityEdit;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
+import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
@@ -23,7 +24,7 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.physics.Physics
  * Created by PiotrJ on 29/08/15.
  */
 @Wire
-public class ShooterSystem extends EntityProcessingSystem {
+public class ShooterSystem extends IteratingSystem {
 	private final static String TAG = ShooterSystem.class.getSimpleName();
 
 	protected ComponentMapper<Shoot> mShoot;
@@ -50,20 +51,19 @@ public class ShooterSystem extends EntityProcessingSystem {
 		return v;
 	}
 
-	@Override protected void process (Entity e) {
-		Shooter shooter = mShooter.get(e);
+	@Override protected void process (int eid) {
+		Shooter shooter = mShooter.get(eid);
 		shooter.timer -= world.delta;
-		if (mShoot.has(e)) {
+		if (mShoot.has(eid)) {
 			if (shooter.timer <= 0) {
 				shooter.timer = shooter.delay;
-				createProjectile(e, shooter);
+				createProjectile(eid, shooter);
 			}
 		}
-
-		e.edit().remove(Shoot.class);
+		mShoot.remove(eid);
 	}
 
-	private void createProjectile (Entity e, Shooter shooter) {
+	private void createProjectile (int eid, Shooter shooter) {
 		Entity p = world.createEntity();
 		EntityEdit pe = p.edit();
 
@@ -71,14 +71,14 @@ public class ShooterSystem extends EntityProcessingSystem {
 		pCircle.setSize(0.25f);
 
 		Transform trans = pe.create(Transform.class);
-		trans.set(mTransform.get(e));
+		trans.set(mTransform.get(eid));
 		trans.pos.sub(pCircle.radius, pCircle.radius);
-		if (mRectBounds.has(e)) {
-			RectBounds rectBounds = mRectBounds.get(e);
+		if (mRectBounds.has(eid)) {
+			RectBounds rectBounds = mRectBounds.get(eid);
 			trans.pos.x += rectBounds.width / 2;
 			trans.pos.y += rectBounds.height / 2;
-		} else if (mCircleBounds.has(e)) {
-			CircleBounds circleBounds = mCircleBounds.get(e);
+		} else if (mCircleBounds.has(eid)) {
+			CircleBounds circleBounds = mCircleBounds.get(eid);
 			trans.pos.x += circleBounds.radius;
 			trans.pos.y += circleBounds.radius;
 		}
@@ -88,8 +88,8 @@ public class ShooterSystem extends EntityProcessingSystem {
 		bodyDef.restitution = .25f;
 		bodyDef.friction = .25f;
 		bodyDef.density = 1;
-		AimDirection facing = mFacing.get(e);
-		Velocity vel = mVelocity.get(e);
+		AimDirection facing = mFacing.get(eid);
+		Velocity vel = mVelocity.get(eid);
 		toAngle(bodyDef.def.linearVelocity, facing.angle)
 			.scl(MathUtils.random(shooter.vel - shooter.vel * shooter.velSpread, shooter.vel + shooter.vel * shooter.velSpread))
 				.add(vel.vel.x * shooter.srcVelMult, vel.vel.y * shooter.srcVelMult);
@@ -97,7 +97,7 @@ public class ShooterSystem extends EntityProcessingSystem {
 		bodyDef.categoryBits = shooter.collisionCategory;
 		bodyDef.maskBits = shooter.collisionMask;
 
-		bodyDef.userData = new Physics.UserData(p.id) {
+		bodyDef.userData = new Physics.UserData(p.getId()) {
 			@Override public void onContact (Physics.UserData other) {
 				ShooterSystem.this.onContact(this, other);
 			}
@@ -119,7 +119,7 @@ public class ShooterSystem extends EntityProcessingSystem {
 				shooter.alive - shooter.alive * shooter.aliveSpread,
 				shooter.alive + shooter.alive * shooter.aliveSpread);
 		} else {
-			Gdx.app.log(TAG, "Default alive time for shooter = " + e.id);
+			Gdx.app.log(TAG, "Default alive time for shooter = " + eid);
 		}
 		pe.create(DeleteAfter.class).setDelay(alive);
 	}

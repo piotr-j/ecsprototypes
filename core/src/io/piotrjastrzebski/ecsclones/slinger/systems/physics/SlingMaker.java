@@ -1,9 +1,6 @@
 package io.piotrjastrzebski.ecsclones.slinger.systems.physics;
 
-import com.artemis.Aspect;
-import com.artemis.ComponentMapper;
-import com.artemis.Entity;
-import com.artemis.EntitySystem;
+import com.artemis.*;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
@@ -21,7 +18,8 @@ import io.piotrjastrzebski.ecsclones.slinger.components.parts.SlingDef;
  * Created by EvilEntity on 15/08/2015.
  */
 @Wire
-public class SlingMaker extends EntitySystem {
+public class SlingMaker extends BaseEntitySystem {
+	protected ComponentMapper<Sling> mSling;
 	private ComponentMapper<SlingDef> mSlingDef;
 	private ComponentMapper<Transform> mTransform;
 	private ComponentMapper<Size> mSize;
@@ -30,7 +28,6 @@ public class SlingMaker extends EntitySystem {
 
 	public SlingMaker () {
 		super(Aspect.all(SlingDef.class, Transform.class, Size.class));
-		setPassive(true);
 	}
 
 	int latestID;
@@ -44,7 +41,7 @@ public class SlingMaker extends EntitySystem {
 		Size size = mSize.get(eid);
 		SlingDef slingDef = mSlingDef.get(eid);
 
-		Sling sling = world.getEntity(eid).edit().create(Sling.class);
+		Sling sling = mSling.create(eid);
 		sling.length = slingDef.length;
 		sling.dampingRatio = slingDef.dampingRatio;
 		sling.frequencyHz = slingDef.frequencyHz;
@@ -56,7 +53,7 @@ public class SlingMaker extends EntitySystem {
 		bodyDef.position.set(tf.x + size.width / 2, tf.y + size.height / 2);
 		bodyDef.angle = tf.rotation * MathUtils.degreesToRadians;
 
-		sling.body = physics.getWorld().createBody(bodyDef);
+		sling.body = physics.getB2DWorld().createBody(bodyDef);
 
 		if (shape == null) shape = new PolygonShape();
 		shape.setAsBox(size.width / 2, size.height / 2);

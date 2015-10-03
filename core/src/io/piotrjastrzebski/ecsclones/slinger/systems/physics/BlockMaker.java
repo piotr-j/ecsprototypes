@@ -1,9 +1,6 @@
 package io.piotrjastrzebski.ecsclones.slinger.systems.physics;
 
-import com.artemis.Aspect;
-import com.artemis.ComponentMapper;
-import com.artemis.Entity;
-import com.artemis.EntitySystem;
+import com.artemis.*;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -18,7 +15,7 @@ import io.piotrjastrzebski.ecsclones.slinger.components.parts.BlockDef;
  * Created by EvilEntity on 15/08/2015.
  */
 @Wire
-public class BlockMaker extends EntitySystem {
+public class BlockMaker extends BaseEntitySystem {
 	private ComponentMapper<Block> mBlock;
 	private ComponentMapper<BlockDef> mBlockDef;
 	private ComponentMapper<Transform> mTransform;
@@ -28,7 +25,6 @@ public class BlockMaker extends EntitySystem {
 
 	public BlockMaker () {
 		super(Aspect.all(BlockDef.class, Transform.class, Size.class));
-		setPassive(true);
 	}
 
 	BodyDef bodyDef;
@@ -39,14 +35,14 @@ public class BlockMaker extends EntitySystem {
 		Transform tf = mTransform.get(eid);
 		Size size = mSize.get(eid);
 
-		Block block = world.getEntity(eid).edit().create(Block.class);
+		Block block = mBlock.create(eid);
 		if (bodyDef == null) bodyDef = new BodyDef();
 
 		bodyDef.type = BodyDef.BodyType.DynamicBody;
 		bodyDef.position.set(tf.x + size.width / 2, tf.y + size.height / 2);
 		bodyDef.angle = tf.rotation * MathUtils.degreesToRadians;
 
-		block.body = physics.getWorld().createBody(bodyDef);
+		block.body = physics.getB2DWorld().createBody(bodyDef);
 
 		if (shape == null) shape = new PolygonShape();
 		shape.setAsBox(size.width / 2, size.height / 2);
@@ -62,7 +58,7 @@ public class BlockMaker extends EntitySystem {
 		block.body.setUserData(new Physics.UserData(eid, Physics.Category.BLOCK){
 			@Override public void onPostSolve (Physics.UserData userData, float strength) {
 				if (strength > 2) {
-					world.deleteEntity(eid);
+					world.delete(eid);
 				}
 			}
 		});
@@ -70,7 +66,7 @@ public class BlockMaker extends EntitySystem {
 
 	@Override protected void removed (int eid) {
 		Block block = mBlock.get(eid);
-		physics.getWorld().destroyBody(block.body);
+		physics.getB2DWorld().destroyBody(block.body);
 	}
 
 	@Override protected void processSystem () {

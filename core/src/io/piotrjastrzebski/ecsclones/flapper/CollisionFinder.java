@@ -6,6 +6,7 @@ import com.artemis.Entity;
 import com.artemis.EntityEdit;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
+import com.artemis.systems.IteratingSystem;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.math.Rectangle;
 import io.piotrjastrzebski.ecsclones.base.components.*;
@@ -14,7 +15,7 @@ import io.piotrjastrzebski.ecsclones.base.components.*;
  * Created by PiotrJ on 04/08/15.
  */
 @Wire
-public class CollisionFinder extends EntityProcessingSystem {
+public class CollisionFinder extends IteratingSystem {
 	protected ComponentMapper<Collided> mCollided;
 	protected ComponentMapper<Position> mPosition;
 	protected ComponentMapper<Size> mSize;
@@ -32,29 +33,22 @@ public class CollisionFinder extends EntityProcessingSystem {
 	Rectangle eb = new Rectangle();
 	Rectangle ob = new Rectangle();
 
-	@Override protected void process (Entity e) {
-		Position pos = mPosition.get(e);
-		Size size = mSize.get(e);
+	@Override protected void process (int eid) {
+		Position pos = mPosition.get(eid);
+		Size size = mSize.get(eid);
 		eb.set(pos.pos.x, pos.pos.y, size.width, size.height);
-		EntityEdit ee = e.edit();
 		for (int i = 0; i < entities.size(); i++) {
-			Entity o = world.getEntity(entities.get(i));
-			if (e.id == o.id)
+			int oid = entities.get(i);
+			if (eid == oid)
 				continue;
-			Position oPos = mPosition.get(o);
-			Size oSize = mSize.get(o);
+			Position oPos = mPosition.get(oid);
+			Size oSize = mSize.get(oid);
 			ob.set(oPos.pos.x, oPos.pos.y, oSize.width, oSize.height);
 			if (eb.overlaps(ob)) {
-				Collided ec = mCollided.getSafe(e);
-				if (ec == null) {
-					ec = ee.create(Collided.class);
-				}
-				Collided oc = mCollided.getSafe(o, true);
-				if (oc == null) {
-					oc = o.edit().create(Collided.class);
-				}
-				ec.with.add(o.id);
-				oc.with.add(e.id);
+				Collided ec = mCollided.create(eid);
+				Collided oc = mCollided.create(oid);
+				ec.with.add(oid);
+				oc.with.add(eid);
 			}
 		}
 	}

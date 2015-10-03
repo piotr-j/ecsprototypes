@@ -1,9 +1,6 @@
 package io.piotrjastrzebski.ecsclones.slinger.systems.physics;
 
-import com.artemis.Aspect;
-import com.artemis.ComponentMapper;
-import com.artemis.Entity;
-import com.artemis.EntitySystem;
+import com.artemis.*;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -22,7 +19,8 @@ import io.piotrjastrzebski.ecsclones.slinger.components.parts.ProjectileDef;
  * Created by EvilEntity on 15/08/2015.
  */
 @Wire
-public class ProjectileMaker extends EntitySystem {
+public class ProjectileMaker extends BaseEntitySystem {
+	protected ComponentMapper<Projectile> mProjectile;
 	private ComponentMapper<ProjectileDef> mProjectileDef;
 	private ComponentMapper<Transform> mTransform;
 	private ComponentMapper<Radius> mRadius;
@@ -31,7 +29,6 @@ public class ProjectileMaker extends EntitySystem {
 
 	public ProjectileMaker () {
 		super(Aspect.all(ProjectileDef.class, Transform.class, Radius.class));
-		setPassive(true);
 	}
 
 	BodyDef bodyDef;
@@ -42,14 +39,14 @@ public class ProjectileMaker extends EntitySystem {
 		Transform tf = mTransform.get(eid);
 		Radius radius = mRadius.get(eid);
 
-		Projectile projectile = world.getEntity(eid).edit().create(Projectile.class);
+		Projectile projectile = mProjectile.create(eid);
 		if (bodyDef == null) bodyDef = new BodyDef();
 
 		bodyDef.type = BodyDef.BodyType.DynamicBody;
 		bodyDef.position.set(tf.x + radius.radius, tf.y + radius.radius);
 		bodyDef.angle = tf.rotation * MathUtils.degreesToRadians;
 
-		projectile.body = physics.getWorld().createBody(bodyDef);
+		projectile.body = physics.getB2DWorld().createBody(bodyDef);
 
 		if (shape == null) shape = new CircleShape();
 		shape.setRadius(radius.radius);

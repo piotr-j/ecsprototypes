@@ -1,9 +1,6 @@
 package io.piotrjastrzebski.ecsclones.restrainingofbob.processors.physics;
 
-import com.artemis.Aspect;
-import com.artemis.ComponentMapper;
-import com.artemis.Entity;
-import com.artemis.EntitySystem;
+import com.artemis.*;
 import com.artemis.annotations.Wire;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PBody;
 
@@ -11,7 +8,7 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PBody;
  * Created by PiotrJ on 22/08/15.
  */
 @Wire
-public class PhysicsCleaner extends EntitySystem {
+public class PhysicsCleaner extends BaseEntitySystem {
 	private final static String TAG = PhysicsCleaner.class.getSimpleName();
 
 	protected ComponentMapper<PBody> mPBody;
@@ -19,7 +16,6 @@ public class PhysicsCleaner extends EntitySystem {
 	Physics physics;
 	public PhysicsCleaner () {
 		super(Aspect.all(PBody.class));
-		setPassive(true);
 	}
 
 	@Override protected void processSystem () {}

@@ -5,6 +5,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
+import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import io.piotrjastrzebski.ecsclones.base.components.Collided;
 import io.piotrjastrzebski.ecsclones.flapper.components.Flapper;
@@ -15,7 +16,7 @@ import io.piotrjastrzebski.ecsclones.flapper.components.FlapperScorer;
  * Created by PiotrJ on 04/08/15.
  */
 @Wire
-public class FlapperCollisionResolver extends EntityProcessingSystem {
+public class FlapperCollisionResolver extends IteratingSystem {
 	protected ComponentMapper<Collided> mCollided;
 	protected ComponentMapper<Flapper> mFlapper;
 	protected ComponentMapper<FlapperKiller> mKiller;
@@ -33,7 +34,7 @@ public class FlapperCollisionResolver extends EntityProcessingSystem {
 			Entity o = world.getEntity(collided.with.get(i));
 			if (mKiller.has(o)) {
 				// dead
-				world.deleteEntity(eid);
+				world.delete(eid);
 				Gdx.app.log("", "Died! ");
 			}
 			if (mScore.has(o)) {
@@ -49,7 +50,7 @@ public class FlapperCollisionResolver extends EntityProcessingSystem {
 		}
 	}
 
-	@Override protected void process (Entity e) {
+	@Override protected void process (int eid) {
 
 	}
 }

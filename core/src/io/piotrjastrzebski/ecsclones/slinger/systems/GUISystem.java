@@ -1,9 +1,6 @@
 package io.piotrjastrzebski.ecsclones.slinger.systems;
 
-import com.artemis.Aspect;
-import com.artemis.ComponentMapper;
-import com.artemis.Entity;
-import com.artemis.EntitySystem;
+import com.artemis.*;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import io.piotrjastrzebski.ecsclones.slinger.components.GUIActor;
@@ -12,7 +9,7 @@ import io.piotrjastrzebski.ecsclones.slinger.components.GUIActor;
  * Created by EvilEntity on 15/08/2015.
  */
 @Wire
-public class GUISystem extends EntitySystem {
+public class GUISystem extends BaseEntitySystem {
 	private ComponentMapper<GUIActor> mGUIActor;
 	@Wire Stage stage;
 

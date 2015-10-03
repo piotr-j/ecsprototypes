@@ -26,10 +26,7 @@ public class BWanderer extends Manager {
 	PProximity dummyProxy = new PProximity();
 
 	public void set (int id) {
-		SBehaviour sBehaviour = mSBehaviour.getSafe(world.getEntity(id));
-		if (sBehaviour == null) {
-			sBehaviour = world.getEntity(id).edit().create(SBehaviour.class);
-		}
+		SBehaviour sBehaviour = mSBehaviour.create(id);
 		sBehaviour.target = -1;
 		mDebugTint.get(id).setDdefault();
 		// TODO pool?

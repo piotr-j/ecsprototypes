@@ -19,7 +19,7 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.physics.Physics
  * Created by PiotrJ on 31/08/15.
  */
 @Wire
-public class PlayerSpawner extends EntitySystem {
+public class PlayerSpawner extends BaseEntitySystem {
 
 	public PlayerSpawner () {
 		super(Aspect.all(Player.class));
@@ -46,7 +46,7 @@ public class PlayerSpawner extends EntitySystem {
 
 	private void spawnPlayer () {
 		Entity player = world.createEntity();
-		world.getManager(TagManager.class).register("player", player);
+		world.getSystem(TagManager.class).register("player", player);
 		EntityEdit edit = player.edit();
 		edit.create(Player.class).name = "Player 1";
 		Transform transform = edit.create(Transform.class);

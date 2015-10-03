@@ -5,6 +5,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
+import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import io.piotrjastrzebski.ecsclones.base.components.Movement;
@@ -14,7 +15,7 @@ import io.piotrjastrzebski.ecsclones.flapper.components.Flapper;
  * Created by PiotrJ on 04/08/15.
  */
 @Wire
-public class FlapperControl extends EntityProcessingSystem implements InputProcessor {
+public class FlapperControl extends IteratingSystem implements InputProcessor {
 	private ComponentMapper<Flapper> mFlapper;
 	private ComponentMapper<Movement> mMovement;
 
@@ -29,9 +30,9 @@ public class FlapperControl extends EntityProcessingSystem implements InputProce
 		movement.acc.add(flapper.forwardAcc);
 	}
 
-	@Override protected void process (Entity e) {
-		Flapper flapper = mFlapper.get(e);
-		Movement movement = mMovement.get(e);
+	@Override protected void process (int eid) {
+		Flapper flapper = mFlapper.get(eid);
+		Movement movement = mMovement.get(eid);
 		if (jump) {
 			jump = false;
 			movement.vel.y = 0;

@@ -9,7 +9,7 @@ import io.piotrjastrzebski.ecsclones.slinger.components.WorldDef;
  * Created by EvilEntity on 15/08/2015.
  */
 @Wire
-public class Physics extends EntitySystem {
+public class Physics extends BaseEntitySystem {
 	private final static String TAG = Physics.class.getSimpleName();
 	private ComponentMapper<WorldDef> mWorldDef;
 	private World box2d;
@@ -45,7 +45,7 @@ public class Physics extends EntitySystem {
 		box2d = null;
 	}
 
-	public World getWorld () {
+	public World getB2DWorld () {
 		return box2d;
 	}
 

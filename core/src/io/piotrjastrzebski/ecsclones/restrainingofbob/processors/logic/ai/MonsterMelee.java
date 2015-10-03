@@ -29,10 +29,7 @@ public class MonsterMelee extends Manager {
 			return false;
 		}
 		// TODO get range and dmg from attacker
-		HitBy hit = mHitBy.getSafe(te);
-		if (hit == null) {
-			hit = te.edit().create(HitBy.class);
-		}
+		HitBy hit = mHitBy.create(te);
 		Gdx.app.log(TAG, attacker + " attacks " + target);
 		hit.dmg += 0.5f;
 		return true;

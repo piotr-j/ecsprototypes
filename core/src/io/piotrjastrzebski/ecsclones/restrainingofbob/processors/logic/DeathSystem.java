@@ -5,6 +5,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
+import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.Color;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.status.Dead;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.status.Health;
@@ -16,7 +17,9 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.components.rendering.Debug
  * Created by PiotrJ on 29/08/15.
  */
 @Wire
-public class DeathSystem extends EntityProcessingSystem {
+public class DeathSystem extends IteratingSystem {
+	protected ComponentMapper<Dead> mDead;
+	protected ComponentMapper<DeleteAfter> mDeleteAfter;
 	protected ComponentMapper<Health> mHealth;
 	protected ComponentMapper<DebugTint> mDebugTint;
 
@@ -24,13 +27,13 @@ public class DeathSystem extends EntityProcessingSystem {
 		super(Aspect.all(Health.class).exclude(Invulnerable.class, Dead.class));
 	}
 
-	@Override protected void process (Entity e) {
-		Health health = mHealth.get(e);
+	@Override protected void process (int eid) {
+		Health health = mHealth.get(eid);
 		if (health.hp <= 0) {
-			e.edit().create(Dead.class);
-			e.edit().create(DeleteAfter.class).setDelay(3);
-			if (mDebugTint.has(e)) {
-				mDebugTint.get(e).color.set(Color.BROWN);
+			mDead.create(eid);
+			mDeleteAfter.create(eid).setDelay(3);
+			if (mDebugTint.has(eid)) {
+				mDebugTint.get(eid).color.set(Color.BROWN);
 			}
 		}
 	}

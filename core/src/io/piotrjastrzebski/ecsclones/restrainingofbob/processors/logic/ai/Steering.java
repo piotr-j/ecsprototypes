@@ -188,7 +188,7 @@ public class Steering extends EntityProcessingSystem {
 			Proximity<Vector2> proximity = ((GroupBehavior<Vector2>)behaviour).getProximity();
 			proximity.setOwner(steerable);
 			if (proximity instanceof PProximity) {
-				((PProximity)proximity).setWorld(physics.getWorld());
+				((PProximity)proximity).setWorld(physics.getB2DWorld());
 			}
 		}
 	}

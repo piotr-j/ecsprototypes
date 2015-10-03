@@ -31,7 +31,7 @@ public class Box2dRenderer extends BaseSystem {
 	}
 
 	@Override protected void processSystem () {
-		World world = physics.getWorld();
+		World world = physics.getB2DWorld();
 		if (world == null) return;
 		renderer.render(world, camera.combined);
 	}

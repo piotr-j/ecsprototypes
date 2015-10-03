@@ -11,9 +11,10 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.*;
  * Created by PiotrJ on 22/08/15.
  */
 @Wire
-public class PBodyBuilder extends EntitySystem {
+public class PBodyBuilder extends BaseEntitySystem {
 	protected ComponentMapper<Transform> mTransform;
 	protected ComponentMapper<PBodyDef> mPBodyDef;
+	protected ComponentMapper<PBody> mPBody;
 	protected ComponentMapper<PRect> mPRect;
 	protected ComponentMapper<PCircle> mPCircle;
 	protected ComponentMapper<PPolygon> mPPolygon;
@@ -41,8 +42,8 @@ public class PBodyBuilder extends EntitySystem {
 
 
 
-		PBody pBody = world.getEntity(eid).edit().create(PBody.class);
-		Body body = physics.getWorld().createBody(pBodyDef.def);
+		PBody pBody = mPBody.create(eid);
+		Body body = physics.getB2DWorld().createBody(pBodyDef.def);
 
 		if (fixtureDef == null) fixtureDef = new FixtureDef();
 		fixtureDef.restitution = pBodyDef.restitution;

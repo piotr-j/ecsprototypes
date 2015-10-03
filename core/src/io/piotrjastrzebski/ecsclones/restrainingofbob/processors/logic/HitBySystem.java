@@ -5,6 +5,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
+import com.artemis.systems.IteratingSystem;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.status.Dead;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.status.Health;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.status.HitBy;
@@ -14,7 +15,7 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.status.In
  * Created by PiotrJ on 29/08/15.
  */
 @Wire
-public class HitBySystem extends EntityProcessingSystem {
+public class HitBySystem extends IteratingSystem {
 	protected ComponentMapper<HitBy> mHitBy;
 	protected ComponentMapper<Health> mHealth;
 	protected ComponentMapper<Invulnerable> mInvulnerable;
@@ -23,13 +24,13 @@ public class HitBySystem extends EntityProcessingSystem {
 		super(Aspect.all(HitBy.class, Health.class).exclude(Dead.class));
 	}
 
-	@Override protected void process (Entity e) {
-		if (!mInvulnerable.has(e)) {
-			HitBy hitBy = mHitBy.get(e);
-			Health health = mHealth.get(e);
+	@Override protected void process (int eid) {
+		if (!mInvulnerable.has(eid)) {
+			HitBy hitBy = mHitBy.get(eid);
+			Health health = mHealth.get(eid);
 			health.hp -= hitBy.dmg;
 		}
 		// TODO apply some status base on type or whatever
-		e.edit().remove(HitBy.class);
+		mHitBy.remove(eid);
 	}
 }

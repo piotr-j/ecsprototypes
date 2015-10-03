@@ -1,6 +1,7 @@
 package io.piotrjastrzebski.ecsclones.restrainingofbob.processors.physics;
 
 import com.artemis.Aspect;
+import com.artemis.BaseEntitySystem;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
@@ -15,11 +16,15 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PBody;
  * Created by PiotrJ on 29/08/15.
  */
 @Wire
-public class DeathBodySystem extends EntityProcessingSystem {
+public class DeathBodySystem extends BaseEntitySystem {
 	protected ComponentMapper<PBody> mPBody;
 
 	public DeathBodySystem () {
 		super(Aspect.all(Dead.class, PBody.class));
+	}
+
+	@Override protected void processSystem () {
+
 	}
 
 	@Override protected void inserted (int eid) {
@@ -30,9 +35,5 @@ public class DeathBodySystem extends EntityProcessingSystem {
 			filter.maskBits = Physics.MASK_DEAD;
 			fixture.setFilterData(filter);
 		}
-	}
-
-	@Override protected void process (Entity e) {
-
 	}
 }

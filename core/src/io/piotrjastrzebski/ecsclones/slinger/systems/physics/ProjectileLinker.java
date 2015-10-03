@@ -14,7 +14,7 @@ import io.piotrjastrzebski.ecsclones.slinger.components.parts.Sling;
  * Created by EvilEntity on 15/08/2015.
  */
 @Wire
-public class ProjectileLinker extends EntitySystem {
+public class ProjectileLinker extends BaseEntitySystem {
 	private ComponentMapper<Projectile> mProjectile;
 	private ComponentMapper<Slinging> mSlinging;
 	private ComponentMapper<Sling> mSling;
@@ -24,13 +24,12 @@ public class ProjectileLinker extends EntitySystem {
 
 	public ProjectileLinker () {
 		super(Aspect.all(Projectile.class, AttachToSling.class));
-		setPassive(true);
 	}
 
 	EntitySubscription slings;
 	@Override protected void initialize () {
 		super.initialize();
-		slings = world.getManager(AspectSubscriptionManager.class).get(Aspect.all(Sling.class));
+		slings = world.getSystem(AspectSubscriptionManager.class).get(Aspect.all(Sling.class));
 	}
 
 	@Override protected void inserted (int eid) {
@@ -53,8 +52,8 @@ public class ProjectileLinker extends EntitySystem {
 		jointDef.localAnchorA.set(sling.anchor);
 		jointDef.localAnchorB.set(0, 0);
 
-		Slinging slinging = world.getEntity(eid).edit().create(Slinging.class);
-		slinging.joint = (DistanceJoint)physics.getWorld().createJoint(jointDef);
+		Slinging slinging = mSlinging.create(eid);
+		slinging.joint = (DistanceJoint)physics.getB2DWorld().createJoint(jointDef);
 		slinging.slingID = slingMaker.latestID();
 	}
 

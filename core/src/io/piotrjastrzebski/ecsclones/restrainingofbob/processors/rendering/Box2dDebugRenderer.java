@@ -23,6 +23,6 @@ public class Box2dDebugRenderer extends BaseSystem {
 	}
 
 	@Override protected void processSystem () {
-		renderer.render(physics.getWorld(), camera.combined);
+		renderer.render(physics.getB2DWorld(), camera.combined);
 	}
 }

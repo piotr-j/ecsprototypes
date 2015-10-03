@@ -48,7 +48,7 @@ public class Physics extends BaseSystem {
 		box2d.step(step, velIters, posIters);
 	}
 
-	public World getWorld () {
+	public World getB2DWorld () {
 		return box2d;
 	}
 

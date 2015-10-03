@@ -27,20 +27,20 @@ public class RoBScreen extends GameScreen {
 	}
 
 	@Override protected void preInit (WorldConfiguration config) {
-		config.setManager(new TagManager());
+		config.setSystem(new TagManager());
 
 		config.setSystem(new PlayerSpawner());
 		config.setSystem(new MonsterSpawner());
 
-		config.setManager(new BWanderer());
-		config.setManager(new BEvader());
-		config.setManager(new BPursuer());
-		config.setManager(new BSteeringStopper());
-		config.setManager(new MonsterMelee());
-		config.setManager(new MonsterShooter());
+		config.setSystem(new BWanderer());
+		config.setSystem(new BEvader());
+		config.setSystem(new BPursuer());
+		config.setSystem(new BSteeringStopper());
+		config.setSystem(new MonsterMelee());
+		config.setSystem(new MonsterShooter());
 
 		config.setSystem(new BTreeLoader());
-		config.setManager(new PhysicsContacts());
+		config.setSystem(new PhysicsContacts());
 		config.setSystem(new Physics());
 		config.setSystem(new PhysicsCleaner());
 		config.setSystem(new Steering());

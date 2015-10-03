@@ -20,24 +20,20 @@ import io.piotrjastrzebski.ecsclones.slinger.systems.physics.Physics;
  * Created by EvilEntity on 15/08/2015.
  */
 @Wire
-public class LevelLoader extends Manager {
+public class LevelLoader extends BaseEntitySystem {
 	private ComponentMapper<Level> mLevel;
 	@Wire Physics physics;
 
 	public LevelLoader () {
+		super(Aspect.all(Level.class));
+	}
+
+	@Override protected void processSystem () {
 
 	}
 
-	Aspect levels;
-	@Override protected void initialize () {
-		super.initialize();
-		levels = Aspect.all(Level.class).build(world);
-	}
-
-	@Override public void added (int eid) {
-		if (levels.isInterested(world.getEntity(eid))) {
-			load(physics.getWorld(), mLevel.get(eid));
-		}
+	@Override public void inserted (int eid) {
+		load(physics.getB2DWorld(), mLevel.get(eid));
 	}
 
 	public void load (World world, Level level) {

@@ -2,6 +2,7 @@ package io.piotrjastrzebski.ecsclones.flapper;
 
 import com.artemis.*;
 import com.artemis.systems.EntityProcessingSystem;
+import com.artemis.systems.IteratingSystem;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -11,11 +12,13 @@ import io.piotrjastrzebski.ecsclones.flapper.components.Flapper;
 /**
  * Created by PiotrJ on 08/08/15.
  */
-public class FlapperRespawner extends EntityProcessingSystem {
+public class FlapperRespawner extends BaseEntitySystem {
 
 	public FlapperRespawner () {
 		super(Aspect.all(Flapper.class));
 	}
+
+	@Override protected void processSystem () {}
 
 	@Override protected void initialize () {
 		super.initialize();
@@ -24,7 +27,7 @@ public class FlapperRespawner extends EntityProcessingSystem {
 
 	@Override protected void removed (int ei) {
 		// TODO better way of clearing the world
-		EntitySubscription all = world.getManager(AspectSubscriptionManager.class).get(Aspect.all());
+		EntitySubscription all = world.getSystem(AspectSubscriptionManager.class).get(Aspect.all());
 		IntBag entities = all.getEntities();
 		for (int i = 0; i < entities.size(); i++) {
 			Entity entity = world.getEntity(entities.get(i));
@@ -61,9 +64,5 @@ public class FlapperRespawner extends EntityProcessingSystem {
 		debugRender.color.set(Color.GREEN);
 
 		edit.create(Collider.class);
-	}
-
-	@Override protected void process (Entity e) {
-		// we only care about removed
 	}
 }

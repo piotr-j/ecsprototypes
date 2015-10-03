@@ -28,9 +28,9 @@ public class SlingerScreen extends GameScreen {
 	}
 
 	@Override protected void preInit (WorldConfiguration config) {
-		config.setManager(new PhysicsContacts());
+		config.setSystem(new PhysicsContacts());
 		config.setSystem(physics = new Physics());
-		config.setManager(new LevelLoader());
+		config.setSystem(new LevelLoader());
 		config.setSystem(new GroundMaker());
 		config.setSystem(new BlockMaker());
 		config.setSystem(new SlingMaker());

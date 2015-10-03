@@ -3,6 +3,7 @@ package io.piotrjastrzebski.ecsclones.slinger.systems.physics;
 import com.artemis.*;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
+import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
@@ -22,7 +23,7 @@ import io.piotrjastrzebski.ecsclones.base.util.Input;
  * Created by EvilEntity on 15/08/2015.
  */
 @Wire
-public class ProjectileGrabber extends EntityProcessingSystem implements Input, InputProcessor {
+public class ProjectileGrabber extends IteratingSystem implements Input, InputProcessor {
 	private ComponentMapper<Projectile> mProjectile;
 	private ComponentMapper<Slinging> mSlinging;
 	private ComponentMapper<Sling> mSling;
@@ -43,12 +44,12 @@ public class ProjectileGrabber extends EntityProcessingSystem implements Input, 
 	boolean grabbed;
 	boolean released;
 	MouseJointDef mouseJointDef = new MouseJointDef();
-	@Override protected void process (Entity e) {
-		Projectile projectile = mProjectile.get(e);
-		Slinging slinging = mSlinging.get(e);
+	@Override protected void process (int eid) {
+		Projectile projectile = mProjectile.get(eid);
+		Slinging slinging = mSlinging.get(eid);
 		Sling sling = mSling.get(slinging.slingID);
 		targetBody = projectile.body;
-		physics.getWorld().QueryAABB(callback, temp.x - 0.01f, temp.y - 0.01f, temp.x + 0.01f, temp.y + 0.01f);
+		physics.getB2DWorld().QueryAABB(callback, temp.x - 0.01f, temp.y - 0.01f, temp.x + 0.01f, temp.y + 0.01f);
 		if (grabbed && !dragging) {
 			dragging = true;
 			grabbed = false;
@@ -58,7 +59,7 @@ public class ProjectileGrabber extends EntityProcessingSystem implements Input, 
 			mouseJointDef.target.set(projectile.body.getPosition());
 			mouseJointDef.maxForce = 1000.0f * projectile.body.getMass();
 
-			mouseJoint = (MouseJoint) physics.getWorld().createJoint(mouseJointDef);
+			mouseJoint = (MouseJoint) physics.getB2DWorld().createJoint(mouseJointDef);
 			projectile.body.setAwake(true);
 		}
 		if (dragging) {
@@ -68,13 +69,13 @@ public class ProjectileGrabber extends EntityProcessingSystem implements Input, 
 			dragging = false;
 			released = false;
 			if (mouseJoint != null) {
-				physics.getWorld().destroyJoint(mouseJoint);
+				physics.getB2DWorld().destroyJoint(mouseJoint);
 				mouseJoint = null;
 			}
 			if (slinging.joint != null) {
 				dst.set(slinging.joint.getAnchorA()).sub(slinging.joint.getAnchorB());
-				physics.getWorld().destroyJoint(slinging.joint);
-				e.edit().remove(Slinging.class);
+				physics.getB2DWorld().destroyJoint(slinging.joint);
+				mSlinging.remove(eid);
 
 				projectile.body.applyLinearImpulse(dst.scl(5), projectile.body.getWorldCenter(), true);
 			}

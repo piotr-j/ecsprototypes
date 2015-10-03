@@ -39,7 +39,6 @@ public abstract class GameScreen extends BaseScreen {
 		postInit();
 
 		Array<Input> inputs = new Array<>();
-		input(inputs, world.getManagers());
 		input(inputs, world.getSystems());
 		inputs.sort(new Comparator<Input>() {
 			@Override public int compare (Input o1, Input o2) {
@@ -77,7 +76,6 @@ public abstract class GameScreen extends BaseScreen {
 
 	@Override public void resize (int width, int height) {
 		super.resize(width, height);
-		resize(world.getManagers(), width, height);
 		resize(world.getSystems(), width, height);
 	}
 

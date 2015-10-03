@@ -5,6 +5,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
+import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import io.piotrjastrzebski.ecsclones.base.components.Collided;
 
@@ -12,7 +13,7 @@ import io.piotrjastrzebski.ecsclones.base.components.Collided;
  * Created by PiotrJ on 04/08/15.
  */
 @Wire
-public class CollisionCleaner extends EntityProcessingSystem {
+public class CollisionCleaner extends IteratingSystem {
 	protected ComponentMapper<Collided> mCollided;
 
 	public CollisionCleaner () {
@@ -20,10 +21,10 @@ public class CollisionCleaner extends EntityProcessingSystem {
 	}
 
 	@Override protected void inserted (int eid) {
-		world.getEntity(eid).edit().remove(Collided.class);
+		mCollided.remove(eid);
 	}
 
-	@Override protected void process (Entity e) {
+	@Override protected void process (int entityId) {
 
 	}
 }

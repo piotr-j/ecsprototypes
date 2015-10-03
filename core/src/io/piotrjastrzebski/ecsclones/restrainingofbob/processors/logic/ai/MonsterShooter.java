@@ -19,6 +19,7 @@ public class MonsterShooter extends Manager {
 	private final static String TAG = MonsterShooter.class.getSimpleName();
 	protected ComponentMapper<AimDirection> mAimDirection;
 	protected ComponentMapper<Transform> mTransform;
+	protected ComponentMapper<Shoot> mShoot;
 
 	public MonsterShooter () {
 	}
@@ -36,9 +37,8 @@ public class MonsterShooter extends Manager {
 		Vector2 ap = mTransform.get(attacker).pos;
 		Vector2 tp = mTransform.get(te).pos;
 		aim.angle = tmp.set(tp).sub(ap).angle();;
-		Entity entity = world.getEntity(attacker);
 		Gdx.app.log(TAG, attacker + " shoots at " + target);
-		entity.edit().create(Shoot.class);
+		mShoot.create(attacker);
 		return true;
 	}
 }

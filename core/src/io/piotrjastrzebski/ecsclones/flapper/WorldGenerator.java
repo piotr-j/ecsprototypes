@@ -6,6 +6,7 @@ import com.artemis.Entity;
 import com.artemis.EntityEdit;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
+import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
@@ -22,7 +23,7 @@ import io.piotrjastrzebski.ecsclones.flapper.components.FlapperScorer;
  * Created by PiotrJ on 08/08/15.
  */
 @Wire
-public class WorldGenerator extends EntityProcessingSystem {
+public class WorldGenerator extends IteratingSystem {
 	@Wire
 	OrthographicCamera camera;
 	@Wire ExtendViewport viewport;
@@ -44,10 +45,10 @@ public class WorldGenerator extends EntityProcessingSystem {
 		createGround(lastX -FlapperScreen.VP_WIDTH / 2, FlapperScreen.VP_WIDTH);
 	}
 
-	@Override protected void process (Entity e) {
+	@Override protected void process (int eid) {
 		// generate world as needed
-		Position position = mPosition.get(e);
-		Size size = mSize.get(e);
+		Position position = mPosition.get(eid);
+		Size size = mSize.get(eid);
 
 		// spawn every x distance traveled?
 		if (lastX <= position.pos.x) {

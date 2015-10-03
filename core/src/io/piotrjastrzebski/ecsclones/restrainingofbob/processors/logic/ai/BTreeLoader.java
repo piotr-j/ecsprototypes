@@ -23,14 +23,13 @@ import java.io.Reader;
  * Created by PiotrJ on 31/08/15.
  */
 @Wire
-public class BTreeLoader extends EntitySystem implements Input, InputProcessor {
+public class BTreeLoader extends BaseEntitySystem implements Input, InputProcessor {
 	private final static String TAG = BTreeLoader.class.getSimpleName();
 	protected ComponentMapper<EnemyBrain> mEnemyBrain;
 	protected ComponentMapper<EnemyBTree> mEnemyBTree;
 
 	public BTreeLoader () {
 		super(Aspect.all(EnemyBrain.class));
-		setPassive(true);
 	}
 
 	ObjectMap<String, Pool<BehaviorTree<EnemyBrain>>> bTreePools = new ObjectMap<>();
@@ -40,7 +39,7 @@ public class BTreeLoader extends EntitySystem implements Input, InputProcessor {
 
 	@Override protected void inserted (int eid) {
 		EnemyBrain brain = mEnemyBrain.get(eid);
-		EnemyBTree tree = world.getEntity(eid).edit().create(EnemyBTree.class);
+		EnemyBTree tree = mEnemyBTree.create(eid);
 		tree.set(brain.treePath, get(brain.treePath));
 	}
 

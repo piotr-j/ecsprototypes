@@ -1,9 +1,6 @@
 package io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic;
 
-import com.artemis.Aspect;
-import com.artemis.ComponentMapper;
-import com.artemis.Entity;
-import com.artemis.EntitySystem;
+import com.artemis.*;
 import com.artemis.annotations.Wire;
 import com.artemis.managers.TagManager;
 import com.badlogic.gdx.math.Circle;
@@ -14,24 +11,20 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.Transfo
  * Created by PiotrJ on 31/08/15.
  */
 @Wire
-public class Finder extends EntitySystem {
+public class Finder extends Manager {
 	protected ComponentMapper<Transform> mTransform;
 	protected ComponentMapper<CircleBounds> mCircleBounds;
 	TagManager tags;
 
 	public Finder () {
-		super(Aspect.all(Transform.class));
-		setPassive(true);
 	}
-
-	@Override protected void processSystem () {}
 
 	public float dst2 (int src, String target) {
 		Entity tagged = tags.getEntity(target);
 		if (tagged == null) {
 			return 9999;
 		}
-		return dst2(src, tagged.id);
+		return dst2(src, tagged.getId());
 	}
 
 	public float dst2 (int src, int target) {
@@ -47,7 +40,7 @@ public class Finder extends EntitySystem {
 		if (tagged == null) {
 			return false;
 		}
-		return overlaps(src, tagged.id, radius);
+		return overlaps(src, tagged.getId(), radius);
 	}
 
 	Circle tmp = new Circle();
