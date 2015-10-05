@@ -328,5 +328,9 @@ public class BTViewer extends IteratingSystem {
 		public void parent (int entityId) {
 			parentId = entityId;
 		}
+
+		public void childAdded(Task<EnemyBrain> task, int param) {
+
+		}
 	}
 }
