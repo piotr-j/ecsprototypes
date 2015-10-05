@@ -18,7 +18,7 @@ public class WanderTask extends BaseTask {
 	}
 
 	@Override public void run () {
-		success();
+		running();
 	}
 
 	@Override protected Task<EnemyBrain> copyTo (Task<EnemyBrain> task) {

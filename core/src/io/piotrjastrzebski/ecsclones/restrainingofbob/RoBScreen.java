@@ -4,6 +4,7 @@ import com.artemis.*;
 import com.artemis.managers.TagManager;
 import io.piotrjastrzebski.ecsclones.ECSGame;
 import io.piotrjastrzebski.ecsclones.base.GameScreen;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.BTWatcher;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.*;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.ai.*;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.input.MoveController;
@@ -65,6 +66,7 @@ public class RoBScreen extends GameScreen {
 		config.setSystem(new FacingSystem());
 		config.setSystem(new Finder());
 		config.setSystem(new BTreeUpdater());
+		config.setSystem(new BTViewer());
 
 		config.setSystem(new Remover());
 		config.setSystem(new Deleter());

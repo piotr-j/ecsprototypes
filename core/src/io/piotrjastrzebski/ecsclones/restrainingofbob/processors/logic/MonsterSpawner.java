@@ -5,11 +5,13 @@ import com.artemis.Entity;
 import com.artemis.EntityEdit;
 import com.artemis.EntitySystem;
 import com.artemis.annotations.Wire;
+import com.badlogic.gdx.ai.btree.leaf.Wait;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.RoBScreen;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.*;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.BTWatcher;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.EnemyBrain;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.status.Health;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.*;
@@ -27,7 +29,7 @@ public class MonsterSpawner extends EntitySystem {
 	}
 
 	@Override protected void processSystem () {
-		int toSpawn = 200 - getSubscription().getEntities().size();
+		int toSpawn = 1 - getSubscription().getEntities().size();
 		for (int i = 0; i < toSpawn; i++) {
 			spawnEnemy();
 		}
@@ -74,7 +76,8 @@ public class MonsterSpawner extends EntitySystem {
 		brain.minDst2 = 5;
 		brain.id = e.getId();
 		// TODO need to define this in some reasonable way
-		switch (MathUtils.random(9)) {
+//		switch (MathUtils.random(9)) {
+		switch (0) {
 		default:
 		case 0:
 		case 1:
@@ -110,5 +113,7 @@ public class MonsterSpawner extends EntitySystem {
 
 		ee.create(Health.class).hp(3);
 		ee.create(MoveFacing.class);
+
+		ee.create(BTWatcher.class);
 	}
 }

@@ -4,6 +4,7 @@ import com.artemis.*;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.systems.IteratingSystem;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.BTWatcher;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.status.Dead;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.EnemyBTree;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.EnemyBrain;
@@ -18,7 +19,7 @@ public class BTreeUpdater extends IteratingSystem {
 	protected ComponentMapper<EnemyBTree> mEnemyBTree;
 
 	public BTreeUpdater () {
-		super(Aspect.all(EnemyBrain.class, EnemyBTree.class).exclude(Dead.class));
+		super(Aspect.all(EnemyBrain.class, EnemyBTree.class).exclude(Dead.class, BTWatcher.class));
 	}
 
 	@Override protected void initialize () {}

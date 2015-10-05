@@ -5,6 +5,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
+import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -17,7 +18,7 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.Transfo
  * Created by PiotrJ on 29/08/15.
  */
 @Wire
-public class TransformUpdater extends EntityProcessingSystem {
+public class TransformUpdater extends IteratingSystem {
 
 	protected ComponentMapper<Transform> mTransform;
 	protected ComponentMapper<PBody> mPBody;
@@ -28,15 +29,15 @@ public class TransformUpdater extends EntityProcessingSystem {
 	}
 
 
-	@Override protected void process (Entity e) {
-		Transform trans = mTransform.get(e);
-		Body body = mPBody.get(e).body;
+	@Override protected void process (int eid) {
+		Transform trans = mTransform.get(eid);
+		Body body = mPBody.get(eid).body;
 		Vector2 pos = body.getPosition();
-		if (mCircleBounds.has(e)) {
-			float radius = mCircleBounds.get(e).radius;
+		if (mCircleBounds.has(eid)) {
+			float radius = mCircleBounds.get(eid).radius;
 			trans.pos.set(pos.x - radius, pos.y - radius);
-		} else if (mRectBounds.has(e)) {
-			Rectangle bounds = mRectBounds.get(e).bounds;
+		} else if (mRectBounds.has(eid)) {
+			Rectangle bounds = mRectBounds.get(eid).bounds;
 			trans.pos.set(pos.x - bounds.width / 2, pos.y - bounds.height /2);
 		} else {
 			trans.pos.set(pos.x, pos.y);

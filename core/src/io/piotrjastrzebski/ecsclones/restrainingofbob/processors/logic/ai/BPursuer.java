@@ -41,5 +41,9 @@ public class BPursuer extends Manager {
 		steering.add(new Pursue<>(dummy, null), .5f);
 		return true;
 	}
+
+	public void stop (int eid) {
+		mSBehaviour.remove(eid);
+	}
 }
 

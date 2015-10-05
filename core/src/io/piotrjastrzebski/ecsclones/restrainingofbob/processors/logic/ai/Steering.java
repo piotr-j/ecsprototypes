@@ -3,6 +3,7 @@ package io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.ai;
 import com.artemis.*;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
+import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.ai.steer.GroupBehavior;
 import com.badlogic.gdx.ai.steer.Proximity;
 import com.badlogic.gdx.ai.steer.SteeringAcceleration;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import io.piotrjastrzebski.ecsclones.base.GameScreen;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.BTWatcher;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.status.Dead;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.SBehaviour;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PBody;
@@ -27,7 +29,7 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.utils.PProximity;
  * Created by PiotrJ on 23/08/15.
  */
 @Wire
-public class Steering extends EntityProcessingSystem {
+public class Steering extends IteratingSystem {
 	@Wire(name = GameScreen.WIRE_GAME_CAM) OrthographicCamera camera;
 	@Wire ShapeRenderer renderer;
 
@@ -45,7 +47,7 @@ public class Steering extends EntityProcessingSystem {
 
 	private boolean debug;
 	public Steering (boolean debug) {
-		super(Aspect.all(PSteerable.class, PBody.class, SBehaviour.class).exclude(Dead.class));
+		super(Aspect.all(PSteerable.class, PBody.class, SBehaviour.class).exclude(Dead.class, BTWatcher.class));
 		this.debug = debug;
 	}
 
@@ -55,14 +57,14 @@ public class Steering extends EntityProcessingSystem {
 		}
 	}
 
-	@Override protected void process (Entity e) {
-		PSteerable steerable = mPSteerable.get(e);
+	@Override protected void process (int eid) {
+		PSteerable steerable = mPSteerable.get(eid);
 
-		PBody phys = mPBody.get(e);
+		PBody phys = mPBody.get(eid);
 		Body body = phys.body;
 		steerable.setBody(body);
 
-		SBehaviour sBehaviour = mSBehaviour.get(e);
+		SBehaviour sBehaviour = mSBehaviour.get(eid);
 		if (sBehaviour.behaviour == null) return;
 
 //		if (sBehaviour.behaviour instanceof BlendedSteering) {

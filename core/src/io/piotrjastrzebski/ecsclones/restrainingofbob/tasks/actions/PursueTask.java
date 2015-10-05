@@ -33,6 +33,12 @@ public class PursueTask extends BaseTask {
 		running();
 	}
 
+	@Override public void end () {
+		EnemyBrain brain = getObject();
+		pursuer.stop(brain.id);
+		super.end();
+	}
+
 	@Override protected Task<EnemyBrain> copyTo (Task<EnemyBrain> task) {
 		PursueTask range = (PursueTask)task;
 		range.target = target;
