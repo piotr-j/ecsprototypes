@@ -10,10 +10,7 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.ai.*;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.input.MoveController;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.input.ShootController;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.physics.*;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.rendering.Box2dDebugRenderer;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.rendering.DebugRenderer;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.rendering.HealthRenderer;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.rendering.MeleeRangeRenderer;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.rendering.*;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.updaters.*;
 
 /**
@@ -60,6 +57,7 @@ public class RoBScreen extends GameScreen {
 		config.setSystem(new CameraFollower());
 		config.setSystem(new Box2dDebugRenderer());
 		config.setSystem(new HealthRenderer());
+		config.setSystem(new BGRenderer());
 		config.setSystem(new DebugRenderer());
 		config.setSystem(new MeleeRangeRenderer());
 		config.setSystem(new ShooterSystem());
