@@ -64,7 +64,8 @@ public class RoBScreen extends GameScreen {
 		config.setSystem(new FacingSystem());
 		config.setSystem(new Finder());
 		config.setSystem(new BTreeUpdater());
-		config.setSystem(new BTViewer());
+//		config.setSystem(new BTViewer());
+		config.setSystem(new BTEditor());
 
 		config.setSystem(new Remover());
 		config.setSystem(new Deleter());
