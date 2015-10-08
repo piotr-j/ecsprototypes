@@ -187,6 +187,7 @@ class BTEditWindow<E> extends VisWindow implements BehaviorTree.Listener<E> {
 
 		@Override public void reset () {
 			task = null;
+			fade = 1;
 			clearStatus();
 			// free any children
 			Array<Tree.Node> children = getChildren();
