@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.btree.BehaviorTree;
 import com.badlogic.gdx.ai.btree.Task;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Tree;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -117,7 +118,9 @@ class BTEditWindow<E> extends VisWindow implements BehaviorTree.Listener<E> {
 	}
 
 	public void update () {
-
+		for (TaskNode node : taskToNode.values()) {
+			node.update(Gdx.graphics.getDeltaTime());
+		}
 	}
 
 	public void updateTasks (Array<Class<? extends Task>> registered) {
@@ -169,6 +172,17 @@ class BTEditWindow<E> extends VisWindow implements BehaviorTree.Listener<E> {
 			return this;
 		}
 
+		float fade = 1;
+		float fadeTime = 3f;
+		float fadeMin = .5f;
+		public void update (float delta) {
+			Color color = label.getColor();
+			if (fade > fadeMin) {
+				fade -= 1.f / fadeTime * delta;
+			}
+			color.a = fade;
+		}
+
 		@Override public void reset () {
 			task = null;
 			clearStatus();
@@ -187,6 +201,7 @@ class BTEditWindow<E> extends VisWindow implements BehaviorTree.Listener<E> {
 		public void updateStatus (Task.Status previousStatus) {
 			// TODO what do we do with previous status?
 			// TODO figure out a way to show actually running task
+			fade = 1;
 			if (task == null) {
 				label.setColor(COLOR_DEFAULT);
 				return;
@@ -212,12 +227,6 @@ class BTEditWindow<E> extends VisWindow implements BehaviorTree.Listener<E> {
 				break;
 			default:
 				label.setColor(COLOR_NOT_RUN);
-			}
-			if (status != previousStatus) {
-				Color color = label.getColor();
-				color.r *= .5f;
-				color.g *= .5f;
-				color.b *= .5f;
 			}
 		}
 	}
