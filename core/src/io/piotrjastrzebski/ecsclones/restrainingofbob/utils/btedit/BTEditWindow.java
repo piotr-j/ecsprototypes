@@ -215,7 +215,9 @@ class BTEditWindow<E> extends VisWindow implements BehaviorTree.Listener<E> {
 			}
 			if (status != previousStatus) {
 				Color color = label.getColor();
-				color.a = .5f;
+				color.r *= .5f;
+				color.g *= .5f;
+				color.b *= .5f;
 			}
 		}
 	}
