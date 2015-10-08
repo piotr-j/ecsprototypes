@@ -15,19 +15,19 @@ import com.badlogic.gdx.utils.Array;
  *
  * Created by PiotrJ on 06/10/15.
  */
-public class BTEdit<T> {
+public class BTEdit<E> {
 	// we want to add category in here
 	private static final Class[] defaults = new Class[] {
 		Parallel.class, Sequence.class, Selector.class, AlwaysFail.class, AlwaysSucceed.class, Include.class, Invert.class,
 		Repeat.class, SemaphoreGuard.class, UntilFail.class, UntilSuccess.class, Wait.class,
 	};
-	private BTEditWindow window;
+	private BTEditWindow<E> window;
 
-	private BehaviorTree<T> bt;
+	private BehaviorTree<E> bt;
 
 	Array<Class<? extends Task>> registered = new Array<>();
 	public BTEdit () {
-		window = new BTEditWindow();
+		window = new BTEditWindow<>();
 		registerAll(defaults);
 	}
 
@@ -58,7 +58,7 @@ public class BTEdit<T> {
 	 *	Set tree to watch/edit
 	 * @param tree behaviour tree to work with
 	 */
-	public void set (BehaviorTree<T> tree) {
+	public void set (BehaviorTree<E> tree) {
 		if (bt != null) {
 			reset();
 		}
@@ -69,7 +69,7 @@ public class BTEdit<T> {
 	/**
 	 * @return current tree or null
 	 */
-	public BehaviorTree<T> get () {
+	public BehaviorTree<E> get () {
 		return bt;
 	}
 
