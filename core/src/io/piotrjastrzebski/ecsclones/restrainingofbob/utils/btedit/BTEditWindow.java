@@ -101,6 +101,8 @@ class BTEditWindow<E> extends VisWindow implements BehaviorTree.Listener<E> {
 		if (parent == null) {
 			// TODO some better name for root node
 			treeView.add(node.init(task));
+			node.fadeMin = 1;
+			node.label.setColor(COLOR_RUNNING);
 		} else {
 			parent.add(node.init(task));
 		}
