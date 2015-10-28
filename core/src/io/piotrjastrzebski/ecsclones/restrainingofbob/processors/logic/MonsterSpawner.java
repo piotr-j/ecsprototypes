@@ -114,6 +114,6 @@ public class MonsterSpawner extends EntitySystem {
 		ee.create(Health.class).hp(3);
 		ee.create(MoveFacing.class);
 
-//		ee.create(BTWatcher.class);
+		ee.create(BTWatcher.class);
 	}
 }
