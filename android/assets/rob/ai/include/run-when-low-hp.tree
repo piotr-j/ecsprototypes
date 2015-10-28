@@ -1,9 +1,8 @@
-import stopParallel:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.StoppingParallel"
 import inRange:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.InRangeTask"
 import hpAbove:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.HPAboveTask"
 import evade:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.EvadeTask"
 
-stopParallel
+parallel policy:"Selector"
   inRange target:"player" dst:10.0
   invert
     # percent/absolute, percent overrides absolute if percent>0

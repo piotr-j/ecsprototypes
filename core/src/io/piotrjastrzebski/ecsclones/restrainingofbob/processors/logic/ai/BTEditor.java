@@ -11,11 +11,6 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.EnemyB
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.EnemyBrain;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.SBehaviour;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.status.Dead;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.*;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.HPAboveTask;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.InRangeTask;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.IsAliveTask;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.utils.btedit.BTEdit;
 
 /**
  *
@@ -31,27 +26,18 @@ public class BTEditor extends IteratingSystem {
 	Stage stage;
 	Steering steering;
 
-	BTEdit<EnemyBrain> editor;
-
-	Class[] taskClasses = new Class[]{EvadeTask.class, MeleeTask.class, PursueTask.class, ShootTask.class, StopSteeringTask.class,
-		WanderTask.class, HPAboveTask.class, InRangeTask.class, IsAliveTask.class,
-	};
-
 	public BTEditor () {
 		super(Aspect.all(EnemyBrain.class, EnemyBTree.class, BTWatcher.class).exclude(Dead.class));
 	}
 
 	@Override protected void initialize () {
-		editor = new BTEdit<>();
-		editor.registerAll(taskClasses);
-		editor.addToStage(stage);
+
 	}
 
 	@Override protected void inserted (int entityId) {
 		EnemyBrain brain = mEnemyBrain.get(entityId);
 		EnemyBTree tree = mEnemyBTree.get(entityId);
 		tree.tree.setObject(brain);
-		editor.set(tree.tree);
 	}
 
 	@Override protected void process (int entityId) {
@@ -61,9 +47,9 @@ public class BTEditor extends IteratingSystem {
 		if (mSBehaviour.has(entityId))
 			steering.process(entityId);
 		// NOTE if we ever have shared trees we would need to set the object each time
-//		tree.tree.setObject(brain);
+		tree.tree.setObject(brain);
 		// entity is excluded from normal updates if it is watched, so we cam manipulate the tree
-		editor.step();
+		tree.tree.step();
 	}
 
 	@Override protected void end () {
@@ -74,6 +60,6 @@ public class BTEditor extends IteratingSystem {
 	@Override protected void removed (int entityId) {
 		EnemyBrain brain = mEnemyBrain.get(entityId);
 		EnemyBTree tree = mEnemyBTree.get(entityId);
-		editor.reset();
+
 	}
 }
