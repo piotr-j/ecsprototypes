@@ -10,6 +10,7 @@ import com.badlogic.gdx.ai.btree.LeafTask;
 import com.badlogic.gdx.ai.btree.Task;
 import com.badlogic.gdx.ai.btree.leaf.Wait;
 import com.badlogic.gdx.ai.btree.utils.BehaviorTreeParser;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.SerializationException;
@@ -86,18 +87,22 @@ public class BTreeLoader extends BaseEntitySystem implements Input, InputProcess
 		return tree;
 	}
 
-	private BehaviorTree<EnemyBrain> load (String path) {
+	public BehaviorTree<EnemyBrain> load (String path) {
+		return load(Gdx.files.internal(path));
+	}
+
+	public BehaviorTree<EnemyBrain> load (FileHandle file) {
 		Reader reader = null;
 		BehaviorTree<EnemyBrain> tree = null;
 		try {
-			reader = Gdx.files.internal(path).reader();
+			reader = file.reader();
 			BehaviorTreeParser<EnemyBrain> parser = new BehaviorTreeParser<>(BehaviorTreeParser.DEBUG_NONE);
 			tree = parser.parse(reader, null);
 			// cline tree tp force load included sub trees
 			tree = (BehaviorTree<EnemyBrain>)tree.cloneTask();
 			injectTask(tree);
 		} catch (SerializationException e) {
-			Gdx.app.error(TAG, "Reload of " + path + " failed!");
+			Gdx.app.error(TAG, "Reload of " + file + " failed!");
 			e.printStackTrace();
 		} finally {
 			StreamUtils.closeQuietly(reader);
