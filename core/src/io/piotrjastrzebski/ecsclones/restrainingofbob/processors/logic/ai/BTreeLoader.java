@@ -110,19 +110,18 @@ public class BTreeLoader extends BaseEntitySystem implements Input, InputProcess
 		return tree;
 	}
 
-	private void injectTask (Task task) {
-		for (int i = 0; i < task.getChildCount(); i++) {
-			Task child = task.getChild(i);
-			if (child instanceof Injectable) {
-				try {
-					((Injectable)child).initialize(world);
-				} catch (MundaneWireException e) {
-					// we do not care if there is nothing to inject, perhaps we will at some point
-				}
-			} else if (child instanceof LeafTask) {
-				Gdx.app.error(TAG, "All LeafTasks should extend BaseTask! " + child);
+	public void injectTask (Task task) {
+		if (task instanceof Injectable) {
+			try {
+				((Injectable)task).initialize(world);
+			} catch (MundaneWireException e) {
+				// we do not care if there is nothing to inject, perhaps we will at some point
 			}
-			injectTask(child);
+		} else if (task instanceof LeafTask) {
+			Gdx.app.error(TAG, "All LeafTasks should extend BaseTask! " + task);
+		}
+		for (int i = 0; i < task.getChildCount(); i++) {
+			injectTask( task.getChild(i));
 		}
 	}
 
