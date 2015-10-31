@@ -15,10 +15,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.btedit.model.ModelTree;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.btedit.model.TaskLibrary;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.btedit.view.ViewGraph;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.btedit.view.ViewTask;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.btedit.view.ViewTaskAttributeEdit;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.btedit.view.ViewTree;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.EnemyBrain;
 
 /**
  * Main entry point for the editor
@@ -68,6 +70,7 @@ public class BehaviorTreeEditor<E> extends Table implements ViewTree.ViewTaskSel
 	private TextButton stepBtn;
 	private TextButton showGraph;
 	private RelativeFileHandleResolver resolver;
+	private TaskLibrary.Injector<EnemyBrain> taskInjector;
 
 	public BehaviorTreeEditor (Skin skin, Drawable white) {
 		this(skin, white, 1);
@@ -297,6 +300,10 @@ public class BehaviorTreeEditor<E> extends Table implements ViewTree.ViewTaskSel
 
 	public ViewTree<E> getView () {
 		return view;
+	}
+
+	public void setTaskInjector (TaskLibrary.Injector<E> injector) {
+		model.getTaskLibrary().setInjector(injector);
 	}
 
 	private static class TaskNode extends Label {
