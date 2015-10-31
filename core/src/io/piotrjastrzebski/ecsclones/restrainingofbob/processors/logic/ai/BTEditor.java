@@ -6,14 +6,21 @@ import com.artemis.ComponentMapper;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.btree.BehaviorTree;
 import com.badlogic.gdx.ai.btree.branch.*;
 import com.badlogic.gdx.ai.btree.decorator.*;
 import com.badlogic.gdx.ai.btree.leaf.Failure;
 import com.badlogic.gdx.ai.btree.leaf.Success;
 import com.badlogic.gdx.ai.btree.leaf.Wait;
+import com.badlogic.gdx.ai.btree.utils.BehaviorTreeParser;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.SerializationException;
+import com.badlogic.gdx.utils.StreamUtils;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisWindow;
+import com.kotcrab.vis.ui.widget.file.FileChooser;
+import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.btedit.BehaviorTreeEditor;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.btedit.IPersist;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.BTWatcher;
@@ -25,6 +32,8 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.*;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.HPAboveTask;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.InRangeTask;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.IsAliveTask;
+
+import java.io.Reader;
 
 /**
  *
@@ -45,11 +54,38 @@ public class BTEditor extends IteratingSystem {
 	VisWindow editorWindow;
 	BehaviorTreeEditor<EnemyBrain> editor;
 
+	private FileChooser saveAsFC;
+	private FileChooser loadFC;
+	private String treeToSave;
+	private FileHandle saveFH;
+
+	@Wire BTreeLoader loader;
+	BehaviorTree<EnemyBrain> loaded;
 	public BTEditor () {
 		super(Aspect.all(EnemyBrain.class, EnemyBTree.class, BTWatcher.class).exclude(Dead.class));
 	}
 
 	@Override protected void initialize () {
+		saveAsFC = new FileChooser(FileChooser.Mode.SAVE);
+		saveAsFC.setDirectory(Gdx.files.getLocalStoragePath());
+		saveAsFC.setListener(new FileChooserAdapter() {
+			@Override public void selected (FileHandle file) {
+				Gdx.app.log("", "save " + file.file().getAbsolutePath());
+				saveFH = file;
+				saveBT(treeToSave, saveFH);
+			}
+		});
+
+		loadFC = new FileChooser(FileChooser.Mode.OPEN);
+		loadFC.setDirectory(Gdx.files.getLocalStoragePath());
+		loadFC.setListener(new FileChooserAdapter() {
+			@Override public void selected (FileHandle file) {
+				Gdx.app.log("", "load " + file.file().getAbsolutePath());
+				loaded = loader.load(file);
+			}
+		});
+
+
 		editor = new BehaviorTreeEditor<>(VisUI.getSkin(), VisUI.getSkin().getDrawable("white"));
 
 		editor.addTaskClass(Sequence.class);
@@ -85,14 +121,22 @@ public class BTEditor extends IteratingSystem {
 		editor.setPersist(new IPersist<EnemyBrain>() {
 			@Override public void onSave (String tree) {
 				Gdx.app.log(TAG, "save");
+				if (saveFH == null) {
+					onSaveAs(tree);
+				} else {
+					saveBT(tree, saveFH);
+				}
 			}
 
 			@Override public void onSaveAs (String tree) {
 				Gdx.app.log(TAG, "save as");
+				treeToSave = tree;
+				stage.addActor(saveAsFC.fadeIn());
 			}
 
 			@Override public void onLoad () {
 				Gdx.app.log(TAG, "load");
+				stage.addActor(loadFC.fadeIn());
 			}
 		});
 
@@ -105,6 +149,10 @@ public class BTEditor extends IteratingSystem {
 		editorWindow.centerWindow();
 	}
 
+	private void saveBT(String tree, FileHandle file) {
+		file.writeString(tree, false);
+	}
+
 	@Override protected void inserted (int entityId) {
 		EnemyBrain brain = mEnemyBrain.get(entityId);
 		EnemyBTree tree = mEnemyBTree.get(entityId);
@@ -115,6 +163,13 @@ public class BTEditor extends IteratingSystem {
 	@Override protected void process (int entityId) {
 		EnemyBrain brain = mEnemyBrain.get(entityId);
 		EnemyBTree tree = mEnemyBTree.get(entityId);
+
+		if (loaded != null) {
+			tree.tree.cancel();
+			tree.tree = loaded;
+			editor.initialize(tree.tree, "");
+			loaded = null;
+		}
 		// TODO do we really want this steering in here?
 		if (mSBehaviour.has(entityId))
 			steering.process(entityId);
