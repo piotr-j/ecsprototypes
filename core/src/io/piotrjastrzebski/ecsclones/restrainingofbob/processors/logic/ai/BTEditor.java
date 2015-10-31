@@ -7,6 +7,7 @@ import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.btree.BehaviorTree;
+import com.badlogic.gdx.ai.btree.Task;
 import com.badlogic.gdx.ai.btree.branch.*;
 import com.badlogic.gdx.ai.btree.decorator.*;
 import com.badlogic.gdx.ai.btree.leaf.Failure;
@@ -23,6 +24,7 @@ import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.btedit.BehaviorTreeEditor;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.btedit.IPersist;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.btedit.model.TaskLibrary;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.BTWatcher;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.EnemyBTree;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.EnemyBrain;
@@ -87,6 +89,12 @@ public class BTEditor extends IteratingSystem {
 
 
 		editor = new BehaviorTreeEditor<>(VisUI.getSkin(), VisUI.getSkin().getDrawable("white"));
+
+		editor.setTaskInjector(new TaskLibrary.Injector<EnemyBrain>() {
+			@Override public void inject (Task<EnemyBrain> task) {
+				loader.injectTask(task);
+			}
+		});
 
 		editor.addTaskClass("branch", Sequence.class);
 		editor.addTaskClass("branch", Selector.class);
