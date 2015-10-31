@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectMap;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.btedit.model.ModelTree;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.btedit.view.ViewGraph;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.btedit.view.ViewTask;
@@ -24,6 +25,17 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.btedit.view.ViewTree;
  * <p>
  * E - type of blackboard in the tree
  * <p>
+ *
+ *    TODO:
+ *    - replaceable root node, currently removing root clears all
+ *    - replaceable other nodes via shortcut
+ *    - tooltips?
+ *    - help screen on start
+ *    - icons for task types
+ *    - save selected branch of the tree as new tree
+ *    - improve handling of include subtrees
+ *    - make selected branch of the tree as include
+ *
  * Created by PiotrJ on 20/06/15.
  */
 public class BehaviorTreeEditor<E> extends Table implements ViewTree.ViewTaskSelectedListener<E> {
@@ -35,7 +47,7 @@ public class BehaviorTreeEditor<E> extends Table implements ViewTree.ViewTaskSel
 	private Skin skin;
 
 	private Array<TaskNode> nodes = new Array<>();
-	private Table tasks;
+	private Tree tasks;
 	private Label trash;
 
 	private ModelTree<E> model;
@@ -79,14 +91,17 @@ public class BehaviorTreeEditor<E> extends Table implements ViewTree.ViewTaskSel
 		view.addListener(this);
 		view.addTrash(trash);
 		view.setShortStatuses(true);
-		add(view).expand().fill();
-		tasks = new Table();
-		add(edit).expand().fill();
+
+		tasks = new Tree(skin);
+		tasks.setYSpacing(0);
 		Table paneCont = new Table();
 		paneCont.add(new Label("DragAndDrop", skin)).row();
 		ScrollPane pane = new ScrollPane(tasks);
-		paneCont.add(pane);
+		paneCont.add(pane).expand().fill();
 		add(paneCont).expand().fill().top();
+
+		add(view).expand().fill();
+		add(edit).expand().fill();
 
 		graphWindow = new Window("Graph view", skin);
 		graphWindow.setResizable(true);
@@ -256,12 +271,24 @@ public class BehaviorTreeEditor<E> extends Table implements ViewTree.ViewTaskSel
 		this.delay = delay;
 	}
 
+	private ObjectMap<String, Tree.Node> catToNode = new ObjectMap<>();
 	public void addTaskClass (Class<? extends Task> aClass) {
+		addTaskClass("all", aClass);
+	}
+
+	public void addTaskClass (String category, Class<? extends Task> aClass) {
 		model.getTaskLibrary().add(aClass);
 		TaskNode node = new TaskNode(aClass, skin);
 		nodes.add(node);
 		view.addSource(node, aClass);
-		tasks.add(node).row();
+		Tree.Node catNode = catToNode.get(category);
+		if (catNode == null) {
+			catNode = new Tree.Node(new Label(category, skin));
+			catToNode.put(category, catNode);
+			tasks.add(catNode);
+		}
+		catNode.add(new Tree.Node(node));
+		tasks.expandAll();
 	}
 
 	public ModelTree<E> getModel () {
