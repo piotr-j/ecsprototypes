@@ -78,6 +78,7 @@ public class ECSGame extends Game {
 		public MainMenuScreen (ECSGame game) {
 			super(game);
 			group = new GridGroup();
+			group.setItemSize((int)(150 * bridge.getPixelScaleFactor()));
 			keyToClass = new IntMap<>();
 			button(FlapperScreen.class, Input.Keys.NUM_1);
 //			button(Roguer.class);
