@@ -146,7 +146,7 @@ public class BTEditor extends IteratingSystem {
 
 		editorWindow = new VisWindow("Editor");
 		editorWindow.setResizable(true);
-		editorWindow.add(editor).expand().fillX();
+		editorWindow.add(editor).expand().fillX().top();
 		editorWindow.pack();
 
 		stage.addActor(editorWindow);
