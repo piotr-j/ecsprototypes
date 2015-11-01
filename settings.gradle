@@ -1,1 +1,7 @@
 include 'desktop', 'android', 'core'
+include ':bteditor'
+project(':bteditor').projectDir = new File(settingsDir, '../bteditor/core')
+// TODO get this to work
+//include ':bteditor'
+//project(':bteditor').projectDir = new File(settingsDir, '../bteditor')
+

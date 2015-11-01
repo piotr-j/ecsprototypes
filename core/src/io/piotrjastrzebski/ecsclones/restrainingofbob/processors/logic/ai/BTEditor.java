@@ -13,18 +13,15 @@ import com.badlogic.gdx.ai.btree.decorator.*;
 import com.badlogic.gdx.ai.btree.leaf.Failure;
 import com.badlogic.gdx.ai.btree.leaf.Success;
 import com.badlogic.gdx.ai.btree.leaf.Wait;
-import com.badlogic.gdx.ai.btree.utils.BehaviorTreeParser;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.SerializationException;
-import com.badlogic.gdx.utils.StreamUtils;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisWindow;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.btedit.BehaviorTreeEditor;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.btedit.IPersist;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.btedit.model.TaskLibrary;
+import io.piotrjastrzebski.bteditor.core.BehaviorTreeEditor;
+import io.piotrjastrzebski.bteditor.core.IPersist;
+import io.piotrjastrzebski.bteditor.core.model.TaskLibrary;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.BTWatcher;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.EnemyBTree;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.EnemyBrain;
@@ -34,8 +31,6 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.*;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.HPAboveTask;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.InRangeTask;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.IsAliveTask;
-
-import java.io.Reader;
 
 /**
  *
@@ -93,6 +88,7 @@ public class BTEditor extends IteratingSystem {
 		editor.setTaskInjector(new TaskLibrary.Injector<EnemyBrain>() {
 			@Override public void inject (Task<EnemyBrain> task) {
 				loader.injectTask(task);
+
 			}
 		});
 
