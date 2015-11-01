@@ -28,6 +28,9 @@ public class BEvader extends Manager {
 	public boolean set (int evader, String evadee) {
 		SBehaviour sBehaviour = mSBehaviour.create(evader);
 		Entity target = tags.getEntity(evadee);
+		if (target == null) {
+			return false;
+		}
 //		if (mDead.has(target)) return false;
 		mDebugTint.get(evader).color.set(Color.PURPLE);
 

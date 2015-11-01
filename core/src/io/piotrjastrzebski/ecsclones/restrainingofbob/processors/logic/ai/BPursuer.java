@@ -31,6 +31,9 @@ public class BPursuer extends Manager {
 	public boolean set (int pursuer, String pursuee) {
 		SBehaviour sBehaviour = mSBehaviour.create(pursuer);
 		Entity target = tags.getEntity(pursuee);
+		if (target == null) {
+			return false;
+		}
 //		if (mDead.has(target)) return false;
 		mDebugTint.get(pursuer).set(Color.RED);
 
