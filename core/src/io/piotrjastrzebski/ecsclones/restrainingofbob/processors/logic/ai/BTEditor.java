@@ -150,6 +150,12 @@ public class BTEditor extends IteratingSystem {
 		editorWindow.pack();
 
 		stage.addActor(editorWindow);
+		if (editorWindow.getWidth() > stage.getWidth()) {
+			editorWindow.setWidth(stage.getWidth());
+		}
+		if (editorWindow.getHeight() > stage.getHeight()) {
+			editorWindow.setHeight(stage.getHeight());
+		}
 		editorWindow.centerWindow();
 	}
 
