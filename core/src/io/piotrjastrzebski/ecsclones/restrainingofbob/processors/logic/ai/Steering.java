@@ -4,6 +4,8 @@ import com.artemis.*;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.systems.IteratingSystem;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.ai.GdxAI;
 import com.badlogic.gdx.ai.steer.GroupBehavior;
 import com.badlogic.gdx.ai.steer.Proximity;
 import com.badlogic.gdx.ai.steer.SteeringAcceleration;
@@ -15,6 +17,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import io.piotrjastrzebski.ecsclones.base.GameScreen;
+import io.piotrjastrzebski.ecsclones.base.util.Input;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.BTWatcher;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.status.Dead;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.SBehaviour;
@@ -29,7 +32,7 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.utils.PProximity;
  * Created by PiotrJ on 23/08/15.
  */
 @Wire
-public class Steering extends IteratingSystem {
+public class Steering extends IteratingSystem implements Input, InputProcessor {
 	@Wire(name = GameScreen.WIRE_GAME_CAM) OrthographicCamera camera;
 	@Wire ShapeRenderer renderer;
 
@@ -55,6 +58,8 @@ public class Steering extends IteratingSystem {
 		if (debug) {
 			renderer.begin(ShapeRenderer.ShapeType.Line);
 		}
+		// need to update or steering will be broken
+		GdxAI.getTimepiece().update(world.delta);
 	}
 
 	@Override protected void process (int eid) {
@@ -133,7 +138,10 @@ public class Steering extends IteratingSystem {
 		}
 
 		if (debug) {
+			renderer.setProjectionMatrix(camera.combined);
+			renderer.begin(ShapeRenderer.ShapeType.Line);
 			debugDraw(sBehaviour.behaviour, body.getPosition());
+			renderer.end();
 		}
 	}
 
@@ -231,5 +239,50 @@ public class Steering extends IteratingSystem {
 		outVector.x = -(float)Math.sin(angle);
 		outVector.y = (float)Math.cos(angle);
 		return outVector;
+	}
+
+	@Override public int priority () {
+		return 10;
+	}
+
+	@Override public InputProcessor get () {
+		return this;
+	}
+
+	@Override public boolean keyDown (int keycode) {
+		switch (keycode) {
+		case com.badlogic.gdx.Input.Keys.F2:
+			debug = !debug;
+			break;
+		}
+		return false;
+	}
+
+	@Override public boolean keyUp (int keycode) {
+		return false;
+	}
+
+	@Override public boolean keyTyped (char character) {
+		return false;
+	}
+
+	@Override public boolean touchDown (int screenX, int screenY, int pointer, int button) {
+		return false;
+	}
+
+	@Override public boolean touchUp (int screenX, int screenY, int pointer, int button) {
+		return false;
+	}
+
+	@Override public boolean touchDragged (int screenX, int screenY, int pointer) {
+		return false;
+	}
+
+	@Override public boolean mouseMoved (int screenX, int screenY) {
+		return false;
+	}
+
+	@Override public boolean scrolled (int amount) {
+		return false;
 	}
 }
