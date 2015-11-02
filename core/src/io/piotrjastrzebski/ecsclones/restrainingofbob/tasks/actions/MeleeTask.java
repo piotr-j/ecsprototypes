@@ -19,18 +19,13 @@ public class MeleeTask extends BaseTask {
 	@TaskAttribute(required=true)
 	public String target;
 
-	@Override public void start () {
+	@Override public void run () {
 		EnemyBrain brain = getObject();
 		if (meleer.attack(brain.id, target)) {
 			success();
 		} else {
 			fail();
 		}
-	}
-
-
-	@Override public void run () {
-		running();
 	}
 
 	@Override protected Task<EnemyBrain> copyTo (Task<EnemyBrain> task) {
