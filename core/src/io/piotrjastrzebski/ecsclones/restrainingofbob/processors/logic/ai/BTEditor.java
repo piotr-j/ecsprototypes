@@ -53,7 +53,9 @@ public class BTEditor extends IteratingSystem {
 
 	private FileChooser saveAsFC;
 	private FileChooser loadFC;
+	private FileChooser saveTaskAsFC;
 	private String treeToSave;
+	private String taskToSave;
 	private FileHandle saveFH;
 
 	@Wire BTreeLoader loader;
@@ -79,6 +81,15 @@ public class BTEditor extends IteratingSystem {
 			@Override public void selected (FileHandle file) {
 				Gdx.app.log("", "load " + file.file().getAbsolutePath());
 				loaded = loader.load(file);
+			}
+		});
+
+		saveTaskAsFC = new FileChooser(FileChooser.Mode.SAVE);
+		saveTaskAsFC.setDirectory(Gdx.files.getLocalStoragePath());
+		saveTaskAsFC.setListener(new FileChooserAdapter() {
+			@Override public void selected (FileHandle file) {
+				Gdx.app.log("", "save tasl " + file.file().getAbsolutePath());
+				saveBT(taskToSave, file);
 			}
 		});
 
@@ -141,6 +152,12 @@ public class BTEditor extends IteratingSystem {
 			@Override public void onLoad () {
 				Gdx.app.log(TAG, "load");
 				stage.addActor(loadFC.fadeIn());
+			}
+
+			@Override public void onSaveTaskAs (String tree) {
+				Gdx.app.log(TAG, "save as");
+				taskToSave = tree;
+				stage.addActor(saveTaskAsFC.fadeIn());
 			}
 		});
 
