@@ -1,34 +1,27 @@
-import inRange:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.InRangeTask"
-import hpAbove:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.HPAboveTask"
-import evade:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.EvadeTask"
-import pursue:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.PursueTask"
-import wander:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.WanderTask"
-import stopParallel:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.StoppingParallel"
-import melee:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.MeleeTask"
-import limit:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.LimitDecorator"
+# Alias definitions
+import inRangeTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.InRangeTask"
+import isAliveTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.IsAliveTask"
+import meleeTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.MeleeTask"
+import pursueTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.PursueTask"
+import wanderTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.WanderTask"
 
 root
   selector
     sequence
-      inRange target:"player" dst:7.0
-      selector
-        stopParallel
-          inRange target:"player" dst:10.0
-          invert
-            # percent/absolute, percent overrides absolute if percent>0
-            hpAbove percent:25
-          evade target:"player"
-        # this cant succeed, must be broken by low hp/death
-        stopParallel
-          inRange target:"player" dst:10.0
-          hpAbove percent:25
-          parallel
-            pursue target:"player"
-            # need a limitter of sort, time?
-            sequence
-              # actual range should probably be in entity
-              inRange target:"player" dst:.75
-              # actual delay should probably be in entity
-              limit delay:.5
-                melee target:"player"
-    wander
+      isAliveTask target:"player"
+      inRangeTask target:"player" dst:7.0
+      parallel policy:"Sequence"
+        isAliveTask target:"player"
+        inRangeTask target:"player" dst:10.0
+        pursueTask target:"player"
+        alwaysSucceed
+          sequence
+            inRangeTask target:"player" dst:1.0
+            meleeTask target:"player"
+            wait seconds:"constant,0.33"
+    parallel policy:"Sequence"
+      invert
+        sequence
+          isAliveTask target:"player"
+          inRangeTask target:"player" dst:7.0
+      wanderTask
