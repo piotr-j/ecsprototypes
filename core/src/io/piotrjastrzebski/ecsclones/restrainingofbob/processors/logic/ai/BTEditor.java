@@ -14,8 +14,11 @@ import com.badlogic.gdx.ai.btree.leaf.Failure;
 import com.badlogic.gdx.ai.btree.leaf.Success;
 import com.badlogic.gdx.ai.btree.leaf.Wait;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.VisUI;
+import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisWindow;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
@@ -166,14 +169,25 @@ public class BTEditor extends IteratingSystem {
 		editorWindow.add(editor).expand().fillX().top();
 		editorWindow.pack();
 
-		stage.addActor(editorWindow);
 		if (editorWindow.getWidth() > stage.getWidth()) {
 			editorWindow.setWidth(stage.getWidth());
 		}
 		if (editorWindow.getHeight() > stage.getHeight()) {
 			editorWindow.setHeight(stage.getHeight());
 		}
-		editorWindow.centerWindow();
+		editorWindow.addCloseButton();
+		VisTextButton showEditor = new VisTextButton("EDITOR");
+		stage.addActor(showEditor);
+		showEditor.addListener(new ClickListener() {
+			@Override public void clicked (InputEvent event, float x, float y) {
+				if (editorWindow.getParent() != null) {
+					editorWindow.fadeOut();
+				} else {
+					stage.addActor(editorWindow.fadeIn());
+					editorWindow.centerWindow();
+				}
+			}
+		});
 	}
 
 	private void saveBT(String tree, FileHandle file) {
