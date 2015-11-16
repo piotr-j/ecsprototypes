@@ -1,31 +1,37 @@
-import inRange:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.InRangeTask"
-import hpAbove:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.HPAboveTask"
-import evade:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.EvadeTask"
-import pursue:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.PursueTask"
-import wander:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.WanderTask"
-import melee:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.MeleeTask"
-import shoot:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.ShootTask"
-import limit:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.LimitDecorator"
-import isAlive:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.IsAliveTask"
+import evadeTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.EvadeTask"
+import hPAboveTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.HPAboveTask"
+import inRangeTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.InRangeTask"
+import isAliveTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.IsAliveTask"
+import shootTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.ShootTask"
+import pursueTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.PursueTask"
+import wanderTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.WanderTask"
 
 root
   selector
     sequence
-      inRange target:"player" dst:7.0
+      isAliveTask target:"player"
+      inRangeTask target:"player" dst:7.0
       selector
-        include subtree:"rob/ai/include/run-when-low-hp.tree"
-        # this cant succeed, must be broken by low hp/death
-        parallel policy:"Selector"
-          isAlive target:"player"
-          inRange target:"player" dst:10.0
-          hpAbove percent:25
-          parallel
-            pursue target:"player"
-            # need a limitter of sort, time?
+        sequence
+          invert
+            hPAboveTask percent:30.0 absolute:0.0
+          parallel policy:"Sequence"
+            isAliveTask target:"player"
+            inRangeTask target:"player" dst:10.0
+            evadeTask target:"player"
+        parallel policy:"Sequence"
+          isAliveTask target:"player"
+          inRangeTask target:"player" dst:10.0
+          hPAboveTask percent:30.0 absolute:0.0
+          pursueTask target:"player"
+          alwaysSucceed
             sequence
-              # actual range should probably be in entity
-              inRange target:"player" dst:7.0
-              # actual delay should probably be in entity
-              limit delay:1
-                shoot target:"player"
-    wander
+              inRangeTask target:"player" dst:7.0
+              shootTask target:"player"
+              wait seconds:"constant,1"
+    parallel policy:"Sequence"
+      invert
+        sequence
+          isAliveTask target:"player"
+          inRangeTask target:"player" dst:7.0
+      wanderTask
