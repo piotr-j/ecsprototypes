@@ -17,8 +17,8 @@ public class WanderTask extends BaseTask {
 		wanderer.set(getObject().id);
 	}
 
-	@Override public void run () {
-		running();
+	@Override public Status execute() {
+		return Status.RUNNING;
 	}
 
 	@Override protected Task<EnemyBrain> copyTo (Task<EnemyBrain> task) {

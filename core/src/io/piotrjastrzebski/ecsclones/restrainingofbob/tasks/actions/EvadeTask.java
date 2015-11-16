@@ -24,13 +24,13 @@ public class EvadeTask extends BaseTask {
 		Gdx.app.log(TAG, "start!");
 	}
 
-	@Override public void run () {
+	@Override public Status execute() {
 		EnemyBrain brain = getObject();
 		// fail if dead or player our of range
 		if (evader.set(brain.id, target)) {
-			running();
+			return Status.RUNNING;
 		} else {
-			fail();
+			return Status.FAILED;
 		}
 //		if (evader.set(brain.id, target)) {
 //			running();

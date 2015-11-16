@@ -20,17 +20,17 @@ public class PursueTask extends BaseTask {
 	BPursuer pursuer;
 
 	@Override public void start () {
-		EnemyBrain brain = getObject();
-		if (pursuer.set(brain.id, target)) {
-			running();
-		} else {
-			fail();
-		}
+
 	}
 
 
-	@Override public void run () {
-		running();
+	@Override public Status execute() {
+		EnemyBrain brain = getObject();
+		if (pursuer.set(brain.id, target)) {
+			return Status.RUNNING;
+		} else {
+			return Status.FAILED;
+		}
 	}
 
 	@Override public void end () {

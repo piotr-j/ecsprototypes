@@ -19,12 +19,12 @@ public class MeleeTask extends BaseTask {
 	@TaskAttribute(required=true)
 	public String target;
 
-	@Override public void run () {
+	@Override public Status execute() {
 		EnemyBrain brain = getObject();
 		if (meleer.attack(brain.id, target)) {
-			success();
+			return Status.SUCCEEDED;
 		} else {
-			fail();
+			return Status.FAILED;
 		}
 	}
 

@@ -19,7 +19,7 @@ public class HPAboveTask extends BaseTask {
 	@TaskAttribute
 	public float absolute;
 
-	@Override public void run () {
+	@Override public Status execute() {
 		EnemyBrain brain = getObject();
 		float test = 0;
 		if (percent > 0) {
@@ -28,9 +28,9 @@ public class HPAboveTask extends BaseTask {
 			test = absolute;
 		}
 		if (brain.hp > test) {
-			success();
+			return Status.SUCCEEDED;
 		} else {
-			fail();
+			return Status.FAILED;
 		}
 	}
 

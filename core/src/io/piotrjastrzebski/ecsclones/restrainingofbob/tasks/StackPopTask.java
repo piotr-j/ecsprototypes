@@ -16,7 +16,7 @@ public class StackPopTask extends BaseTask {
 	@TaskAttribute(required=true)
 	public String name;
 
-	@Override public void run () {
+	@Override public Status execute() {
 		EnemyBrain eb = getObject();
 //		eb.getStack(name);
 //		if (stack.isEmpty()) {
@@ -25,7 +25,7 @@ public class StackPopTask extends BaseTask {
 //		   eb.object = stack.pop();
 //			success();
 //		}
-		success();
+		return Status.SUCCEEDED;
 	}
 
 	@Override protected Task<EnemyBrain> copyTo (Task<EnemyBrain> task) {

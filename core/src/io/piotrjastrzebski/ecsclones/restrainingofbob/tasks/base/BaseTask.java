@@ -13,11 +13,8 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.Injectable;
  * Created by PiotrJ on 19/08/15.
  */
 @Wire
-public class BaseTask extends LeafTask<EnemyBrain> implements Injectable {
+public abstract class BaseTask extends LeafTask<EnemyBrain> implements Injectable {
 	protected World world;
-	@Override public void run () {
-
-	}
 
 	@Override protected Task<EnemyBrain> copyTo (Task<EnemyBrain> task) {
 		BaseTask base = (BaseTask)task;
