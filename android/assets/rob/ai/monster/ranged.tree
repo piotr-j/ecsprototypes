@@ -16,13 +16,17 @@ root
           invert
             hPAboveTask percent:30.0 absolute:0.0
           parallel policy:"Sequence"
-            isAliveTask target:"player"
-            inRangeTask target:"player" dst:10.0
+            sequence
+              invert
+                hPAboveTask percent:30.0 absolute:0.0
+              isAliveTask target:"player"
+              inRangeTask target:"player" dst:10.0
             evadeTask target:"player"
         parallel policy:"Sequence"
-          isAliveTask target:"player"
-          inRangeTask target:"player" dst:10.0
-          hPAboveTask percent:30.0 absolute:0.0
+          sequence
+            hPAboveTask percent:30.0 absolute:0.0
+            isAliveTask target:"player"
+            inRangeTask target:"player" dst:10.0
           pursueTask target:"player"
           alwaysSucceed
             sequence
@@ -32,6 +36,6 @@ root
     parallel policy:"Sequence"
       invert
         sequence
-          isAliveTask target:"player"
           inRangeTask target:"player" dst:7.0
+          isAliveTask target:"player"
       wanderTask
