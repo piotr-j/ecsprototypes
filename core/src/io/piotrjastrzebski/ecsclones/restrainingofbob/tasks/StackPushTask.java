@@ -16,12 +16,12 @@ public class StackPushTask extends BaseTask {
 	@TaskAttribute(required=true)
 	public String name;
 
-	@Override public void run () {
+	@Override public Status execute() {
 		EnemyBrain eb = getObject();
 
 //		Stack stack = eb.getStack(name);
 //		eb.object = stack.pop();
-		success();
+		return Status.SUCCEEDED;
 	}
 
 	@Override protected Task<EnemyBrain> copyTo (Task<EnemyBrain> task) {

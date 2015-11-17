@@ -22,12 +22,12 @@ public class InRangeTask extends BaseTask {
 
 	Finder finder;
 
-	@Override public void run () {
+	@Override public Status execute() {
 		EnemyBrain brain = getObject();
 		if (finder.overlaps(brain.id, target, dst)) {
-			success();
+			return Status.SUCCEEDED;
 		} else {
-			fail();
+			return Status.FAILED;
 		}
 	}
 

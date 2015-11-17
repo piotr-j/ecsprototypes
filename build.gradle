@@ -15,11 +15,11 @@ allprojects {
     version = '1.0'
     ext {
         appName = 'ecsclones'
-        gdxVersion = '1.6.4'
+        gdxVersion = '1.7.1'
         box2DLightsVersion = '1.4'
         aiVersion = '1.6.1-SNAPSHOT'
         artemisVersion = '1.0.0'
-        visuiVersion = '0.8.1'
+        visuiVersion = '0.9.2'
     }
 
     repositories {

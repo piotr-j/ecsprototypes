@@ -19,18 +19,13 @@ public class ShootTask extends BaseTask {
 	@TaskAttribute(required=true)
 	public String target;
 
-	@Override public void start () {
+	@Override public Status execute() {
 		EnemyBrain brain = getObject();
 		if (shooter.attack(brain.id, target)) {
-			success();
+			return Status.SUCCEEDED;
 		} else {
-			fail();
+			return Status.FAILED;
 		}
-	}
-
-
-	@Override public void run () {
-		running();
 	}
 
 	@Override protected Task<EnemyBrain> copyTo (Task<EnemyBrain> task) {

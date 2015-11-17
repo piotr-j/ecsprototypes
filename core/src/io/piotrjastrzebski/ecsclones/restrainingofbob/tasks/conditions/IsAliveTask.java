@@ -23,12 +23,12 @@ public class IsAliveTask extends BaseTask {
 	TagManager tags;
 	protected ComponentMapper<Dead> mDead;
 
-	@Override public void run () {
+	@Override public Status execute() {
 		Entity te = tags.getEntity(target);
 		if (te == null || mDead.has(te)) {
-			fail();
+			return Status.FAILED;
 		} else {
-			success();
+			return Status.SUCCEEDED;
 		}
 	}
 

@@ -15,12 +15,12 @@ public class StopSteeringTask extends BaseTask {
 
 	@Wire BSteeringStopper stopper;
 
-	@Override public void run () {
+	@Override public Status execute() {
 		EnemyBrain brain = getObject();
 		if (stopper.set(brain.id)) {
-			success();
+			return Status.SUCCEEDED;
 		} else {
-			fail();
+			return Status.FAILED;
 		}
 	}
 
