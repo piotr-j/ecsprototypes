@@ -9,32 +9,37 @@ import wanderTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.
 
 root
   selector
+    # check if target is in range and alive
     sequence
       isAliveTask target:"player"
       inRangeTask target:"player" dst:7.0
+      # run away or attack
       selector
-        sequence
-          invert
-            hPAboveTask percent:30.0 absolute:0.0
-          parallel policy:"Sequence"
-            sequence
-              invert
-                hPAboveTask percent:30.0 absolute:0.0
-              isAliveTask target:"player"
-              inRangeTask target:"player" dst:10.0
-            evadeTask target:"player"
+        # evade target if low on hp and target is in range
+        parallel policy:"Sequence"
+          sequence
+            invert
+              hPAboveTask percent:30.0 absolute:0.0
+            isAliveTask target:"player"
+            inRangeTask target:"player" dst:10.0
+          evadeTask target:"player"
+        # pursue target if high hp and try to attack when close enough
         parallel policy:"Sequence"
           sequence
             hPAboveTask percent:30.0 absolute:0.0
             isAliveTask target:"player"
             inRangeTask target:"player" dst:10.0
           pursueTask target:"player"
+          # we dont want to stop if we are not in attack range
           alwaysSucceed
             sequence
+              # melee range
               inRangeTask target:"player" dst:1.0
               meleeTask target:"player"
+              # melee delay in seconds
               wait seconds:"constant,0.33"
     parallel policy:"Sequence"
+      # stop wandering when player is close and alive
       invert
         sequence
           inRangeTask target:"player" dst:7.0
