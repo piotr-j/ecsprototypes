@@ -118,7 +118,9 @@ public class BTreeLoader extends BaseEntitySystem implements Input, InputProcess
 				// we do not care if there is nothing to inject, perhaps we will at some point
 			}
 		} else if (task instanceof LeafTask) {
-			Gdx.app.error(TAG, "All LeafTasks should extend BaseTask! " + task);
+			String name = task.getClass().getPackage().getName();
+			if (!name.equals("com.badlogic.gdx.ai.btree.leaf"))
+				Gdx.app.error(TAG, "All LeafTasks should extend BaseTask! " + task);
 		}
 		for (int i = 0; i < task.getChildCount(); i++) {
 			injectTask( task.getChild(i));
