@@ -34,6 +34,7 @@ public class RoBScreen extends GameScreen {
 		config.setSystem(new BEvader());
 		config.setSystem(new BPursuer());
 		config.setSystem(new BSteeringStopper());
+		config.setSystem(new MonsterAttack());
 		config.setSystem(new MonsterMelee());
 		config.setSystem(new MonsterShooter());
 

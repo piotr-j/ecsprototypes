@@ -8,6 +8,7 @@ import com.artemis.managers.TagManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.AimDirection;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.Shooter;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.tags.Shoot;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.Transform;
 
@@ -15,18 +16,28 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.Transfo
  * Created by PiotrJ on 31/08/15.
  */
 @Wire
-public class MonsterShooter extends Manager {
+public class MonsterShooter extends Manager implements MonsterAttack.AttackExecutor {
 	private final static String TAG = MonsterShooter.class.getSimpleName();
 	protected ComponentMapper<AimDirection> mAimDirection;
 	protected ComponentMapper<Transform> mTransform;
 	protected ComponentMapper<Shoot> mShoot;
+	protected ComponentMapper<Shooter> mShooter;
 
-	public MonsterShooter () {
+	public MonsterShooter () {}
+
+	@Override protected void initialize () {
+		super.initialize();
+		world.getSystem(MonsterAttack.class).register(this);
 	}
 
 	TagManager tags;
 	Vector2 tmp = new Vector2();
-	public boolean attack (int attacker, String target) {
+
+	@Override public boolean accept (int entityId) {
+		return mShooter.has(entityId);
+	}
+
+	@Override public boolean attack (int attacker, String target) {
 		Entity te = tags.getEntity(target);
 		if (te == null) {
 			Gdx.app.log(TAG, "Invalid tag " + target + "!");
@@ -38,6 +49,7 @@ public class MonsterShooter extends Manager {
 		Vector2 tp = mTransform.get(te).pos;
 		aim.angle = tmp.set(tp).sub(ap).angle();;
 		Gdx.app.log(TAG, attacker + " shoots at " + target);
+		// at what point do we shoot exactly? melee is in here
 		mShoot.create(attacker);
 		return true;
 	}

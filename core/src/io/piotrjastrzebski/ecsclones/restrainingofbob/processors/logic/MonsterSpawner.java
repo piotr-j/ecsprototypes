@@ -5,7 +5,6 @@ import com.artemis.Entity;
 import com.artemis.EntityEdit;
 import com.artemis.EntitySystem;
 import com.artemis.annotations.Wire;
-import com.badlogic.gdx.ai.btree.leaf.Wait;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -86,18 +85,23 @@ public class MonsterSpawner extends EntitySystem {
 		case 4:
 		case 5:
 		case 6:
-			brain.treePath = "rob/ai/monster/melee.tree";
+			brain.treePath = "rob/ai/monster/attacker.tree";
 			ee.create(DebugTint.class).setBase(Color.YELLOW);
+			Meleer meleer = ee.create(Meleer.class);
+			meleer.dmg = .5f;
+			meleer.delay = .33f;
+			meleer.range = 1;
 			break;
 		case 7:
 		case 8:
 			// TODO charged ranged attack that can be interrupted by hitting the monster
-			brain.treePath = "rob/ai/monster/ranged.tree";
+			brain.treePath = "rob/ai/monster/attacker.tree";
 			Shooter shooter = ee.create(Shooter.class);
 			shooter.dmg = 2;
 			shooter.alive = 3;
 			shooter.delay = 1;
 			shooter.vel = 7;
+			shooter.range = 7;
 			shooter.collisionCategory = Physics.CAT_PROJECTILE_E;
 			shooter.collisionMask = Physics.CAT_PLAYER;
 			ee.create(AimDirection.class);
