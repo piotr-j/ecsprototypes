@@ -32,6 +32,7 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.SBehav
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.status.Dead;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.*;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.HPAboveTask;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.InAttackRangeTask;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.InRangeTask;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.IsAliveTask;
 
@@ -125,15 +126,18 @@ public class BTEditor extends IteratingSystem {
 		editor.addTaskClass("decorator", Success.class);
 		editor.addTaskClass("decorator", Failure.class);
 
-		editor.addTaskClass("actions", EvadeTask.class);
-		editor.addTaskClass("actions", MeleeTask.class);
+		editor.addTaskClass("actions", AttackTask.class);
+		editor.addTaskClass("actions", AttackCoolDownTask.class);
 		editor.addTaskClass("actions", PursueTask.class);
-		editor.addTaskClass("actions", ShootTask.class);
-		editor.addTaskClass("actions", StopSteeringTask.class);
+		editor.addTaskClass("actions", EvadeTask.class);
 		editor.addTaskClass("actions", WanderTask.class);
+		editor.addTaskClass("actions", StopSteeringTask.class);
+		editor.addTaskClass("actions", ShootTask.class);
+		editor.addTaskClass("actions", MeleeTask.class);
 
 		editor.addTaskClass("conditions", HPAboveTask.class);
 		editor.addTaskClass("conditions", InRangeTask.class);
+		editor.addTaskClass("conditions", InAttackRangeTask.class);
 		editor.addTaskClass("conditions", IsAliveTask.class);
 
 		editor.setPersist(new IPersist<EnemyBrain>() {
