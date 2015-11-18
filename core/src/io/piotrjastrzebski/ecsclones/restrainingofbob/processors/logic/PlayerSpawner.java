@@ -46,6 +46,7 @@ public class PlayerSpawner extends BaseEntitySystem {
 
 	private void spawnPlayer () {
 		Entity player = world.createEntity();
+		world.getSystem(Groups.class).add(player, "player");
 		world.getSystem(TagManager.class).register("player", player);
 		EntityEdit edit = player.edit();
 		edit.create(Player.class).name = "Player 1";

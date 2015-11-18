@@ -1,4 +1,4 @@
-package io.piotrjastrzebski.ecsclones.restrainingofbob.tasks;
+package io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.stacks;
 
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.ai.btree.Task;
@@ -16,19 +16,26 @@ public class StackIsEmptyTask extends BaseTask {
 	@TaskAttribute(required=true)
 	public String name;
 
+	@TaskAttribute(required=true)
+	public ValueType type = ValueType.INT;
+
 	@Override public Status execute() {
 		EnemyBrain eb = getObject();
-//		if (stack.isEmpty()) {
-//			fail();
-//		} else {
-//			success();
-//		}
-		return Status.SUCCEEDED;
+		switch (type) {
+		case INT:
+			return eb.getIntStorage().isStackEmpty(name)?Status.SUCCEEDED:Status.FAILED;
+		case FLOAT:
+			return eb.getFloatStorage().isStackEmpty(name)?Status.SUCCEEDED:Status.FAILED;
+		case STRING:
+			return eb.getStringStorage().isStackEmpty(name)?Status.SUCCEEDED:Status.FAILED;
+		}
+		return Status.FAILED;
 	}
 
 	@Override protected Task<EnemyBrain> copyTo (Task<EnemyBrain> task) {
 		StackIsEmptyTask range = (StackIsEmptyTask)task;
 		range.name = name;
+		range.type = type;
 		return super.copyTo(task);
 	}
 }

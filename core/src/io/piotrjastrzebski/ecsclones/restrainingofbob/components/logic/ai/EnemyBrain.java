@@ -1,10 +1,9 @@
 package io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai;
 
 import com.artemis.PooledComponent;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.utils.IntMap;
-import com.badlogic.gdx.utils.ObjectIntMap;
-import com.badlogic.gdx.utils.ObjectMap;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.ai.storage.FloatStorage;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.ai.storage.IntStorage;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.ai.storage.StringStorage;
 
 /**
  * Created by PiotrJ on 31/08/15.
@@ -22,6 +21,10 @@ public class EnemyBrain extends PooledComponent {
 	public String treePath;
 	public boolean inRange;
 
+	protected IntStorage intStorage;
+	protected FloatStorage floatStorage;
+	protected StringStorage stringStorage;
+
 	public EnemyBrain () {
 		reset();
 	}
@@ -33,47 +36,23 @@ public class EnemyBrain extends PooledComponent {
 		target = -1;
 		id = -1;
 		inRange = false;
-		keyToString.clear();
-		keyToFloat.clear();
-		keyToInt.clear();
+		if (intStorage != null) intStorage.clear();
+		if (floatStorage != null) floatStorage.clear();
+		if (stringStorage != null) stringStorage.clear();
 	}
 
-	private ObjectIntMap<String> keyToFloat = new ObjectIntMap<>();
-	public void put (String key, float value) {
-		keyToFloat.put(key, Float.floatToIntBits(value));
+	public IntStorage getIntStorage () {
+		if (intStorage == null) intStorage = new IntStorage();
+		return intStorage;
 	}
 
-	public float getFloat (String key) {
-		if (!keyToFloat.containsKey(key)) {
-			Gdx.app.error("", "Missing float key " + key);
-			return 0;
-		}
-		return Float.intBitsToFloat(keyToFloat.get(key, 0));
+	public FloatStorage getFloatStorage () {
+		if (floatStorage == null) floatStorage = new FloatStorage();
+		return floatStorage;
 	}
 
-	private ObjectIntMap<String> keyToInt = new ObjectIntMap<>();
-	public void put (String key, int value) {
-		keyToInt.put(key, value);
-	}
-
-	public int getInt (String key) {
-		if (!keyToInt.containsKey(key)) {
-			Gdx.app.error("", "Missing int key " + key);
-			return 0;
-		}
-		return keyToInt.get(key, 0);
-	}
-
-	private ObjectMap<String, String> keyToString = new ObjectMap<>();
-	public void put (String key, String value) {
-		keyToString.put(key, value);
-	}
-
-	public String getString (String key) {
-		if (!keyToString.containsKey(key)) {
-			Gdx.app.error("", "Missing String key " + key);
-			return "";
-		}
-		return keyToString.get(key);
+	public StringStorage getStringStorage () {
+		if (stringStorage == null) stringStorage = new StringStorage();
+		return stringStorage;
 	}
 }

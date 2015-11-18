@@ -1,6 +1,7 @@
 package io.piotrjastrzebski.ecsclones.restrainingofbob;
 
 import com.artemis.*;
+import com.artemis.managers.GroupManager;
 import com.artemis.managers.TagManager;
 import io.piotrjastrzebski.ecsclones.ECSGame;
 import io.piotrjastrzebski.ecsclones.base.GameScreen;
@@ -26,6 +27,7 @@ public class RoBScreen extends GameScreen {
 
 	@Override protected void preInit (WorldConfiguration config) {
 		config.setSystem(new TagManager());
+		config.setSystem(new Groups());
 
 		config.setSystem(new PlayerSpawner());
 		config.setSystem(new MonsterSpawner());

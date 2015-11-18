@@ -3,7 +3,9 @@ package io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic;
 import com.artemis.*;
 import com.artemis.annotations.Wire;
 import com.artemis.managers.TagManager;
+import com.artemis.utils.IntBag;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.utils.IntArray;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.CircleBounds;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.Transform;
 
@@ -15,6 +17,7 @@ public class Finder extends Manager {
 	protected ComponentMapper<Transform> mTransform;
 	protected ComponentMapper<CircleBounds> mCircleBounds;
 	TagManager tags;
+	Groups groups;
 
 	public Finder () {
 	}
@@ -51,5 +54,25 @@ public class Finder extends Manager {
 		tmp.set(srcCB.bounds);
 		tmp.setRadius(radius);
 		return tmp.overlaps(tarCB.bounds);
+	}
+
+	private IntArray found = new IntArray();
+	public IntArray findTaggedWithin (int src, String target, float distance) {
+		found.clear();
+		IntBag entities = groups.getEntities(target);
+		// can this ever be null? yes...
+		CircleBounds srcCB = mCircleBounds.getSafe(src);
+		if (entities.size() == 0 || srcCB == null) return found;
+		tmp.set(srcCB.bounds);
+		tmp.setRadius(distance);
+		int[] data = entities.getData();
+		for (int i = 0; i < entities.size(); i++) {
+			int id = data[i];
+			CircleBounds other = mCircleBounds.getSafe(id);
+			if (other == null) continue;
+			if (tmp.overlaps(other.bounds)) found.add(id);
+		}
+		// todo find stuff
+		return found;
 	}
 }

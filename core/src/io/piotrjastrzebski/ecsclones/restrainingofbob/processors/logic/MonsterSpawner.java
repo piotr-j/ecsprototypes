@@ -34,8 +34,10 @@ public class MonsterSpawner extends EntitySystem {
 		}
 	}
 
+	int spawned = 6;
 	private void spawnEnemy () {
 		Entity e = world.createEntity();
+		world.getSystem(Groups.class).add(e, "enemy");
 		EntityEdit ee = e.edit();
 
 		ee.create(CircleBounds.class).radius(.25f);
@@ -71,11 +73,15 @@ public class MonsterSpawner extends EntitySystem {
 		physSteerable.setIndependentFacing(true);
 		physSteerable.setBoundingRadius(0.25f);
 
+		Health health = ee.create(Health.class);
+		health.hp(3);
+
 		EnemyBrain brain = ee.create(EnemyBrain.class);
 		brain.minDst2 = 5;
 		brain.id = e.getId();
 		// TODO need to define this in some reasonable way
 //		switch (MathUtils.random(9)) {
+//		switch (spawned) {
 		switch (0) {
 		default:
 		case 0:
@@ -91,9 +97,14 @@ public class MonsterSpawner extends EntitySystem {
 			meleer.dmg = .5f;
 			meleer.delay = .33f;
 			meleer.range = 1;
+			health.hp = 1.5f;
 			break;
 		case 7:
+			brain.treePath = "rob/ai/monster/healer.tree";
+			ee.create(DebugTint.class).setBase(Color.GREEN);
+			break;
 		case 8:
+		case 9:
 			// TODO charged ranged attack that can be interrupted by hitting the monster
 			brain.treePath = "rob/ai/monster/attacker.tree";
 			Shooter shooter = ee.create(Shooter.class);
@@ -107,17 +118,13 @@ public class MonsterSpawner extends EntitySystem {
 			ee.create(AimDirection.class);
 			ee.create(DebugTint.class).setBase(Color.ORANGE);
 			break;
-		case 9:
-			brain.treePath = "rob/ai/monster/healer.tree";
-			ee.create(DebugTint.class).setBase(Color.GREEN);
-			break;
 		}
 
 		ee.create(Velocity.class);
 
-		ee.create(Health.class).hp(3);
 		ee.create(MoveFacing.class);
 
 		ee.create(BTWatcher.class);
+		spawned++;
 	}
 }

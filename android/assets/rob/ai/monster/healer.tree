@@ -1,30 +1,31 @@
-import inRange:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.InRangeTask"
-import hpAbove:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.HPAboveTask"
-import evade:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.EvadeTask"
-import pursue:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.PursueTask"
-import wander:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.WanderTask"
-import melee:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.MeleeTask"
-import limit:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.LimitDecorator"
-import isAlive:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.IsAliveTask"
+# Alias definitions
+import evadeTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.EvadeTask"
+import hPAboveTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.HPAboveTask"
+import inRangeTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.InRangeTask"
+import inAttackRangeTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.InAttackRangeTask"
+import isAliveTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.IsAliveTask"
+import attackTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.AttackTask"
+import pursueTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.PursueTask"
+import wanderTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.WanderTask"
+import attackCoolDownTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.AttackCoolDownTask"
 
 root
+  # wander unless there is injured friendly within usual range, 7
+  # find injured friendly and set as current target
+  # pursue the target until within 5 range
+  # heal current target if needed for 25% hp, cast time!
+  # run away if attacked?
   selector
-    sequence
-      inRange target:"player" dst:7.0
-      selector
-        include subtree:"rob/ai/include/run-when-low-hp.tree"
-        # this cant succeed, must be broken by low hp/death
-        parallel policy:"Selector"
-          isAlive target:"player"
-          inRange target:"player" dst:10.0
-          hpAbove percent:25
-          parallel
-            pursue target:"player"
-            # need a limitter of sort, time?
+     sequence
+        inRangeTask target:"friendly" dst:7.0
+        invert
+            hPAboveTask target:"current" percent:75
+        # cast, running until successfully cast
+        parallel policy:"Sequence"
+            # break if we are under attack
             sequence
-              # actual range should probably be in entity
-              inRange target:"player" dst:.75
-              # actual delay should probably be in entity
-              limit delay:.5
-                melee target:"player"
-    wander
+                invert
+                    isTargetThis
+                hPAboveTask target:"this" percent:50.0
+            healTarget target:"current"
+     wanderTask

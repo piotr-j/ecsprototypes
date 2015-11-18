@@ -35,6 +35,10 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.HPAboveTa
 import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.InAttackRangeTask;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.InRangeTask;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.IsAliveTask;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.stacks.IsValueSet;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.stacks.StackIsEmptyTask;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.stacks.StackPopTask;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.stacks.StackPushTask;
 
 /**
  *
@@ -139,6 +143,12 @@ public class BTEditor extends IteratingSystem {
 		editor.addTaskClass("conditions", InRangeTask.class);
 		editor.addTaskClass("conditions", InAttackRangeTask.class);
 		editor.addTaskClass("conditions", IsAliveTask.class);
+
+		editor.addTaskClass("stack", FindGroupTask.class);
+		editor.addTaskClass("stack", StackIsEmptyTask.class);
+		editor.addTaskClass("stack", StackPopTask.class);
+		editor.addTaskClass("stack", StackPushTask.class);
+		editor.addTaskClass("stack", IsValueSet.class);
 
 		editor.setPersist(new IPersist<EnemyBrain>() {
 			@Override public void onSave (String tree) {
