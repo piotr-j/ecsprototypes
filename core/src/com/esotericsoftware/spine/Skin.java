@@ -37,7 +37,7 @@ import com.badlogic.gdx.utils.ObjectMap.Entry;
 import com.badlogic.gdx.utils.Pool;
 import com.esotericsoftware.spine.attachments.Attachment;
 
-/** Stores attachments by slot index and attachment name. */
+/** Stores attachments by slot index and attachment stack. */
 public class Skin {
 	static private final Key lookup = new Key();
 
@@ -50,7 +50,7 @@ public class Skin {
 	};
 
 	public Skin (String name) {
-		if (name == null) throw new IllegalArgumentException("name cannot be null.");
+		if (name == null) throw new IllegalArgumentException("stack cannot be null.");
 		this.name = name;
 	}
 
@@ -115,7 +115,7 @@ public class Skin {
 		int hashCode;
 
 		public void set (int slotIndex, String name) {
-			if (name == null) throw new IllegalArgumentException("name cannot be null.");
+			if (name == null) throw new IllegalArgumentException("stack cannot be null.");
 			this.slotIndex = slotIndex;
 			this.name = name;
 			hashCode = 31 * (31 + name.hashCode()) + slotIndex;

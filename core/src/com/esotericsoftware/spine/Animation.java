@@ -43,7 +43,7 @@ public class Animation {
 	private float duration;
 
 	public Animation (String name, Array<Timeline> timelines, float duration) {
-		if (name == null) throw new IllegalArgumentException("name cannot be null.");
+		if (name == null) throw new IllegalArgumentException("stack cannot be null.");
 		if (timelines == null) throw new IllegalArgumentException("timelines cannot be null.");
 		this.name = name;
 		this.timelines = timelines;

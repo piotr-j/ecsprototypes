@@ -10,11 +10,10 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.base.BaseTask;
  * Created by PiotrJ on 19/08/15.
  */
 @Wire(injectInherited = true)
-public class StackIsEmptyTask extends BaseTask {
-	private final static String TAG = StackIsEmptyTask.class.getSimpleName();
+public class StackClear extends BaseTask {
 
 	@TaskAttribute(required=true)
-	public String name;
+	public String stack;
 
 	@TaskAttribute(required=true)
 	public ValueType type = ValueType.INT;
@@ -23,19 +22,18 @@ public class StackIsEmptyTask extends BaseTask {
 		EnemyBrain eb = getObject();
 		switch (type) {
 		case INT:
-			return eb.getIntStorage().isStackEmpty(name)?Status.SUCCEEDED:Status.FAILED;
+			return eb.getIntStorage().clearStack(stack)?Status.SUCCEEDED:Status.FAILED;
 		case FLOAT:
-			return eb.getFloatStorage().isStackEmpty(name)?Status.SUCCEEDED:Status.FAILED;
+			return eb.getFloatStorage().clearStack(stack)?Status.SUCCEEDED:Status.FAILED;
 		case STRING:
-			return eb.getStringStorage().isStackEmpty(name)?Status.SUCCEEDED:Status.FAILED;
+			return eb.getStringStorage().clearStack(stack)?Status.SUCCEEDED:Status.FAILED;
 		}
 		return Status.FAILED;
 	}
 
 	@Override protected Task<EnemyBrain> copyTo (Task<EnemyBrain> task) {
-		StackIsEmptyTask range = (StackIsEmptyTask)task;
-		range.name = name;
-		range.type = type;
+		StackClear range = (StackClear)task;
+		range.stack = stack;
 		return super.copyTo(task);
 	}
 }

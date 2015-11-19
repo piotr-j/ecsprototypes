@@ -10,7 +10,7 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.base.BaseTask;
  * Created by PiotrJ on 19/08/15.
  */
 @Wire(injectInherited = true)
-public class IsValueSet extends BaseTask {
+public class ValueIsEmpty extends BaseTask {
 
 	@TaskAttribute(required=true)
 	public String name;
@@ -22,17 +22,17 @@ public class IsValueSet extends BaseTask {
 		EnemyBrain eb = getObject();
 		switch (type) {
 		case INT:
-			return eb.getIntStorage().hasValue(name)?Status.SUCCEEDED:Status.FAILED;
+			return eb.getIntStorage().hasValue(name)?Status.FAILED:Status.SUCCEEDED;
 		case FLOAT:
-			return eb.getFloatStorage().hasValue(name)?Status.SUCCEEDED:Status.FAILED;
+			return eb.getFloatStorage().hasValue(name)?Status.FAILED:Status.SUCCEEDED;
 		case STRING:
-			return eb.getStringStorage().hasValue(name)?Status.SUCCEEDED:Status.FAILED;
+			return eb.getStringStorage().hasValue(name)?Status.FAILED:Status.SUCCEEDED;
 		}
 		return Status.FAILED;
 	}
 
 	@Override protected Task<EnemyBrain> copyTo (Task<EnemyBrain> task) {
-		IsValueSet range = (IsValueSet)task;
+		ValueIsEmpty range = (ValueIsEmpty)task;
 		range.name = name;
 		return super.copyTo(task);
 	}

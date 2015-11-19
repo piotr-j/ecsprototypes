@@ -48,7 +48,7 @@ public class BoneData {
 
 	/** @param parent May be null. */
 	public BoneData (String name, BoneData parent) {
-		if (name == null) throw new IllegalArgumentException("name cannot be null.");
+		if (name == null) throw new IllegalArgumentException("stack cannot be null.");
 		this.name = name;
 		this.parent = parent;
 	}

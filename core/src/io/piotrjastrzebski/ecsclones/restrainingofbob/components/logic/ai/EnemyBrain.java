@@ -1,6 +1,7 @@
 package io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai;
 
 import com.artemis.PooledComponent;
+import com.artemis.annotations.EntityId;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.ai.storage.FloatStorage;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.ai.storage.IntStorage;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.ai.storage.StringStorage;
@@ -9,6 +10,7 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.ai.storag
  * Created by PiotrJ on 31/08/15.
  */
 public class EnemyBrain extends PooledComponent {
+	public final static String SELF_ID = "self";
 	// current hp of entity
 	public float hp;
 	public float maxHP;
@@ -16,7 +18,7 @@ public class EnemyBrain extends PooledComponent {
 	public float minDst2;
 //	@EntityID
 	public int target;
-	//	@EntityID
+	@EntityId
 	public int id;
 	public String treePath;
 	public boolean inRange;
@@ -39,6 +41,11 @@ public class EnemyBrain extends PooledComponent {
 		if (intStorage != null) intStorage.clear();
 		if (floatStorage != null) floatStorage.clear();
 		if (stringStorage != null) stringStorage.clear();
+	}
+
+	public void setOwnerId(int id) {
+		this.id = id;
+		getIntStorage().putValue(SELF_ID, id);
 	}
 
 	public IntStorage getIntStorage () {

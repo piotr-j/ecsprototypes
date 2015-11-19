@@ -38,7 +38,7 @@ public class EventData {
 	String stringValue;
 
 	public EventData (String name) {
-		if (name == null) throw new IllegalArgumentException("name cannot be null.");
+		if (name == null) throw new IllegalArgumentException("stack cannot be null.");
 		this.name = name;
 	}
 

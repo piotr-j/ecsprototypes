@@ -2,6 +2,7 @@ package io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.ai.stora
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.FloatArray;
 import com.badlogic.gdx.utils.ObjectMap;
 
 public class StringStorage {
@@ -50,6 +51,32 @@ public class StringStorage {
 			return "";
 		}
 		return keyToValue.get(key);
+	}
+
+	public boolean clearValue (String varName) {
+		if (!hasValue(varName)) return false;
+		keyToValue.remove(varName);
+		return true;
+	}
+
+	public boolean clearStack (String stack) {
+		if (!hasStack(stack)) return false;
+		keyToStack.get(stack, null).clear();
+		return true;
+	}
+
+	public boolean popAndSet (String stack, String var) {
+		Array<String> values = getStack(stack);
+		if (values == null || values.size == 0) return false;
+		putValue(var, values.pop());
+		return false;
+	}
+
+	public boolean getAndPush (String var, String stack) {
+		if (!hasValue(var)) return false;
+		String value = getValue(var);
+		getStack(stack).add(value);
+		return true;
 	}
 
 	public void clear () {

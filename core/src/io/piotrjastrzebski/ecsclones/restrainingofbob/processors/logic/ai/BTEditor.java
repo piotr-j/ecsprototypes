@@ -31,14 +31,11 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.EnemyB
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.SBehaviour;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.status.Dead;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.*;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.HPAboveTask;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.InAttackRangeTask;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.InRangeTask;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.IsAliveTask;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.stacks.IsValueSet;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.stacks.StackIsEmptyTask;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.stacks.StackPopTask;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.stacks.StackPushTask;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.*;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.stacks.ValueIsEmpty;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.stacks.StackIsEmpty;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.stacks.StackPop;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.stacks.StackPush;
 
 /**
  *
@@ -140,15 +137,19 @@ public class BTEditor extends IteratingSystem {
 		editor.addTaskClass("actions", MeleeTask.class);
 
 		editor.addTaskClass("conditions", HPAboveTask.class);
+		editor.addTaskClass("conditions", HPAbove2Task.class);
 		editor.addTaskClass("conditions", InRangeTask.class);
+		editor.addTaskClass("conditions", InRange2Task.class);
 		editor.addTaskClass("conditions", InAttackRangeTask.class);
+		editor.addTaskClass("conditions", InAttackRange2Task.class);
 		editor.addTaskClass("conditions", IsAliveTask.class);
+		editor.addTaskClass("conditions", IsAlive2Task.class);
 
 		editor.addTaskClass("stack", FindGroupTask.class);
-		editor.addTaskClass("stack", StackIsEmptyTask.class);
-		editor.addTaskClass("stack", StackPopTask.class);
-		editor.addTaskClass("stack", StackPushTask.class);
-		editor.addTaskClass("stack", IsValueSet.class);
+		editor.addTaskClass("stack", StackIsEmpty.class);
+		editor.addTaskClass("stack", StackPop.class);
+		editor.addTaskClass("stack", StackPush.class);
+		editor.addTaskClass("stack", ValueIsEmpty.class);
 
 		editor.setPersist(new IPersist<EnemyBrain>() {
 			@Override public void onSave (String tree) {

@@ -78,7 +78,7 @@ public class MonsterSpawner extends EntitySystem {
 
 		EnemyBrain brain = ee.create(EnemyBrain.class);
 		brain.minDst2 = 5;
-		brain.id = e.getId();
+		brain.setOwnerId(e.getId());
 		// TODO need to define this in some reasonable way
 //		switch (MathUtils.random(9)) {
 //		switch (spawned) {

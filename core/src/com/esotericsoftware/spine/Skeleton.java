@@ -278,7 +278,7 @@ public class Skeleton {
 		return skin;
 	}
 
-	/** Sets a skin by name.
+	/** Sets a skin by stack.
 	 * @see #setSkin(Skin) */
 	public void setSkin (String skinName) {
 		Skin skin = data.findSkin(skinName);
