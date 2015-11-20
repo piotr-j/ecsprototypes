@@ -4,6 +4,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.ai.btree.Task;
 import com.badlogic.gdx.ai.btree.annotation.TaskAttribute;
+import com.badlogic.gdx.math.MathUtils;
 import io.piotrjastrzebski.bteditor.core.TaskComment;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.EnemyBrain;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.status.Health;
@@ -14,17 +15,18 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.base.BaseTask;
  * Created by PiotrJ on 19/08/15.
  */
 @Wire(injectInherited = true)
-public class HPAbove2Task extends BaseTask implements TaskComment {
-	private final static String TAG = HPAbove2Task.class.getSimpleName();
+public class HPCheckTask extends BaseTask implements TaskComment {
+	enum CHECK {GT, GT_EQ, LT, LT_EQ, EQ, NEQ}
+	private final static String TAG = HPCheckTask.class.getSimpleName();
 
 	@TaskAttribute(required=true)
 	public String idName;
 
-	@TaskAttribute
-	public float percent;
+	@TaskAttribute(required=true)
+	public CHECK type;
 
-	@TaskAttribute
-	public float absolute;
+	@TaskAttribute(required=true)
+	public float percent;
 
 	ComponentMapper<Health> mHealth;
 
@@ -36,24 +38,30 @@ public class HPAbove2Task extends BaseTask implements TaskComment {
 		Health health = mHealth.getSafe(eid, null);
 		if (health == null) return Status.FAILED;
 
-		float test = 0;
-		if (percent > 0) {
-			test = health.maxHp * percent * 0.01f;
-		} else if (absolute > 0) {
-			test = absolute;
+		float test = health.maxHp * percent * 0.01f;
+		boolean eq = MathUtils.isEqual(health.hp, test);
+		switch (type) {
+		case GT:
+			return (health.hp > test)?Status.SUCCEEDED:Status.FAILED;
+		case GT_EQ:
+			return (health.hp > test || eq)?Status.SUCCEEDED:Status.FAILED;
+		case LT:
+			return (health.hp < test)?Status.SUCCEEDED:Status.FAILED;
+		case LT_EQ:
+			return (health.hp > test || eq)?Status.SUCCEEDED:Status.FAILED;
+		case EQ:
+			return eq?Status.SUCCEEDED:Status.FAILED;
+		case NEQ:
+			return eq?Status.FAILED:Status.SUCCEEDED;
 		}
-		if (health.hp > test) {
-			return Status.SUCCEEDED;
-		} else {
-			return Status.FAILED;
-		}
+		return Status.FAILED;
 	}
 
 	@Override protected Task<EnemyBrain> copyTo (Task<EnemyBrain> task) {
-		HPAbove2Task hp = (HPAbove2Task)task;
+		HPCheckTask hp = (HPCheckTask)task;
 		hp.idName = idName;
 		hp.percent = percent;
-		hp.absolute = absolute;
+		hp.type = type;
 		hp.mHealth = mHealth;
 		return super.copyTo(task);
 	}

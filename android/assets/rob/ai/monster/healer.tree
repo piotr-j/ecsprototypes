@@ -1,19 +1,19 @@
 # Alias definitions
-import evadeTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.EvadeTask"
-import hPAboveTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.HPAboveTask"
-import inRangeTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.InRangeTask"
-import inAttackRangeTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.InAttackRangeTask"
-import isAliveTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.IsAliveTask"
-import attackTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.AttackTask"
-import pursueTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.PursueTask"
-import wanderTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.WanderTask"
-import attackCoolDownTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.AttackCoolDownTask"
+import findGroupTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.FindGroupTask"
+import hPCheckTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.HPCheckTask"
+import healTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.HealTask"
+import stackPop:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.stacks.StackPop"
 
 root
-  # wander unless there is injured friendly within usual range, 7
-  # find injured friendly and set as current target
-  # pursue the target until within 5 range
-  # heal current target if needed for 25% hp, cast time!
-  # run away if attacked?
   selector
+    sequence
+      findGroupTask intStack:"toHeal" group:"enemy" distance:5.0
+      untilFail
+        sequence
+          stackPop stack:"toHeal" type:"INT" varName:"healTarget"
+          alwaysSucceed
+            sequence
+              hPCheckTask idName:"healTarget" type:"LT" percent:100.0
+              healTask target:"healTarget"
+      failure
     wait seconds:"constant,0.3"

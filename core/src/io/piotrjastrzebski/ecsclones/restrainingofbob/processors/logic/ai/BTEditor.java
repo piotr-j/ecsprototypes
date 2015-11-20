@@ -135,9 +135,11 @@ public class BTEditor extends IteratingSystem {
 		editor.addTaskClass("actions", StopSteeringTask.class);
 		editor.addTaskClass("actions", ShootTask.class);
 		editor.addTaskClass("actions", MeleeTask.class);
+		editor.addTaskClass("actions", HealTask.class);
 
 		editor.addTaskClass("conditions", HPAboveTask.class);
 		editor.addTaskClass("conditions", HPAbove2Task.class);
+		editor.addTaskClass("conditions", HPCheckTask.class);
 		editor.addTaskClass("conditions", InRangeTask.class);
 		editor.addTaskClass("conditions", InRange2Task.class);
 		editor.addTaskClass("conditions", InAttackRangeTask.class);
