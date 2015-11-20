@@ -16,16 +16,4 @@ root
   # heal current target if needed for 25% hp, cast time!
   # run away if attacked?
   selector
-     sequence
-        inRangeTask target:"friendly" dst:7.0
-        invert
-            hPAboveTask target:"current" percent:75
-        # cast, running until successfully cast
-        parallel policy:"Sequence"
-            # break if we are under attack
-            sequence
-                invert
-                    isTargetThis
-                hPAboveTask target:"this" percent:50.0
-            healTarget target:"current"
-     wanderTask
+    wait seconds:"constant,0.3"

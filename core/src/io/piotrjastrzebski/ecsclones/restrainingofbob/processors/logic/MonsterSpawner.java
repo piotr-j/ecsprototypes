@@ -38,10 +38,14 @@ public class MonsterSpawner extends EntitySystem {
 		distribution.add(EnemyType.RANGE, 0.2f);
 		distribution.add(EnemyType.HEAL, 0.1f);
 		distribution.generateNormalized();
+
+		spawnEnemy(0, 0, EnemyType.HEAL);
+		spawnEnemy(-1, 0, EnemyType.RANGE);
+		spawnEnemy(1, 0, EnemyType.MELEE);
 	}
 
 	@Override protected void processSystem () {
-		spawnEnemies(targetCount - getSubscription().getEntities().size());
+//		spawnEnemies(targetCount - getSubscription().getEntities().size());
 	}
 
 	private void spawnEnemies(int count) {
@@ -103,11 +107,12 @@ public class MonsterSpawner extends EntitySystem {
 			meleer.dmg = .5f;
 			meleer.delay = .33f;
 			meleer.range = 1;
-			health.hp = 1.5f;
 			break;
 		case HEAL:
 			brain.treePath = "rob/ai/monster/healer.tree";
 			ee.create(DebugTint.class).setBase(Color.GREEN);
+
+			ee.create(BTWatcher.class);
 			break;
 		case RANGE:
 			// TODO charged ranged attack that can be interrupted by hitting the monster
@@ -125,10 +130,10 @@ public class MonsterSpawner extends EntitySystem {
 			break;
 		}
 
+		health.hp = 1.5f;
+
 		ee.create(Velocity.class);
 
 		ee.create(MoveFacing.class);
-
-		ee.create(BTWatcher.class);
 	}
 }
