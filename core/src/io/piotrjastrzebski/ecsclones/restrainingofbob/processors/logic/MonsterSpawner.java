@@ -6,6 +6,7 @@ import com.artemis.EntityEdit;
 import com.artemis.EntitySystem;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.CumulativeDistribution;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.RoBScreen;
@@ -22,20 +23,36 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.physics.Physics
  */
 @Wire
 public class MonsterSpawner extends EntitySystem {
+	enum EnemyType {MELEE, RANGE, HEAL}
 
 	public MonsterSpawner () {
 		super(Aspect.all(EnemyBrain.class));
 	}
 
+	protected int targetCount = 1;
+	CumulativeDistribution<EnemyType> distribution;
+	@Override protected void initialize () {
+		super.initialize();
+		distribution = new CumulativeDistribution<>();
+		distribution.add(EnemyType.MELEE, 0.7f);
+		distribution.add(EnemyType.RANGE, 0.2f);
+		distribution.add(EnemyType.HEAL, 0.1f);
+		distribution.generateNormalized();
+	}
+
 	@Override protected void processSystem () {
-		int toSpawn = 1 - getSubscription().getEntities().size();
-		for (int i = 0; i < toSpawn; i++) {
-			spawnEnemy();
+		spawnEnemies(targetCount - getSubscription().getEntities().size());
+	}
+
+	private void spawnEnemies(int count) {
+		for (int i = 0; i < count; i++) {
+			float x = MathUtils.random(-RoBScreen.VP_WIDTH/3, RoBScreen.VP_WIDTH/3);
+			float y = MathUtils.random(-RoBScreen.VP_HEIGHT/3, RoBScreen.VP_HEIGHT/3);
+			spawnEnemy(x, y, distribution.value());
 		}
 	}
 
-	int spawned = 6;
-	private void spawnEnemy () {
+	private void spawnEnemy (float x, float y, EnemyType type) {
 		Entity e = world.createEntity();
 		world.getSystem(Groups.class).add(e, "enemy");
 		EntityEdit ee = e.edit();
@@ -43,10 +60,7 @@ public class MonsterSpawner extends EntitySystem {
 		ee.create(CircleBounds.class).radius(.25f);
 
 		Transform transform = ee.create(Transform.class);
-		transform.pos.set(
-			MathUtils.random(-RoBScreen.VP_WIDTH/3, RoBScreen.VP_WIDTH/3),
-			MathUtils.random(-RoBScreen.VP_HEIGHT/3, RoBScreen.VP_HEIGHT/3)
-		);
+		transform.pos.set(x, y);
 
 		Mover mover = ee.create(Mover.class);
 		mover.maxLinearImp = 2.5f;
@@ -80,17 +94,9 @@ public class MonsterSpawner extends EntitySystem {
 		brain.minDst2 = 5;
 		brain.setOwnerId(e.getId());
 		// TODO need to define this in some reasonable way
-//		switch (MathUtils.random(9)) {
-//		switch (spawned) {
-		switch (0) {
+		switch (type) {
 		default:
-		case 0:
-		case 1:
-		case 2:
-		case 3:
-		case 4:
-		case 5:
-		case 6:
+		case MELEE:
 			brain.treePath = "rob/ai/monster/attacker.tree";
 			ee.create(DebugTint.class).setBase(Color.YELLOW);
 			Meleer meleer = ee.create(Meleer.class);
@@ -99,12 +105,11 @@ public class MonsterSpawner extends EntitySystem {
 			meleer.range = 1;
 			health.hp = 1.5f;
 			break;
-		case 7:
+		case HEAL:
 			brain.treePath = "rob/ai/monster/healer.tree";
 			ee.create(DebugTint.class).setBase(Color.GREEN);
 			break;
-		case 8:
-		case 9:
+		case RANGE:
 			// TODO charged ranged attack that can be interrupted by hitting the monster
 			brain.treePath = "rob/ai/monster/attacker.tree";
 			Shooter shooter = ee.create(Shooter.class);
@@ -125,6 +130,5 @@ public class MonsterSpawner extends EntitySystem {
 		ee.create(MoveFacing.class);
 
 		ee.create(BTWatcher.class);
-		spawned++;
 	}
 }
