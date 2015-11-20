@@ -29,6 +29,7 @@ public class FindGroupTask extends BaseTask {
 
 	@Override public Status execute() {
 		EnemyBrain brain = getObject();
+		// TODO do we want this range check in here? cleaner without it, but perf :(
 		IntArray found = finder.findTaggedWithin(brain.id, group, distance);
 		if (found.size > 0) {
 			IntArray intArray = brain.getIntStorage().getStack(intStack);
