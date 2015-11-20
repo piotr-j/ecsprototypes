@@ -63,7 +63,7 @@ public class RoBScreen extends GameScreen {
 		config.setSystem(new BGRenderer());
 		config.setSystem(new PlayerToEnemiesRenderer());
 		config.setSystem(new DebugRenderer());
-		config.setSystem(new MeleeRangeRenderer());
+//		config.setSystem(new MeleeRangeRenderer());
 		config.setSystem(new ShooterSystem());
 		config.setSystem(new FacingSystem());
 		config.setSystem(new Finder());

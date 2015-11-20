@@ -46,5 +46,5 @@ root
         sequence
           inRangeTask target:"player" dst:7.0
           isAliveTask target:"player"
-      # wanderTask
-      wait seconds:"constant,0.3"
+      wanderTask
+      #wait seconds:"constant,0.3"

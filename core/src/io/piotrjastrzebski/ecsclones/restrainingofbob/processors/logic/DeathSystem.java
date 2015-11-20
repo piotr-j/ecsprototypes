@@ -29,12 +29,11 @@ public class DeathSystem extends IteratingSystem {
 
 	@Override protected void process (int eid) {
 		Health health = mHealth.get(eid);
-		if (health.hp <= 0) {
-			mDead.create(eid);
-			mDeleteAfter.create(eid).setDelay(3);
-			if (mDebugTint.has(eid)) {
-				mDebugTint.get(eid).color.set(Color.BROWN);
-			}
+		if (health.hp > 0) return;
+		mDead.create(eid);
+		mDeleteAfter.create(eid).setDelay(.5f);
+		if (mDebugTint.has(eid)) {
+			mDebugTint.get(eid).color.set(Color.BROWN);
 		}
 	}
 }

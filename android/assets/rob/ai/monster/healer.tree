@@ -3,17 +3,20 @@ import findGroupTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actio
 import hPCheckTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.HPCheckTask"
 import healTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.HealTask"
 import stackPop:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.stacks.StackPop"
+import pursueTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.Pursue2Task"
 
 root
   selector
     sequence
-      findGroupTask intStack:"toHeal" group:"enemy" distance:5.0
+      findGroupTask intStack:"toHeal" group:"enemy" distance:7.0
       untilFail
         sequence
           stackPop stack:"toHeal" type:"INT" varName:"healTarget"
           alwaysSucceed
-            sequence
+            parallel policy:"Sequence"
               hPCheckTask idName:"healTarget" type:"LT" percent:100.0
               healTask target:"healTarget"
+              pursueTask target:"healTarget"
       failure
     wait seconds:"constant,0.3"
+    # wanderTask

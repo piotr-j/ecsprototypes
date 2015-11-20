@@ -5,6 +5,7 @@ import com.artemis.Entity;
 import com.artemis.EntityEdit;
 import com.artemis.EntitySystem;
 import com.artemis.annotations.Wire;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.CumulativeDistribution;
 import com.badlogic.gdx.math.MathUtils;
@@ -29,23 +30,25 @@ public class MonsterSpawner extends EntitySystem {
 		super(Aspect.all(EnemyBrain.class));
 	}
 
-	protected int targetCount = 1;
+	protected int targetCount = 100;
 	CumulativeDistribution<EnemyType> distribution;
 	@Override protected void initialize () {
 		super.initialize();
 		distribution = new CumulativeDistribution<>();
 		distribution.add(EnemyType.MELEE, 0.7f);
-		distribution.add(EnemyType.RANGE, 0.2f);
-		distribution.add(EnemyType.HEAL, 0.1f);
+//		distribution.add(EnemyType.RANGE, 0.2f);
+//		distribution.add(EnemyType.HEAL, 0.1f);
 		distribution.generateNormalized();
 
-		spawnEnemy(0, 0, EnemyType.HEAL);
-		spawnEnemy(-1, 0, EnemyType.RANGE);
-		spawnEnemy(1, 0, EnemyType.MELEE);
+//		spawnEnemy(0, 0, EnemyType.HEAL);
+//		spawnEnemy(-1, 0, EnemyType.RANGE);
+//		spawnEnemy(-6, 0, EnemyType.RANGE);
+//		spawnEnemy(1, 0, EnemyType.MELEE);
+//		spawnEnemy(11, 0, EnemyType.MELEE);
 	}
 
 	@Override protected void processSystem () {
-//		spawnEnemies(targetCount - getSubscription().getEntities().size());
+		spawnEnemies(targetCount - getSubscription().getEntities().size());
 	}
 
 	private void spawnEnemies(int count) {
@@ -130,10 +133,12 @@ public class MonsterSpawner extends EntitySystem {
 			break;
 		}
 
-		health.hp = 1.5f;
+		health.hp = 2.5f;
 
 		ee.create(Velocity.class);
 
 		ee.create(MoveFacing.class);
+
+		Gdx.app.log("", "Spawned enemy " + ee.getEntity().getId());
 	}
 }

@@ -29,15 +29,18 @@ public class BPursuer extends Manager {
 	}
 
 	public boolean set (int pursuer, String pursuee) {
-		SBehaviour sBehaviour = mSBehaviour.create(pursuer);
 		Entity target = tags.getEntity(pursuee);
 		if (target == null) {
 			return false;
 		}
-//		if (mDead.has(target)) return false;
 		mDebugTint.get(pursuer).set(Color.RED);
+		return set(pursuer, target.getId());
+	}
 
-		sBehaviour.target = target.getId();
+	public boolean set (int pursuer, int pursuee) {
+		SBehaviour sBehaviour = mSBehaviour.create(pursuer);
+//		if (mDead.has(target)) return false;
+		sBehaviour.target = pursuee;
 		MyBlendedSteering steering = new MyBlendedSteering(dummy);
 		sBehaviour.behaviour = steering;
 		steering.add(new LookWhereYouAreGoing<>(dummy), .5f);

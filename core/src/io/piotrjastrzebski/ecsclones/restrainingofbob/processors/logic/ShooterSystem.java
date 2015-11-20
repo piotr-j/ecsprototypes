@@ -122,6 +122,7 @@ public class ShooterSystem extends IteratingSystem {
 			Gdx.app.log(TAG, "Default alive time for shooter = " + eid);
 		}
 		pe.create(DeleteAfter.class).setDelay(alive);
+		Gdx.app.log("", "Spawned projectile " + p.getId());
 	}
 
 	protected void onContact(Physics.UserData p, Physics.UserData t) {
