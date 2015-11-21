@@ -4,6 +4,7 @@ import hPCheckTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditi
 import healTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.HealTask"
 import stackPop:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.stacks.StackPop"
 import pursueTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.Pursue2Task"
+import wanderTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.WanderTask"
 
 root
   selector
