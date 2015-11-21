@@ -88,8 +88,6 @@ public class MonsterSpawner extends EntitySystem {
 		ee.create(MoveFacing.class);
 
 		PSteerable physSteerable = ee.create(PSteerable.class);
-		physSteerable.setMaxLinearAcceleration(6);
-		physSteerable.setMaxLinearSpeed(2);
 		physSteerable.setMaxAngularAcceleration(0.5f); // greater than 0 because independent facing is enabled
 		physSteerable.setMaxAngularSpeed(5);
 		physSteerable.setIndependentFacing(true);
@@ -111,10 +109,14 @@ public class MonsterSpawner extends EntitySystem {
 			meleer.dmg = .5f;
 			meleer.delay = .33f;
 			meleer.range = 1;
+			physSteerable.setMaxLinearAcceleration(9);
+			physSteerable.setMaxLinearSpeed(3);
 			break;
 		case HEAL:
 			brain.treePath = "rob/ai/monster/healer.tree";
 			ee.create(DebugTint.class).setBase(Color.GREEN);
+			physSteerable.setMaxLinearAcceleration(6);
+			physSteerable.setMaxLinearSpeed(2);
 //			ee.create(BTWatcher.class);
 			break;
 		case RANGE:
@@ -130,6 +132,8 @@ public class MonsterSpawner extends EntitySystem {
 			shooter.collisionMask = Physics.CAT_PLAYER;
 			ee.create(AimDirection.class);
 			ee.create(DebugTint.class).setBase(Color.ORANGE);
+			physSteerable.setMaxLinearAcceleration(6);
+			physSteerable.setMaxLinearSpeed(1.5f);
 			break;
 		}
 	}
