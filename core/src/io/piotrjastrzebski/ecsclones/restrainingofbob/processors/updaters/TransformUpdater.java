@@ -1,15 +1,15 @@
 package io.piotrjastrzebski.ecsclones.restrainingofbob.processors.updaters;
 
 import com.artemis.Aspect;
+import com.artemis.Component;
 import com.artemis.ComponentMapper;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
+import com.artemis.utils.Bag;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.Projectile;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.EnemyBrain;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.CircleBounds;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.PBody;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.RectBounds;
@@ -26,9 +26,6 @@ public class TransformUpdater extends IteratingSystem {
 	protected ComponentMapper<CircleBounds> mCircleBounds;
 	protected ComponentMapper<RectBounds> mRectBounds;
 
-	private ComponentMapper<Projectile> mProjectile;
-	private ComponentMapper<EnemyBrain> mEnemyBrain;
-
 	public TransformUpdater () {
 		super(Aspect.all(Transform.class, PBody.class));
 	}
@@ -36,17 +33,7 @@ public class TransformUpdater extends IteratingSystem {
 
 	@Override protected void process (int eid) {
 		Transform trans = mTransform.get(eid);
-		PBody pBody = mPBody.get(eid);
-		if (pBody == null) {
-			if (mProjectile.has(eid)) {
-				Gdx.app.log("", "Null bullet " + eid);
-			} else if (mEnemyBrain.has(eid)) {
-				Gdx.app.log("", "Null enemy " + eid);
-			} else {
-				Gdx.app.log("", "Null unknown " + eid);
-			}
-		}
-		Body body = pBody.body;
+		Body body =  mPBody.get(eid).body;
 		Vector2 pos = body.getPosition();
 		if (mCircleBounds.has(eid)) {
 			float radius = mCircleBounds.get(eid).radius;

@@ -18,5 +18,5 @@ root
               healTask target:"healTarget"
               pursueTask target:"healTarget"
       failure
-    wait seconds:"constant,0.3"
-    # wanderTask
+    # wait seconds:"constant,0.3"
+    wanderTask

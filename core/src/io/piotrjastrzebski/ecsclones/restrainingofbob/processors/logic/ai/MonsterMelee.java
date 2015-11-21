@@ -40,7 +40,6 @@ public class MonsterMelee extends Manager implements MonsterAttack.AttackExecuto
 		}
 		Meleer meleer = mMeleer.get(attacker);
 		HitBy hit = mHitBy.create(te);
-		Gdx.app.log(TAG, attacker + " attacks " + target);
 		hit.dmg += meleer.dmg;
 		return true;
 	}

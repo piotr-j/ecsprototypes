@@ -48,7 +48,6 @@ public class MonsterShooter extends Manager implements MonsterAttack.AttackExecu
 		Vector2 ap = mTransform.get(attacker).pos;
 		Vector2 tp = mTransform.get(te).pos;
 		aim.angle = tmp.set(tp).sub(ap).angle();;
-		Gdx.app.log(TAG, attacker + " shoots at " + target);
 		// at what point do we shoot exactly? melee is in here
 		mShoot.create(attacker);
 		return true;

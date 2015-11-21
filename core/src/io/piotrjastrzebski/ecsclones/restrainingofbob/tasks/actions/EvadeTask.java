@@ -20,10 +20,6 @@ public class EvadeTask extends BaseTask {
 
 	BEvader evader;
 
-	@Override public void start () {
-		Gdx.app.log(TAG, "start!");
-	}
-
 	@Override public Status execute() {
 		EnemyBrain brain = getObject();
 		// fail if dead or player our of range
@@ -32,11 +28,6 @@ public class EvadeTask extends BaseTask {
 		} else {
 			return Status.FAILED;
 		}
-//		if (evader.set(brain.id, target)) {
-//			running();
-//		} else {
-//			fail();
-//		}
 	}
 
 	@Override protected Task<EnemyBrain> copyTo (Task<EnemyBrain> task) {

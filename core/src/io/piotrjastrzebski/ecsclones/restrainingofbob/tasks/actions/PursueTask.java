@@ -1,5 +1,6 @@
 package io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions;
 
+import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.ai.btree.Task;
 import com.badlogic.gdx.ai.btree.annotation.TaskAttribute;
@@ -19,11 +20,6 @@ public class PursueTask extends BaseTask {
 
 	BPursuer pursuer;
 
-	@Override public void start () {
-
-	}
-
-
 	@Override public Status execute() {
 		EnemyBrain brain = getObject();
 		if (pursuer.set(brain.id, target)) {
@@ -35,7 +31,11 @@ public class PursueTask extends BaseTask {
 
 	@Override public void end () {
 		EnemyBrain brain = getObject();
-		pursuer.stop(brain.id);
+		// TODO this is fixed in 1.3.0-SNAPSHOT
+		Entity entity = world.getEntity(brain.id);
+		boolean active = entity.isActive();
+		if (active)
+			pursuer.stop(brain.id);
 		super.end();
 	}
 

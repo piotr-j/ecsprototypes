@@ -31,7 +31,7 @@ public class DeathSystem extends IteratingSystem {
 		Health health = mHealth.get(eid);
 		if (health.hp > 0) return;
 		mDead.create(eid);
-		mDeleteAfter.create(eid).setDelay(.5f);
+		mDeleteAfter.create(eid).setDelay(3f);
 		if (mDebugTint.has(eid)) {
 			mDebugTint.get(eid).color.set(Color.BROWN);
 		}

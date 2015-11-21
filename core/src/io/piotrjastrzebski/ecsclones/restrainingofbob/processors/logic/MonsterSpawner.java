@@ -5,7 +5,6 @@ import com.artemis.Entity;
 import com.artemis.EntityEdit;
 import com.artemis.EntitySystem;
 import com.artemis.annotations.Wire;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.CumulativeDistribution;
 import com.badlogic.gdx.math.MathUtils;
@@ -36,8 +35,8 @@ public class MonsterSpawner extends EntitySystem {
 		super.initialize();
 		distribution = new CumulativeDistribution<>();
 		distribution.add(EnemyType.MELEE, 0.7f);
-//		distribution.add(EnemyType.RANGE, 0.2f);
-//		distribution.add(EnemyType.HEAL, 0.1f);
+		distribution.add(EnemyType.RANGE, 0.2f);
+		distribution.add(EnemyType.HEAL, 0.1f);
 		distribution.generateNormalized();
 
 //		spawnEnemy(0, 0, EnemyType.HEAL);
@@ -85,6 +84,8 @@ public class MonsterSpawner extends EntitySystem {
 		PCircle pCircle = ee.create(PCircle.class);
 		pCircle.setSize(.5f);
 
+		ee.create(Velocity.class);
+		ee.create(MoveFacing.class);
 
 		PSteerable physSteerable = ee.create(PSteerable.class);
 		physSteerable.setMaxLinearAcceleration(6);
@@ -114,8 +115,7 @@ public class MonsterSpawner extends EntitySystem {
 		case HEAL:
 			brain.treePath = "rob/ai/monster/healer.tree";
 			ee.create(DebugTint.class).setBase(Color.GREEN);
-
-			ee.create(BTWatcher.class);
+//			ee.create(BTWatcher.class);
 			break;
 		case RANGE:
 			// TODO charged ranged attack that can be interrupted by hitting the monster
@@ -132,13 +132,5 @@ public class MonsterSpawner extends EntitySystem {
 			ee.create(DebugTint.class).setBase(Color.ORANGE);
 			break;
 		}
-
-		health.hp = 2.5f;
-
-		ee.create(Velocity.class);
-
-		ee.create(MoveFacing.class);
-
-		Gdx.app.log("", "Spawned enemy " + ee.getEntity().getId());
 	}
 }

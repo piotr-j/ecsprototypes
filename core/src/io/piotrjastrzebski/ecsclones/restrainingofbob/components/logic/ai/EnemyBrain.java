@@ -2,6 +2,7 @@ package io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai;
 
 import com.artemis.PooledComponent;
 import com.artemis.annotations.EntityId;
+import com.badlogic.gdx.ai.btree.BehaviorTree;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.ai.storage.FloatStorage;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.ai.storage.IntStorage;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.ai.storage.StringStorage;
@@ -27,6 +28,15 @@ public class EnemyBrain extends PooledComponent {
 	protected FloatStorage floatStorage;
 	protected StringStorage stringStorage;
 
+	public BehaviorTree<EnemyBrain> tree;
+	public String path;
+
+	public EnemyBrain set (String path, BehaviorTree<EnemyBrain> tree) {
+		this.path = path;
+		this.tree = tree;
+		return this;
+	}
+
 	public EnemyBrain () {
 		reset();
 	}
@@ -41,6 +51,8 @@ public class EnemyBrain extends PooledComponent {
 		if (intStorage != null) intStorage.clear();
 		if (floatStorage != null) floatStorage.clear();
 		if (stringStorage != null) stringStorage.clear();
+		tree = null;
+		path = null;
 	}
 
 	public void setOwnerId(int id) {

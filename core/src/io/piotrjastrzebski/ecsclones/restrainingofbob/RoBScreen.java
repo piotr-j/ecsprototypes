@@ -57,6 +57,7 @@ public class RoBScreen extends GameScreen {
 		config.setSystem(new PhysicsMover());
 		config.setSystem(new CircleBoundsUpdater());
 		config.setSystem(new RectBoundsUpdater());
+
 		config.setSystem(new CameraFollower());
 		config.setSystem(new Box2dDebugRenderer());
 		config.setSystem(new HealthRenderer());
@@ -64,12 +65,14 @@ public class RoBScreen extends GameScreen {
 		config.setSystem(new PlayerToEnemiesRenderer());
 		config.setSystem(new DebugRenderer());
 //		config.setSystem(new MeleeRangeRenderer());
+
 		config.setSystem(new ShooterSystem());
 		config.setSystem(new FacingSystem());
 		config.setSystem(new Finder());
 		config.setSystem(new BTreeUpdater());
+
 //		config.setSystem(new BTViewer());
-		config.setSystem(new BTEditor());
+//		config.setSystem(new BTEditor());
 
 		config.setSystem(new Remover());
 		config.setSystem(new Deleter());
