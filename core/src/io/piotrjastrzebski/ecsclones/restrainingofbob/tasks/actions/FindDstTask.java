@@ -1,4 +1,4 @@
-package io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions;
+package io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions;
 
 import com.artemis.ComponentMapper;
 import com.artemis.annotations.Wire;
@@ -10,26 +10,19 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.EnemyB
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.CircleBounds;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.ai.storage.IntStorage;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.base.BaseTask;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.base.ComparisonType;
 
 /**
  * Created by PiotrJ on 19/08/15.
  */
 @Wire(injectInherited = true)
-public class DstCheckTask extends BaseTask implements TaskComment {
-	private final static String TAG = DstCheckTask.class.getSimpleName();
+public class FindDstTask extends BaseTask implements TaskComment {
+	private final static String TAG = FindDstTask.class.getSimpleName();
 
 	@TaskAttribute(required=true)
-	public String idName;
+	public String target;
 
 	@TaskAttribute(required=true)
-	public ComparisonType type = ComparisonType.GT;
-
-	@TaskAttribute(required=true)
-	public float dstOuter;
-
-	@TaskAttribute
-	public float dstInner;
+	public String dstVar;
 
 	protected ComponentMapper<CircleBounds> mCircleBounds;
 
@@ -37,22 +30,20 @@ public class DstCheckTask extends BaseTask implements TaskComment {
 	@Override public Status execute() {
 		EnemyBrain brain = getObject();
 		IntStorage storage = brain.getIntStorage();
-		if (!storage.hasValue(idName)) return Status.FAILED;
-		int otherID = storage.getValue(idName);
+		if (!storage.hasValue(target)) return Status.FAILED;
+		int otherID = storage.getValue(target);
 		CircleBounds srcCB = mCircleBounds.getSafe(brain.id);
 		CircleBounds tarCB = mCircleBounds.getSafe(otherID);
 		if (srcCB == null || tarCB == null) return Status.FAILED;
-		float dst2 = tmp.set(srcCB.bounds.x, srcCB.bounds.y).dst2(tarCB.bounds.x, tarCB.bounds.y);
-
-		return type.compare(dst2, dstOuter * dstOuter)? Status.SUCCEEDED : Status.FAILED;
+		float dst = tmp.set(srcCB.bounds.x, srcCB.bounds.y).dst(tarCB.bounds.x, tarCB.bounds.y);
+		brain.getFloatStorage().putValue(dstVar, dst);
+		return Status.SUCCEEDED;
 	}
 
 	@Override protected Task<EnemyBrain> copyTo (Task<EnemyBrain> task) {
-		DstCheckTask range = (DstCheckTask)task;
-		range.idName = idName;
-		range.type = type;
-		range.dstOuter = dstOuter;
-		range.dstInner = dstInner;
+		FindDstTask range = (FindDstTask)task;
+		range.target = target;
+		range.dstVar = dstVar;
 		range.mCircleBounds = mCircleBounds;
 		return super.copyTo(task);
 	}

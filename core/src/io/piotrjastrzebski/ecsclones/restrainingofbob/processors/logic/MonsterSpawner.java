@@ -11,7 +11,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.RoBScreen;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.*;
-import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.BTWatcher;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.EnemyBrain;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.status.Health;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.*;

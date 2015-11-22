@@ -26,15 +26,19 @@ public class BEvader extends Manager {
 	Evade<Vector2> evade;
 	PSteerable dummy = new PSteerable();
 	public boolean set (int evader, String evadee) {
-		SBehaviour sBehaviour = mSBehaviour.create(evader);
 		Entity target = tags.getEntity(evadee);
 		if (target == null) {
 			return false;
 		}
+		return set(evader, target.getId());
+	}
+
+	public boolean set (int evader, int evadee) {
+		SBehaviour sBehaviour = mSBehaviour.create(evader);
 //		if (mDead.has(target)) return false;
 		mDebugTint.get(evader).color.set(Color.PURPLE);
 
-		sBehaviour.target = target.getId();
+		sBehaviour.target = evadee;
 
 		MyBlendedSteering behaviour = new MyBlendedSteering(dummy);
 		sBehaviour.behaviour = behaviour;

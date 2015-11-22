@@ -9,6 +9,7 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.ai.storag
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.ai.storage.IntStorage;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.ai.storage.StringStorage;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.base.BaseTask;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.base.ValueType;
 
 /**
  * Created by PiotrJ on 19/08/15.

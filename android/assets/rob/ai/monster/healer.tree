@@ -1,23 +1,33 @@
 # Alias definitions
+import findDstTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.FindDstTask"
 import findGroupTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.FindGroupTask"
 import hPCheckTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.HPCheckTask"
 import healTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.HealTask"
+import pursue2Task:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.Pursue2Task"
 import stackPop:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.stacks.StackPop"
-import pursueTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.Pursue2Task"
-import wanderTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.WanderTask"
+import valueCheckTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.ValueCheckTask"
 
 root
   selector
     sequence
-      findGroupTask intStack:"toHeal" group:"enemy" distance:7.0
+      findGroupTask intStack:"toHeal" group:"enemy" distance:15.0
       untilFail
         sequence
           stackPop stack:"toHeal" type:"INT" varName:"healTarget"
           alwaysSucceed
             parallel policy:"Sequence"
-              hPCheckTask idName:"healTarget" type:"LT" percent:100.0
-              healTask target:"healTarget"
-              pursueTask target:"healTarget"
+              hPCheckTask idName:"healTarget" type:"LT" percent:90.0
+              findDstTask target:"healTarget" dstVar:"healTargetDst"
+              alwaysSucceed
+                parallel policy:"Sequence"
+                  valueCheckTask varName:"healTargetDst" varType:"FLOAT" compType:"GT" otherVarName:"null" intVal:0 floatVal:5.0 stringVal:"null"
+                  pursue2Task target:"healTarget"
+              alwaysSucceed
+                parallel policy:"Sequence"
+                  valueCheckTask varName:"healTargetDst" varType:"FLOAT" compType:"LT" otherVarName:"null" intVal:0 floatVal:6.0 stringVal:"null"
+                  alwaysSucceed
+                    parallel policy:"Sequence"
+                      valueCheckTask varName:"healTargetDst" varType:"FLOAT" compType:"LT_EQ" otherVarName:"null" intVal:0 floatVal:5.0 stringVal:"null"
+                      healTask target:"healTarget"
       failure
-    # wait seconds:"constant,0.3"
-    wanderTask
+    wait seconds:"constant,0.3"

@@ -130,22 +130,27 @@ public class BTEditor extends IteratingSystem {
 		editor.addTaskClass("actions", AttackTask.class);
 		editor.addTaskClass("actions", AttackCoolDownTask.class);
 		editor.addTaskClass("actions", PursueTask.class);
+		editor.addTaskClass("actions", Pursue2Task.class);
 		editor.addTaskClass("actions", EvadeTask.class);
+		editor.addTaskClass("actions", Evade2Task.class);
 		editor.addTaskClass("actions", WanderTask.class);
 		editor.addTaskClass("actions", StopSteeringTask.class);
 		editor.addTaskClass("actions", ShootTask.class);
 		editor.addTaskClass("actions", MeleeTask.class);
 		editor.addTaskClass("actions", HealTask.class);
+		editor.addTaskClass("actions", FindDstTask.class);
 
 		editor.addTaskClass("conditions", HPAboveTask.class);
 		editor.addTaskClass("conditions", HPAbove2Task.class);
 		editor.addTaskClass("conditions", HPCheckTask.class);
+		editor.addTaskClass("conditions", DstCheckTask.class);
 		editor.addTaskClass("conditions", InRangeTask.class);
 		editor.addTaskClass("conditions", InRange2Task.class);
 		editor.addTaskClass("conditions", InAttackRangeTask.class);
 		editor.addTaskClass("conditions", InAttackRange2Task.class);
 		editor.addTaskClass("conditions", IsAliveTask.class);
 		editor.addTaskClass("conditions", IsAlive2Task.class);
+		editor.addTaskClass("conditions", ValueCheckTask.class);
 
 		editor.addTaskClass("stack", FindGroupTask.class);
 		editor.addTaskClass("stack", StackIsEmpty.class);
