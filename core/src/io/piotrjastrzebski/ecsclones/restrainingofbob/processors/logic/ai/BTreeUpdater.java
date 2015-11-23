@@ -29,7 +29,11 @@ public class BTreeUpdater extends IteratingSystem {
 		// TODO could try delayed system in artemis 1.0 for this
 		EnemyBrain brain = mEnemyBrain.get(eid);
 		EnemyBTree tree = mEnemyBTree.get(eid);
-		tree.tree.setObject(brain);
-		tree.tree.step();
+		if (brain.treePath == null) {
+			brain.fsm.update();
+		} else {
+			tree.tree.setObject(brain);
+			tree.tree.step();
+		}
 	}
 }

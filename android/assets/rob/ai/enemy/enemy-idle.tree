@@ -1,0 +1,14 @@
+# Alias definitions
+import changeStateTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.states.ChangeStateTask"
+import inRangeTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.InRangeTask"
+import isAliveTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.IsAliveTask"
+import wanderTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.WanderTask"
+
+root
+  parallel policy:"Sequence"
+    invert
+      sequence
+        inRangeTask target:"player" dst:7.0
+        isAliveTask target:"player"
+        changeStateTask name:"aggro"
+    wanderTask

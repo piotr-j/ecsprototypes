@@ -3,6 +3,10 @@ package io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai;
 import com.artemis.PooledComponent;
 import com.artemis.annotations.EntityId;
 import com.badlogic.gdx.ai.btree.BehaviorTree;
+import com.badlogic.gdx.ai.fsm.StackStateMachine;
+import com.badlogic.gdx.ai.fsm.State;
+import com.badlogic.gdx.utils.ObjectMap;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.ai.BTreeLoader;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.ai.storage.FloatStorage;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.ai.storage.IntStorage;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.processors.logic.ai.storage.StringStorage;
@@ -21,21 +25,26 @@ public class EnemyBrain extends PooledComponent {
 	public int target;
 	@EntityId
 	public int id;
-	public String treePath;
 	public boolean inRange;
-
 	protected IntStorage intStorage;
+
 	protected FloatStorage floatStorage;
 	protected StringStorage stringStorage;
-
 	public BehaviorTree<EnemyBrain> tree;
-	public String path;
 
-	public EnemyBrain set (String path, BehaviorTree<EnemyBrain> tree) {
-		this.path = path;
-		this.tree = tree;
-		return this;
-	}
+	public String path;
+	public String name;
+	public String treePath;
+	public ObjectMap<String, BehaviorTree> stateToTree = new ObjectMap<>();
+	public StackStateMachine<EnemyBrain, State<EnemyBrain>> fsm;
+	public ObjectMap<String, State<EnemyBrain>> nameToState = new ObjectMap<>();
+	public ObjectMap<State<EnemyBrain>, String> stateToName = new ObjectMap<>();
+
+//	public EnemyBrain set (String path, BehaviorTree<EnemyBrain> tree) {
+//		this.path = path;
+//		this.tree = tree;
+//		return this;
+//	}
 
 	public EnemyBrain () {
 		reset();
@@ -52,7 +61,13 @@ public class EnemyBrain extends PooledComponent {
 		if (floatStorage != null) floatStorage.clear();
 		if (stringStorage != null) stringStorage.clear();
 		tree = null;
-		path = null;
+		name = null;
+		treePath = null;
+		fsm = null;
+		nameToState.clear();
+		stateToName.clear();
+//		path = null;
+		stateToTree.clear();
 	}
 
 	public void setOwnerId(int id) {

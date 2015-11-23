@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.RoBScreen;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.*;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.BTWatcher;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.ai.EnemyBrain;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.logic.status.Health;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.components.physics.*;
@@ -28,7 +29,7 @@ public class MonsterSpawner extends EntitySystem {
 		super(Aspect.all(EnemyBrain.class));
 	}
 
-	protected int targetCount = 100;
+	protected int targetCount = 0;
 	CumulativeDistribution<EnemyType> distribution;
 	@Override protected void initialize () {
 		super.initialize();
@@ -43,6 +44,7 @@ public class MonsterSpawner extends EntitySystem {
 //		spawnEnemy(-6, 0, EnemyType.RANGE);
 //		spawnEnemy(1, 0, EnemyType.MELEE);
 //		spawnEnemy(11, 0, EnemyType.MELEE);
+		spawnEnemy(0, 0, EnemyType.MELEE);
 	}
 
 	@Override protected void processSystem () {
@@ -102,7 +104,9 @@ public class MonsterSpawner extends EntitySystem {
 		switch (type) {
 		default:
 		case MELEE:
-			brain.treePath = "rob/ai/monster/attacker.tree";
+//			brain.treePath = "rob/ai/monster/attacker.tree";
+			brain.path = "rob/ai/enemy/";
+			brain.name = "enemy";
 			ee.create(DebugTint.class).setBase(Color.YELLOW);
 			Meleer meleer = ee.create(Meleer.class);
 			meleer.dmg = .5f;
@@ -110,6 +114,7 @@ public class MonsterSpawner extends EntitySystem {
 			meleer.range = 1;
 			physSteerable.setMaxLinearAcceleration(9);
 			physSteerable.setMaxLinearSpeed(3);
+			ee.create(BTWatcher.class);
 			break;
 		case HEAL:
 			brain.treePath = "rob/ai/monster/healer.tree";

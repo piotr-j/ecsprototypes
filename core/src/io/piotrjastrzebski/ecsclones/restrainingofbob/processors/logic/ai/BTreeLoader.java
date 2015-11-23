@@ -10,6 +10,9 @@ import com.badlogic.gdx.ai.btree.LeafTask;
 import com.badlogic.gdx.ai.btree.Task;
 import com.badlogic.gdx.ai.btree.leaf.Wait;
 import com.badlogic.gdx.ai.btree.utils.BehaviorTreeParser;
+import com.badlogic.gdx.ai.fsm.StackStateMachine;
+import com.badlogic.gdx.ai.fsm.State;
+import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.Pool;
@@ -44,8 +47,59 @@ public class BTreeLoader extends BaseEntitySystem implements Input, InputProcess
 
 	@Override protected void inserted (int eid) {
 		EnemyBrain brain = mEnemyBrain.get(eid);
-		EnemyBTree tree = mEnemyBTree.create(eid);
-		tree.set(brain.treePath, get(brain.treePath));
+		final EnemyBTree tree = mEnemyBTree.create(eid);
+		if (brain.treePath != null) {
+			tree.set(brain.treePath, get(brain.treePath));
+		} else {
+			String path = brain.path;
+			String name = brain.name;
+			// in real game, find all states or something
+			// TODO global state of sorts?
+			// TODO this is shite
+			final BehaviorTree<EnemyBrain> aggro = get(path + name + "-aggro.tree");
+			final BehaviorTree<EnemyBrain> idle = get(path + name + "-idle.tree");
+			brain.stateToTree.put("aggro", aggro);
+			brain.stateToTree.put("idle", idle);
+			// this could be one thing with just the tree and name set or something
+			brain.nameToState.put("aggro", new State<EnemyBrain>(){
+				@Override public void enter (EnemyBrain entity) {
+					tree.tree = aggro;
+					tree.tree.setObject(entity);
+					Gdx.app.log("", "Set aggro state");
+				}
+				@Override public void update (EnemyBrain entity) {
+					tree.tree.step();
+				}
+				@Override public void exit (EnemyBrain entity) {
+					tree.tree.cancel();
+				}
+				@Override public boolean onMessage (EnemyBrain entity, Telegram telegram) {
+					return false;
+				}
+			});
+			brain.stateToName.put(brain.nameToState.get("aggro"), "aggro");
+			brain.nameToState.put("idle", new State<EnemyBrain>(){
+				@Override public void enter (EnemyBrain entity) {
+					tree.tree = idle;
+					tree.tree.setObject(entity);
+					Gdx.app.log("", "Set idle state");
+				}
+				@Override public void update (EnemyBrain entity) {
+					tree.tree.step();
+				}
+				@Override public void exit (EnemyBrain entity) {
+					tree.tree.cancel();
+				}
+				@Override public boolean onMessage (EnemyBrain entity, Telegram telegram) {
+					return false;
+				}
+			});
+			brain.stateToName.put(brain.nameToState.get("idle"), "idle");
+			brain.fsm = new StackStateMachine<>(brain);
+			brain.fsm.changeState(brain.nameToState.get("idle"));
+			// idlea seems like a good default state
+			tree.tree = idle;
+		}
 	}
 
 	ObjectMap<String, BehaviorTree<EnemyBrain>> archetypes = new ObjectMap<>();

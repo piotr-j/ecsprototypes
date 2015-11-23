@@ -1,0 +1,44 @@
+# Alias definitions
+import evadeTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.EvadeTask"
+import hPAboveTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.HPAboveTask"
+import inRangeTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.InRangeTask"
+import inAttackRangeTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.InAttackRangeTask"
+import isAliveTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.conditions.IsAliveTask"
+import attackTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.AttackTask"
+import pursueTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.PursueTask"
+import wanderTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.WanderTask"
+import attackCoolDownTask:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.actions.AttackCoolDownTask"
+import revertState:"io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.states.RevertStateTask"
+
+root
+  selector
+    # check if target is in range and alive
+    sequence
+      isAliveTask target:"player"
+      inRangeTask target:"player" dst:7.0
+      # run away or attack
+      selector
+        # evade target if low on hp and target is in range
+        parallel policy:"Sequence"
+          sequence
+            invert
+              hPAboveTask percent:30.0 absolute:0.0
+            isAliveTask target:"player"
+            inRangeTask target:"player" dst:10.0
+          evadeTask target:"player"
+        # pursue target if high hp and try to attack when close enough
+        parallel policy:"Sequence"
+          sequence
+            hPAboveTask percent:30.0 absolute:0.0
+            isAliveTask target:"player"
+            inRangeTask target:"player" dst:10.0
+          pursueTask target:"player"
+          # we dont want to stop if we are not in attack range
+          alwaysSucceed
+            sequence
+              # melee range
+              inAttackRangeTask target:"player"
+              attackTask target:"player"
+              # wait for attack cooldown to expire
+              attackCoolDownTask
+    revertState

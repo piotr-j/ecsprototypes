@@ -36,6 +36,10 @@ import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.stacks.ValueIsEmpty;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.stacks.StackIsEmpty;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.stacks.StackPop;
 import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.stacks.StackPush;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.states.ChangeStateTask;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.states.GetPrevStateTask;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.states.GetStateTask;
+import io.piotrjastrzebski.ecsclones.restrainingofbob.tasks.states.RevertStateTask;
 
 /**
  *
@@ -158,6 +162,11 @@ public class BTEditor extends IteratingSystem {
 		editor.addTaskClass("stack", StackPush.class);
 		editor.addTaskClass("stack", ValueIsEmpty.class);
 
+		editor.addTaskClass("state", ChangeStateTask.class);
+		editor.addTaskClass("state", RevertStateTask.class);
+		editor.addTaskClass("state", GetStateTask.class);
+		editor.addTaskClass("state", GetPrevStateTask.class);
+
 		editor.setPersist(new IPersist<EnemyBrain>() {
 			@Override public void onSave (String tree) {
 				Gdx.app.log(TAG, "save");
@@ -223,6 +232,7 @@ public class BTEditor extends IteratingSystem {
 		editor.initialize(tree.tree, "");
 	}
 
+	BehaviorTree<EnemyBrain> last = null;
 	@Override protected void process (int entityId) {
 		EnemyBrain brain = mEnemyBrain.get(entityId);
 		EnemyBTree tree = mEnemyBTree.get(entityId);
@@ -236,6 +246,12 @@ public class BTEditor extends IteratingSystem {
 		// TODO do we really want this steering in here?
 		if (mSBehaviour.has(entityId))
 			steering.process(entityId);
+		if (last == null) {
+			last = tree.tree;
+		} else if (last != tree.tree) {
+			last = tree.tree;
+			editor.initialize(tree.tree, "");
+		}
 		// NOTE if we ever have shared trees we would need to set the object each time
 		tree.tree.setObject(brain);
 		// entity is excluded from normal updates if it is watched, so we cam manipulate the tree
